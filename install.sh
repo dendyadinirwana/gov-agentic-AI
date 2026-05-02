@@ -92,6 +92,10 @@ elif [ ! -d "$TARGET_DIR/.git" ]; then
 else
   echo "Using existing repository at $TARGET_DIR"
   cd "$TARGET_DIR"
+  if command -v git >/dev/null 2>&1 && [ -d .git ]; then
+    echo "Updating existing clone ..."
+    git pull --ff-only || echo "Warning: could not fast-forward update existing clone; continuing with local files." >&2
+  fi
 fi
 
 echo "Running Gov-Agentic AI installer ..."
