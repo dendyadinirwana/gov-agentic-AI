@@ -1,0 +1,22 @@
+{
+  "adapter_name": "hermes",
+  "adapter_path": "runtime-adapters/hermes/profile.json",
+  "description": "Hermes profile: persistent identity with explicit local-vs-mem9 precedence and role-restricted memory behavior.",
+  "folder_strategy": "repo-relative-persistent-agent-home",
+  "skill_loading": "Load active role skills and shared guardrail skill at session boot; preserve active role restrictions in persistent memory.",
+  "config_entrypoint": "configs/runtime.generated.json",
+  "adapter_docs": ["runtime-adapters/hermes/HERMES.md", "runtime-adapters/universal/BOOT_SEQUENCE.md"],
+  "runtime_paths": {
+    "agent_home": ".",
+    "system_prompt_mount": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
+    "skills_mount": "skills",
+    "knowledge_mount": "knowledge-base",
+    "memory_policy_doc": "runtime-adapters/hermes/HERMES.md",
+    "schemas_mount": "schemas"
+  },
+  "runtime_overrides": {
+    "memory_precedence": "local_knowledge_wins_over_mem9_when_conflicting",
+    "session_memory_backend": "mem9_when_memory_mode_is_mem9_or_hybrid",
+    "canonical_knowledge_mutability": "read_only_by_default"
+  }
+}

@@ -1,0 +1,17 @@
+project_name: gov-agentic-ai
+runtime_target: openclaw
+memory_mode: local
+governance_mode: sandbox
+system_prompt: prompts/system/YayakAI_Master_System_Prompt_v3.0.md
+shared_guardrail_skill: skills/_shared/gov-agentic-common/SKILL.md
+audit_schema: schemas/audit_log_template_v3.0.json
+acceptance_tests: schemas/Gov_Agentic_AI_v3.1_Acceptance_Tests.json
+knowledge_base_root: knowledge-base
+shared_knowledge_root: knowledge-base/_shared
+human_approval_required_for:
+  - L4
+active_clusters:
+  - top-layer
+  - kebijakan-dan-hukum
+active_role_count: 4
+active_skill_count: 4

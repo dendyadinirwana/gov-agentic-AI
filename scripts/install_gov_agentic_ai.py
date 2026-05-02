@@ -18,16 +18,38 @@ RUNTIMES = ['openclaw', 'hermes', 'codex', 'claude', 'antigravity', 'generic']
 MEMORY_MODES = ['local', 'mem9', 'hybrid']
 GOVERNANCE_MODES = ['sandbox', 'production']
 
+OPTION_DESCRIPTIONS = {
+    'runtime': {
+        'openclaw': 'OpenClaw adapter: repo-mounted runtime using skill_manifest and active role skills.',
+        'hermes': 'Hermes adapter: persistent agent identity with explicit mem9/local memory precedence.',
+        'codex': 'Codex adapter: local workspace with SKILL.md capability folders and verification scripts.',
+        'claude': 'Claude adapter: SKILL.md-compatible import with progressive disclosure references.',
+        'antigravity': 'Antigravity adapter: generic repo-mounted agent runtime with manifest-driven routing.',
+        'generic': 'Global portable mode for any runtime that can read files and runtime.generated.json.',
+    },
+    'memory': {
+        'local': 'Full local: local knowledge-base is canonical; no external memory required.',
+        'mem9': 'Full mem9: mem9 is primary memory surface; use when runtime is built around mem9 recall.',
+        'hybrid': 'Hybrid: local knowledge-base is source of truth; mem9 stores preferences/session memory.',
+    },
+    'governance': {
+        'sandbox': 'Sandbox: demo/testing mode; L4 still requires approval, L3 can be explored as draft/recommendation.',
+        'production': 'Production: strict HITL, audit, and data-classification enforcement; L3 and L4 require approval.',
+    },
+}
+
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text())
 
 
-def prompt_choice(label: str, options: list[str], default: str) -> str:
+def prompt_choice(label: str, options: list[str], default: str, description_group: str | None = None) -> str:
     print(f'\n{label}')
+    descriptions = OPTION_DESCRIPTIONS.get(description_group or '', {})
     for idx, option in enumerate(options, 1):
         marker = ' (default)' if option == default else ''
-        print(f'  {idx}. {option}{marker}')
+        detail = f' - {descriptions[option]}' if option in descriptions else ''
+        print(f'  {idx}. {option}{marker}{detail}')
     raw = input('Choose number or value: ').strip()
     if not raw:
         return default
@@ -36,7 +58,7 @@ def prompt_choice(label: str, options: list[str], default: str) -> str:
     if raw in options:
         return raw
     print(f'Invalid choice: {raw}', file=sys.stderr)
-    return prompt_choice(label, options, default)
+    return prompt_choice(label, options, default, description_group)
 
 
 def prompt_clusters(clusters: list[str], default_all: bool = True) -> list[str]:
@@ -74,9 +96,34 @@ def parse_csv(value: str | None) -> list[str] | None:
     return [part.strip() for part in value.split(',') if part.strip()]
 
 
+def runtime_profile(runtime: str) -> dict[str, Any]:
+    profile_path = ROOT / 'runtime-adapters' / runtime / 'profile.json'
+    if profile_path.exists():
+        return load_json(profile_path)
+    return load_json(ROOT / 'runtime-adapters' / 'generic' / 'profile.json')
+
+def governance_policy(governance: str) -> dict[str, Any]:
+    if governance == 'production':
+        return {
+            'mode_summary': 'Strict production mode for real government workflow deployment.',
+            'human_approval_required_for': ['L3', 'L4'],
+            'audit_enforcement': 'strict',
+            'data_classification_enforcement': 'strict',
+            'recommended_use': 'limited production, controlled pilot, or formal workflow integration',
+        }
+    return {
+        'mode_summary': 'Sandbox mode for demo, testing, and prompt/runtime iteration.',
+        'human_approval_required_for': ['L4'],
+        'audit_enforcement': 'lightweight',
+        'data_classification_enforcement': 'advisory',
+        'recommended_use': 'demo, internal exploration, and non-production validation',
+    }
+
 def build_config(runtime: str, memory: str, governance: str, active_clusters: list[str]) -> dict[str, Any]:
     kb = load_json(KB_MANIFEST)
     skills = load_json(SKILL_MANIFEST)
+    profile = runtime_profile(runtime)
+    governance_details = governance_policy(governance)
     role_rows = kb['roles']
     skill_by_role = {(s['cluster'], s['role'], s['alias']): s for s in skills['skills']}
     active_roles = []
@@ -105,9 +152,15 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
     return {
         'project_name': 'gov-agentic-ai',
         'runtime_target': runtime,
+        'runtime_adapter': profile,
+        'adapter_name': profile.get('adapter_name', runtime),
+        'adapter_profile_path': profile.get('adapter_path'),
+        'runtime_paths': profile.get('runtime_paths', {}),
+        'runtime_overrides': profile.get('runtime_overrides', {}),
         'memory_mode': memory,
         'memory_policy': memory_policy(memory),
         'governance_mode': governance,
+        'governance_policy': governance_details,
         'system_prompt': 'prompts/system/YayakAI_Master_System_Prompt_v3.0.md',
         'default_router_role': 'GOV-AI',
         'default_router_alias': 'Yayak',
@@ -120,18 +173,20 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
         'active_clusters': active_clusters,
         'active_roles': active_roles,
         'active_skills': active_skills,
-        'human_approval_required_for': ['L3', 'L4'] if governance == 'production' else ['L4'],
+        'human_approval_required_for': governance_details['human_approval_required_for'],
         'output_contract_required_fields': [
             'summary', 'evidence_map', 'assumptions', 'confidence_status', 'red_flags', 'human_touchpoint', 'next_step'
         ],
         'runtime_boot_sequence': [
             'read_runtime_config',
+            f"load_runtime_adapter_profile:{profile.get('adapter_name', runtime)}",
             'load_system_prompt',
             'load_shared_guardrail_skill',
             'default_to_yayak_router',
             'select_only_active_roles_and_skills',
             'retrieve_active_role_and_shared_knowledge',
-            'apply_memory_policy',
+            f"apply_memory_policy:{memory}",
+            f"apply_governance_policy:{governance}",
             'emit_required_output_contract',
             'require_hitl_for_configured_action_levels',
         ],
@@ -201,9 +256,9 @@ def main() -> None:
         governance = args.governance or defaults.get('governance_mode', 'production')
         active_clusters = parse_csv(args.clusters) or defaults.get('active_clusters') or clusters
     else:
-        runtime = args.runtime or prompt_choice('Runtime target', RUNTIMES, defaults.get('runtime_target', 'generic'))
-        memory = args.memory or prompt_choice('Memory mode', MEMORY_MODES, defaults.get('memory_mode', 'hybrid'))
-        governance = args.governance or prompt_choice('Governance mode', GOVERNANCE_MODES, defaults.get('governance_mode', 'production'))
+        runtime = args.runtime or prompt_choice('Runtime target', RUNTIMES, defaults.get('runtime_target', 'generic'), 'runtime')
+        memory = args.memory or prompt_choice('Memory mode', MEMORY_MODES, defaults.get('memory_mode', 'hybrid'), 'memory')
+        governance = args.governance or prompt_choice('Governance mode', GOVERNANCE_MODES, defaults.get('governance_mode', 'production'), 'governance')
         active_clusters = parse_csv(args.clusters) or prompt_clusters(clusters)
 
     unknown = sorted(set(active_clusters) - set(clusters))
@@ -226,6 +281,8 @@ def main() -> None:
     print(f'active_clusters={len(active_clusters)}')
     print(f'active_roles={len(config["active_roles"])}')
     print(f'active_skills={len(config["active_skills"])}')
+    print(f'adapter_profile={config.get("adapter_profile_path")}')
+    print(f'governance_summary={config.get("governance_policy", {}).get("mode_summary")}')
 
 if __name__ == '__main__':
     main()

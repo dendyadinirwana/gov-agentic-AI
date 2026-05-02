@@ -1,0 +1,17 @@
+{
+  "adapter_name": "codex",
+  "adapter_path": "runtime-adapters/codex/profile.json",
+  "description": "Codex profile: use repo-relative files, skills as local capability folders, and scripts for verification.",
+  "folder_strategy": "repo-relative-codex-workspace",
+  "skill_loading": "Use SKILL.md folders as Codex-compatible capability surfaces when imported or mounted.",
+  "config_entrypoint": "configs/runtime.generated.json",
+  "adapter_docs": ["runtime-adapters/universal/AGENT_RUNTIME.md", "runtime-adapters/universal/BOOT_SEQUENCE.md"],
+  "runtime_paths": {
+    "workspace_root": ".",
+    "system_prompt_mount": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
+    "skills_mount": "skills",
+    "knowledge_mount": "knowledge-base",
+    "schemas_mount": "schemas"
+  },
+  "runtime_overrides": {"verification_commands": ["python3 scripts/verify_repo.py", "python3 scripts/verify_skills.py"]}
+}

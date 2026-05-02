@@ -1,0 +1,309 @@
+{
+  "project_name": "gov-agentic-ai",
+  "runtime_target": "hermes",
+  "runtime_adapter": {
+    "adapter_name": "hermes",
+    "adapter_path": "runtime-adapters/hermes/profile.json",
+    "description": "Hermes profile: persistent identity with explicit local-vs-mem9 precedence and role-restricted memory behavior.",
+    "folder_strategy": "repo-relative-persistent-agent-home",
+    "skill_loading": "Load active role skills and shared guardrail skill at session boot; preserve active role restrictions in persistent memory.",
+    "config_entrypoint": "configs/runtime.generated.json",
+    "adapter_docs": [
+      "runtime-adapters/hermes/HERMES.md",
+      "runtime-adapters/universal/BOOT_SEQUENCE.md"
+    ],
+    "runtime_paths": {
+      "agent_home": ".",
+      "system_prompt_mount": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
+      "skills_mount": "skills",
+      "knowledge_mount": "knowledge-base",
+      "memory_policy_doc": "runtime-adapters/hermes/HERMES.md",
+      "schemas_mount": "schemas"
+    },
+    "runtime_overrides": {
+      "memory_precedence": "local_knowledge_wins_over_mem9_when_conflicting",
+      "session_memory_backend": "mem9_when_memory_mode_is_mem9_or_hybrid",
+      "canonical_knowledge_mutability": "read_only_by_default"
+    }
+  },
+  "adapter_name": "hermes",
+  "adapter_profile_path": "runtime-adapters/hermes/profile.json",
+  "runtime_paths": {
+    "agent_home": ".",
+    "system_prompt_mount": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
+    "skills_mount": "skills",
+    "knowledge_mount": "knowledge-base",
+    "memory_policy_doc": "runtime-adapters/hermes/HERMES.md",
+    "schemas_mount": "schemas"
+  },
+  "runtime_overrides": {
+    "memory_precedence": "local_knowledge_wins_over_mem9_when_conflicting",
+    "session_memory_backend": "mem9_when_memory_mode_is_mem9_or_hybrid",
+    "canonical_knowledge_mutability": "read_only_by_default"
+  },
+  "memory_mode": "hybrid",
+  "memory_policy": {
+    "canonical_knowledge": "local knowledge-base is source of truth",
+    "working_memory": "mem9 stores preferences, session memory, and operational recall",
+    "external_memory": "mem9 optional but expected"
+  },
+  "governance_mode": "production",
+  "governance_policy": {
+    "mode_summary": "Strict production mode for real government workflow deployment.",
+    "human_approval_required_for": [
+      "L3",
+      "L4"
+    ],
+    "audit_enforcement": "strict",
+    "data_classification_enforcement": "strict",
+    "recommended_use": "limited production, controlled pilot, or formal workflow integration"
+  },
+  "system_prompt": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
+  "default_router_role": "GOV-AI",
+  "default_router_alias": "Yayak",
+  "default_router_skill": "gov-gov-ai-yayak",
+  "shared_guardrail_skill": "skills/_shared/gov-agentic-common/SKILL.md",
+  "audit_schema": "schemas/audit_log_template_v3.0.json",
+  "acceptance_tests": "schemas/Gov_Agentic_AI_v3.1_Acceptance_Tests.json",
+  "knowledge_base_root": "knowledge-base",
+  "shared_knowledge_root": "knowledge-base/_shared",
+  "active_clusters": [
+    "tata-usaha",
+    "perencanaan-dan-anggaran",
+    "kebijakan-dan-hukum"
+  ],
+  "active_roles": [
+    {
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Analis Kebijakan",
+      "alias": "Azis",
+      "knowledge_path": "knowledge-base/kebijakan-dan-hukum/analis-kebijakan_azis",
+      "skill_name": "gov-analis-kebijakan-azis",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__analis-kebijakan_azis",
+      "prompt_path": "prompts/roles/kebijakan-dan-hukum__analis-kebijakan_azis.md"
+    },
+    {
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Konsultan Hukum",
+      "alias": "Audy",
+      "knowledge_path": "knowledge-base/kebijakan-dan-hukum/konsultan-hukum_audy",
+      "skill_name": "gov-konsultan-hukum-audy",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__konsultan-hukum_audy",
+      "prompt_path": "prompts/roles/kebijakan-dan-hukum__konsultan-hukum_audy.md"
+    },
+    {
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Monitor Kepatuhan Hukum",
+      "alias": "Edi",
+      "knowledge_path": "knowledge-base/kebijakan-dan-hukum/monitor-kepatuhan-hukum_edi",
+      "skill_name": "gov-monitor-kepatuhan-hukum-edi",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi",
+      "prompt_path": "prompts/roles/kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi.md"
+    },
+    {
+      "cluster": "perencanaan-dan-anggaran",
+      "role": "Perencana Program",
+      "alias": "Faris",
+      "knowledge_path": "knowledge-base/perencanaan-dan-anggaran/perencana-program_faris",
+      "skill_name": "gov-perencana-program-faris",
+      "skill_path": "skills/roles/perencanaan-dan-anggaran__perencana-program_faris",
+      "prompt_path": "prompts/roles/perencanaan-dan-anggaran__perencana-program_faris.md"
+    },
+    {
+      "cluster": "perencanaan-dan-anggaran",
+      "role": "Analis Anggaran",
+      "alias": "Anastasia",
+      "knowledge_path": "knowledge-base/perencanaan-dan-anggaran/analis-anggaran_anastasia",
+      "skill_name": "gov-analis-anggaran-anastasia",
+      "skill_path": "skills/roles/perencanaan-dan-anggaran__analis-anggaran_anastasia",
+      "prompt_path": "prompts/roles/perencanaan-dan-anggaran__analis-anggaran_anastasia.md"
+    },
+    {
+      "cluster": "perencanaan-dan-anggaran",
+      "role": "Monitor Kepatuhan Anggaran",
+      "alias": "Nanang",
+      "knowledge_path": "knowledge-base/perencanaan-dan-anggaran/monitor-kepatuhan-anggaran_nanang",
+      "skill_name": "gov-monitor-kepatuhan-anggaran-nanang",
+      "skill_path": "skills/roles/perencanaan-dan-anggaran__monitor-kepatuhan-anggaran_nanang",
+      "prompt_path": "prompts/roles/perencanaan-dan-anggaran__monitor-kepatuhan-anggaran_nanang.md"
+    },
+    {
+      "cluster": "tata-usaha",
+      "role": "Admin Persuratan",
+      "alias": "Harrisal",
+      "knowledge_path": "knowledge-base/tata-usaha/admin-persuratan_harrisal",
+      "skill_name": "gov-admin-persuratan-harrisal",
+      "skill_path": "skills/roles/tata-usaha__admin-persuratan_harrisal",
+      "prompt_path": "prompts/roles/tata-usaha__admin-persuratan_harrisal.md"
+    },
+    {
+      "cluster": "tata-usaha",
+      "role": "Asisten Disposisi",
+      "alias": "Woro",
+      "knowledge_path": "knowledge-base/tata-usaha/asisten-disposisi_woro",
+      "skill_name": "gov-asisten-disposisi-woro",
+      "skill_path": "skills/roles/tata-usaha__asisten-disposisi_woro",
+      "prompt_path": "prompts/roles/tata-usaha__asisten-disposisi_woro.md"
+    },
+    {
+      "cluster": "tata-usaha",
+      "role": "Arsiparis Digital",
+      "alias": "Sovia",
+      "knowledge_path": "knowledge-base/tata-usaha/arsiparis-digital_sovia",
+      "skill_name": "gov-arsiparis-digital-sovia",
+      "skill_path": "skills/roles/tata-usaha__arsiparis-digital_sovia",
+      "prompt_path": "prompts/roles/tata-usaha__arsiparis-digital_sovia.md"
+    },
+    {
+      "cluster": "tata-usaha",
+      "role": "Agenda & Protokol",
+      "alias": "Ikhsan",
+      "knowledge_path": "knowledge-base/tata-usaha/agenda-dan-protokol_ikhsan",
+      "skill_name": "gov-agenda-dan-protokol-ikhsan",
+      "skill_path": "skills/roles/tata-usaha__agenda-dan-protokol_ikhsan",
+      "prompt_path": "prompts/roles/tata-usaha__agenda-dan-protokol_ikhsan.md"
+    },
+    {
+      "cluster": "tata-usaha",
+      "role": "Admin Layanan Internal",
+      "alias": "Ika",
+      "knowledge_path": "knowledge-base/tata-usaha/admin-layanan-internal_ika",
+      "skill_name": "gov-admin-layanan-internal-ika",
+      "skill_path": "skills/roles/tata-usaha__admin-layanan-internal_ika",
+      "prompt_path": "prompts/roles/tata-usaha__admin-layanan-internal_ika.md"
+    },
+    {
+      "cluster": "tata-usaha",
+      "role": "Monitor SLA Tata Usaha",
+      "alias": "Izza",
+      "knowledge_path": "knowledge-base/tata-usaha/monitor-sla-tata-usaha_izza",
+      "skill_name": "gov-monitor-sla-tata-usaha-izza",
+      "skill_path": "skills/roles/tata-usaha__monitor-sla-tata-usaha_izza",
+      "prompt_path": "prompts/roles/tata-usaha__monitor-sla-tata-usaha_izza.md"
+    }
+  ],
+  "active_skills": [
+    {
+      "name": "gov-analis-kebijakan-azis",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__analis-kebijakan_azis",
+      "skill_md": "skills/roles/kebijakan-dan-hukum__analis-kebijakan_azis/SKILL.md",
+      "role": "Analis Kebijakan",
+      "alias": "Azis",
+      "cluster": "kebijakan-dan-hukum"
+    },
+    {
+      "name": "gov-konsultan-hukum-audy",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__konsultan-hukum_audy",
+      "skill_md": "skills/roles/kebijakan-dan-hukum__konsultan-hukum_audy/SKILL.md",
+      "role": "Konsultan Hukum",
+      "alias": "Audy",
+      "cluster": "kebijakan-dan-hukum"
+    },
+    {
+      "name": "gov-monitor-kepatuhan-hukum-edi",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi",
+      "skill_md": "skills/roles/kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi/SKILL.md",
+      "role": "Monitor Kepatuhan Hukum",
+      "alias": "Edi",
+      "cluster": "kebijakan-dan-hukum"
+    },
+    {
+      "name": "gov-perencana-program-faris",
+      "skill_path": "skills/roles/perencanaan-dan-anggaran__perencana-program_faris",
+      "skill_md": "skills/roles/perencanaan-dan-anggaran__perencana-program_faris/SKILL.md",
+      "role": "Perencana Program",
+      "alias": "Faris",
+      "cluster": "perencanaan-dan-anggaran"
+    },
+    {
+      "name": "gov-analis-anggaran-anastasia",
+      "skill_path": "skills/roles/perencanaan-dan-anggaran__analis-anggaran_anastasia",
+      "skill_md": "skills/roles/perencanaan-dan-anggaran__analis-anggaran_anastasia/SKILL.md",
+      "role": "Analis Anggaran",
+      "alias": "Anastasia",
+      "cluster": "perencanaan-dan-anggaran"
+    },
+    {
+      "name": "gov-monitor-kepatuhan-anggaran-nanang",
+      "skill_path": "skills/roles/perencanaan-dan-anggaran__monitor-kepatuhan-anggaran_nanang",
+      "skill_md": "skills/roles/perencanaan-dan-anggaran__monitor-kepatuhan-anggaran_nanang/SKILL.md",
+      "role": "Monitor Kepatuhan Anggaran",
+      "alias": "Nanang",
+      "cluster": "perencanaan-dan-anggaran"
+    },
+    {
+      "name": "gov-admin-persuratan-harrisal",
+      "skill_path": "skills/roles/tata-usaha__admin-persuratan_harrisal",
+      "skill_md": "skills/roles/tata-usaha__admin-persuratan_harrisal/SKILL.md",
+      "role": "Admin Persuratan",
+      "alias": "Harrisal",
+      "cluster": "tata-usaha"
+    },
+    {
+      "name": "gov-asisten-disposisi-woro",
+      "skill_path": "skills/roles/tata-usaha__asisten-disposisi_woro",
+      "skill_md": "skills/roles/tata-usaha__asisten-disposisi_woro/SKILL.md",
+      "role": "Asisten Disposisi",
+      "alias": "Woro",
+      "cluster": "tata-usaha"
+    },
+    {
+      "name": "gov-arsiparis-digital-sovia",
+      "skill_path": "skills/roles/tata-usaha__arsiparis-digital_sovia",
+      "skill_md": "skills/roles/tata-usaha__arsiparis-digital_sovia/SKILL.md",
+      "role": "Arsiparis Digital",
+      "alias": "Sovia",
+      "cluster": "tata-usaha"
+    },
+    {
+      "name": "gov-agenda-dan-protokol-ikhsan",
+      "skill_path": "skills/roles/tata-usaha__agenda-dan-protokol_ikhsan",
+      "skill_md": "skills/roles/tata-usaha__agenda-dan-protokol_ikhsan/SKILL.md",
+      "role": "Agenda & Protokol",
+      "alias": "Ikhsan",
+      "cluster": "tata-usaha"
+    },
+    {
+      "name": "gov-admin-layanan-internal-ika",
+      "skill_path": "skills/roles/tata-usaha__admin-layanan-internal_ika",
+      "skill_md": "skills/roles/tata-usaha__admin-layanan-internal_ika/SKILL.md",
+      "role": "Admin Layanan Internal",
+      "alias": "Ika",
+      "cluster": "tata-usaha"
+    },
+    {
+      "name": "gov-monitor-sla-tata-usaha-izza",
+      "skill_path": "skills/roles/tata-usaha__monitor-sla-tata-usaha_izza",
+      "skill_md": "skills/roles/tata-usaha__monitor-sla-tata-usaha_izza/SKILL.md",
+      "role": "Monitor SLA Tata Usaha",
+      "alias": "Izza",
+      "cluster": "tata-usaha"
+    }
+  ],
+  "human_approval_required_for": [
+    "L3",
+    "L4"
+  ],
+  "output_contract_required_fields": [
+    "summary",
+    "evidence_map",
+    "assumptions",
+    "confidence_status",
+    "red_flags",
+    "human_touchpoint",
+    "next_step"
+  ],
+  "runtime_boot_sequence": [
+    "read_runtime_config",
+    "load_runtime_adapter_profile:hermes",
+    "load_system_prompt",
+    "load_shared_guardrail_skill",
+    "default_to_yayak_router",
+    "select_only_active_roles_and_skills",
+    "retrieve_active_role_and_shared_knowledge",
+    "apply_memory_policy:hybrid",
+    "apply_governance_policy:production",
+    "emit_required_output_contract",
+    "require_hitl_for_configured_action_levels"
+  ]
+}

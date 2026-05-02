@@ -1,0 +1,170 @@
+{
+  "project_name": "gov-agentic-ai",
+  "runtime_target": "openclaw",
+  "runtime_adapter": {
+    "adapter_name": "openclaw",
+    "adapter_path": "runtime-adapters/openclaw/profile.json",
+    "description": "OpenClaw profile: mount repo root, use runtime.generated.json as activation config, load skills from skill_manifest.",
+    "folder_strategy": "repo-relative-mounted",
+    "skill_loading": "Use skills/skill_manifest.json as registry; activate only active_skills from runtime config.",
+    "config_entrypoint": "configs/runtime.generated.json",
+    "adapter_docs": [
+      "runtime-adapters/openclaw/OPENCLAW.md",
+      "runtime-adapters/universal/BOOT_SEQUENCE.md"
+    ],
+    "runtime_paths": {
+      "repo_mount": ".",
+      "system_prompt_mount": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
+      "skills_mount": "skills/roles",
+      "shared_skill_mount": "skills/_shared/gov-agentic-common",
+      "knowledge_mount": "knowledge-base",
+      "schemas_mount": "schemas"
+    },
+    "runtime_overrides": {
+      "router_mode": "manifest-driven",
+      "skill_registry_mode": "skill_manifest",
+      "knowledge_resolver": "role_knowledge_then_shared_links"
+    }
+  },
+  "adapter_name": "openclaw",
+  "adapter_profile_path": "runtime-adapters/openclaw/profile.json",
+  "runtime_paths": {
+    "repo_mount": ".",
+    "system_prompt_mount": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
+    "skills_mount": "skills/roles",
+    "shared_skill_mount": "skills/_shared/gov-agentic-common",
+    "knowledge_mount": "knowledge-base",
+    "schemas_mount": "schemas"
+  },
+  "runtime_overrides": {
+    "router_mode": "manifest-driven",
+    "skill_registry_mode": "skill_manifest",
+    "knowledge_resolver": "role_knowledge_then_shared_links"
+  },
+  "memory_mode": "local",
+  "memory_policy": {
+    "canonical_knowledge": "local knowledge-base only",
+    "working_memory": "runtime-local memory only",
+    "external_memory": "disabled by default"
+  },
+  "governance_mode": "sandbox",
+  "governance_policy": {
+    "mode_summary": "Sandbox mode for demo, testing, and prompt/runtime iteration.",
+    "human_approval_required_for": [
+      "L4"
+    ],
+    "audit_enforcement": "lightweight",
+    "data_classification_enforcement": "advisory",
+    "recommended_use": "demo, internal exploration, and non-production validation"
+  },
+  "system_prompt": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
+  "default_router_role": "GOV-AI",
+  "default_router_alias": "Yayak",
+  "default_router_skill": "gov-gov-ai-yayak",
+  "shared_guardrail_skill": "skills/_shared/gov-agentic-common/SKILL.md",
+  "audit_schema": "schemas/audit_log_template_v3.0.json",
+  "acceptance_tests": "schemas/Gov_Agentic_AI_v3.1_Acceptance_Tests.json",
+  "knowledge_base_root": "knowledge-base",
+  "shared_knowledge_root": "knowledge-base/_shared",
+  "active_clusters": [
+    "top-layer",
+    "kebijakan-dan-hukum"
+  ],
+  "active_roles": [
+    {
+      "cluster": "top-layer",
+      "role": "GOV-AI",
+      "alias": "Yayak",
+      "knowledge_path": "knowledge-base/top-layer/gov-ai_yayak",
+      "skill_name": "gov-gov-ai-yayak",
+      "skill_path": "skills/roles/top-layer__gov-ai_yayak",
+      "prompt_path": "prompts/roles/top-layer__gov-ai_yayak.md"
+    },
+    {
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Analis Kebijakan",
+      "alias": "Azis",
+      "knowledge_path": "knowledge-base/kebijakan-dan-hukum/analis-kebijakan_azis",
+      "skill_name": "gov-analis-kebijakan-azis",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__analis-kebijakan_azis",
+      "prompt_path": "prompts/roles/kebijakan-dan-hukum__analis-kebijakan_azis.md"
+    },
+    {
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Konsultan Hukum",
+      "alias": "Audy",
+      "knowledge_path": "knowledge-base/kebijakan-dan-hukum/konsultan-hukum_audy",
+      "skill_name": "gov-konsultan-hukum-audy",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__konsultan-hukum_audy",
+      "prompt_path": "prompts/roles/kebijakan-dan-hukum__konsultan-hukum_audy.md"
+    },
+    {
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Monitor Kepatuhan Hukum",
+      "alias": "Edi",
+      "knowledge_path": "knowledge-base/kebijakan-dan-hukum/monitor-kepatuhan-hukum_edi",
+      "skill_name": "gov-monitor-kepatuhan-hukum-edi",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi",
+      "prompt_path": "prompts/roles/kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi.md"
+    }
+  ],
+  "active_skills": [
+    {
+      "name": "gov-gov-ai-yayak",
+      "skill_path": "skills/roles/top-layer__gov-ai_yayak",
+      "skill_md": "skills/roles/top-layer__gov-ai_yayak/SKILL.md",
+      "role": "GOV-AI",
+      "alias": "Yayak",
+      "cluster": "top-layer"
+    },
+    {
+      "name": "gov-analis-kebijakan-azis",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__analis-kebijakan_azis",
+      "skill_md": "skills/roles/kebijakan-dan-hukum__analis-kebijakan_azis/SKILL.md",
+      "role": "Analis Kebijakan",
+      "alias": "Azis",
+      "cluster": "kebijakan-dan-hukum"
+    },
+    {
+      "name": "gov-konsultan-hukum-audy",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__konsultan-hukum_audy",
+      "skill_md": "skills/roles/kebijakan-dan-hukum__konsultan-hukum_audy/SKILL.md",
+      "role": "Konsultan Hukum",
+      "alias": "Audy",
+      "cluster": "kebijakan-dan-hukum"
+    },
+    {
+      "name": "gov-monitor-kepatuhan-hukum-edi",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi",
+      "skill_md": "skills/roles/kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi/SKILL.md",
+      "role": "Monitor Kepatuhan Hukum",
+      "alias": "Edi",
+      "cluster": "kebijakan-dan-hukum"
+    }
+  ],
+  "human_approval_required_for": [
+    "L4"
+  ],
+  "output_contract_required_fields": [
+    "summary",
+    "evidence_map",
+    "assumptions",
+    "confidence_status",
+    "red_flags",
+    "human_touchpoint",
+    "next_step"
+  ],
+  "runtime_boot_sequence": [
+    "read_runtime_config",
+    "load_runtime_adapter_profile:openclaw",
+    "load_system_prompt",
+    "load_shared_guardrail_skill",
+    "default_to_yayak_router",
+    "select_only_active_roles_and_skills",
+    "retrieve_active_role_and_shared_knowledge",
+    "apply_memory_policy:local",
+    "apply_governance_policy:sandbox",
+    "emit_required_output_contract",
+    "require_hitl_for_configured_action_levels"
+  ]
+}

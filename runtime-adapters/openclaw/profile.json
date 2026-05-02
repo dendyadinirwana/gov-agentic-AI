@@ -1,0 +1,22 @@
+{
+  "adapter_name": "openclaw",
+  "adapter_path": "runtime-adapters/openclaw/profile.json",
+  "description": "OpenClaw profile: mount repo root, use runtime.generated.json as activation config, load skills from skill_manifest.",
+  "folder_strategy": "repo-relative-mounted",
+  "skill_loading": "Use skills/skill_manifest.json as registry; activate only active_skills from runtime config.",
+  "config_entrypoint": "configs/runtime.generated.json",
+  "adapter_docs": ["runtime-adapters/openclaw/OPENCLAW.md", "runtime-adapters/universal/BOOT_SEQUENCE.md"],
+  "runtime_paths": {
+    "repo_mount": ".",
+    "system_prompt_mount": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
+    "skills_mount": "skills/roles",
+    "shared_skill_mount": "skills/_shared/gov-agentic-common",
+    "knowledge_mount": "knowledge-base",
+    "schemas_mount": "schemas"
+  },
+  "runtime_overrides": {
+    "router_mode": "manifest-driven",
+    "skill_registry_mode": "skill_manifest",
+    "knowledge_resolver": "role_knowledge_then_shared_links"
+  }
+}
