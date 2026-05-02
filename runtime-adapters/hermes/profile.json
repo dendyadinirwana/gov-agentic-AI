@@ -48,5 +48,12 @@
       "gov-agentic-common"
     ],
     "runtime_healthcheck_supported": true
-  }
+  },
+  "runtime_native_exports": [
+    {
+      "file": "hermes.runtime.config.yaml",
+      "format": "yaml",
+      "description": "Clean hermes runtime shim export with MCP config and canonical Gov-Agentic AI pointers."
+    }
+  ]
 }

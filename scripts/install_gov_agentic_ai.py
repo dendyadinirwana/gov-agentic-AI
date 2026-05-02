@@ -839,6 +839,84 @@ def write_yaml_like(path: Path, config: dict[str, Any]) -> None:
     path.write_text('\n'.join(lines) + '\n')
 
 
+def yaml_scalar(value: Any) -> str:
+    if value is None:
+        return 'null'
+    if isinstance(value, bool):
+        return 'true' if value else 'false'
+    if isinstance(value, (int, float)):
+        return str(value)
+    text = str(value)
+    special = ':#{}[],-&*!|>"\'\n'
+    if text == '' or any(ch in text for ch in special) or text.strip() != text:
+        return json.dumps(text)
+    return text
+
+def to_yaml_text(value: Any, indent: int = 0) -> str:
+    pad = ' ' * indent
+    if isinstance(value, dict):
+        lines: list[str] = []
+        for key, item in value.items():
+            if isinstance(item, (dict, list)):
+                lines.append(f'{pad}{key}:')
+                lines.append(to_yaml_text(item, indent + 2))
+            else:
+                lines.append(f'{pad}{key}: {yaml_scalar(item)}')
+        return '\n'.join(lines)
+    if isinstance(value, list):
+        lines = []
+        for item in value:
+            if isinstance(item, (dict, list)):
+                lines.append(f'{pad}-')
+                lines.append(to_yaml_text(item, indent + 2))
+            else:
+                lines.append(f'{pad}- {yaml_scalar(item)}')
+        return '\n'.join(lines)
+    return f'{pad}{yaml_scalar(value)}'
+
+def adapter_native_exports(config: dict[str, Any]) -> dict[str, str]:
+    runtime = config['runtime_target']
+    exports: dict[str, str] = {}
+    mcp = config.get('mcp', {})
+    if runtime == 'hermes':
+        payload: dict[str, Any] = {
+            'version': 1,
+            'gov_agentic_ai': {
+                'runtime_config': './runtime.generated.json',
+                'runtime_bootstrap': './runtime-bootstrap.generated.json',
+                'runtime_link': './runtime-link.json',
+                'central_home_root': config['central_home_root'],
+                'router_alias': config['default_router_alias'],
+                'router_skill': config['default_router_skill'],
+            },
+            'mcp_servers': {},
+        }
+        for name, server in (mcp.get('servers') or {}).items():
+            entry: dict[str, Any] = {}
+            if server.get('transport') == 'stdio':
+                entry['command'] = server.get('command')
+                entry['args'] = server.get('args', [])
+            else:
+                entry['url'] = server.get('url')
+                if server.get('headers'):
+                    entry['headers'] = server['headers']
+            payload['mcp_servers'][name] = entry
+        exports['hermes.runtime.config.yaml'] = to_yaml_text(payload) + '\n'
+    elif runtime == 'openclaw':
+        payload = {
+            'version': 1,
+            'identity': 'Gov-Agentic AI',
+            'runtime_config': './runtime.generated.json',
+            'runtime_bootstrap': './runtime-bootstrap.generated.json',
+            'runtime_link': './runtime-link.json',
+            'router_alias': config['default_router_alias'],
+            'router_skill': config['default_router_skill'],
+            'central_home_root': config['central_home_root'],
+            'mcp_servers': mcp.get('servers', {}),
+        }
+        exports['openclaw.runtime.config.json'] = json.dumps(payload, ensure_ascii=False, indent=2) + '\n'
+    return exports
+
 def generate_pack_manifest(config: dict[str, Any], pack_kind: str) -> dict[str, Any]:
     return {
         'project_name': config['project_name'],
@@ -929,10 +1007,14 @@ def build_runtime_pack(config: dict[str, Any], output: Path, active_deployment: 
     pack_adapter_path.write_text(json.dumps(config['runtime_adapter'], ensure_ascii=False, indent=2) + '\n')
     pack_skills_manifest.write_text(json.dumps({'skills': subset_skills}, ensure_ascii=False, indent=2) + '\n')
     pack_link_path.write_text(json.dumps(link_payload, ensure_ascii=False, indent=2) + '\n')
+    native_exports = adapter_native_exports(config)
+    for file_name, content in native_exports.items():
+        (pack_root / file_name).write_text(content)
     manifest = generate_pack_manifest(config, 'runtime-shim')
+    manifest['runtime_native_exports'] = sorted(native_exports.keys())
     manifest['checksums'] = collect_pack_checksums(pack_root)
     pack_manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
-    return {'pack_root': str(pack_root), 'config_path': str(pack_config_path), 'deployment_path': str(pack_deployment_path), 'adapter_profile_path': str(pack_adapter_path), 'skills_manifest_path': str(pack_skills_manifest), 'manifest_path': str(pack_manifest_path), 'link_path': str(pack_link_path)}
+    return {'pack_root': str(pack_root), 'config_path': str(pack_config_path), 'deployment_path': str(pack_deployment_path), 'adapter_profile_path': str(pack_adapter_path), 'skills_manifest_path': str(pack_skills_manifest), 'manifest_path': str(pack_manifest_path), 'link_path': str(pack_link_path), 'runtime_native_exports': sorted(native_exports.keys())}
 
 
 def summarize_tree(root: Path, max_items: int = 18) -> list[str]:

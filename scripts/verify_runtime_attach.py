@@ -12,6 +12,11 @@ REQUIRED_SHIM_FILES = [
     'skills/roles/top-layer__gov-ai_yayak/SKILL.md',
     'AGENT_README.md',
 ]
+ADAPTER_EXPORTS = {
+    'hermes': ['hermes.runtime.config.yaml'],
+    'openclaw': ['openclaw.runtime.config.json'],
+}
+
 REQUIRED_CENTRAL_FILES = [
     'configs/runtime.generated.json',
     'configs/runtime-bootstrap.generated.json',
@@ -48,6 +53,9 @@ def main() -> int:
             errors.append('runtime-link canonical_runtime_config must match runtime.generated.json')
         if bootstrap.get('path_registry', {}).get('canonical_skill_manifest') != config.get('canonical_skill_manifest'):
             errors.append('bootstrap path_registry canonical_skill_manifest must match runtime.generated.json')
+        for rel in ADAPTER_EXPORTS.get(config.get('runtime_target'), []):
+            if not (shim_root / rel).exists():
+                errors.append(f'missing runtime-native export: {rel}')
     print(f'shim_root={shim_root}')
     if not errors:
         print(f'central_home_root={link.get("central_home_root")}')

@@ -1,7 +1,7 @@
 # OpenClaw Adapter
 
 ## Goal
-Mount this repository into OpenClaw and point the runtime to `configs/runtime.generated.json`.
+Mount this repository into OpenClaw and point the runtime to `configs/runtime.generated.json` or local shim `openclaw.runtime.config.json`.
 
 ## Expected Loading Order
 1. Load runtime config.

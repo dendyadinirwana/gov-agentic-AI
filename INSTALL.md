@@ -146,6 +146,15 @@ $env:GOV_AGENTIC_INSTALL_ARGS='-Defaults -Runtime hermes -Memory hybrid -Governa
 ```
 
 
+## Runtime-Native Shim Exports
+
+For runtime homes that benefit from a cleaner native surface, the installer now writes adapter-specific shim exports:
+
+- Hermes: `hermes.runtime.config.yaml`
+- OpenClaw: `openclaw.runtime.config.json`
+
+These exports mirror the same canonical pointers as `runtime.generated.json`, but keep local MCP servers clean and omit empty auth scaffolding.
+
 ## Generated Runtime Pack
 
 The installer now generates two artifacts: a central home pack under `build/central-home/<version>/` and a runtime shim pack under `build/runtime-pack/<runtime>/<version>/`.

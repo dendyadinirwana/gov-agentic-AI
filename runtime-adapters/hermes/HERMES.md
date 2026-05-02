@@ -10,7 +10,7 @@ Use this repository as a persistent agent identity and governance package for He
 - Hermes must preserve audit and HITL rules from the generated runtime config.
 
 ## Recommended Boot
-1. Read `configs/runtime.generated.json`.
+1. Read `configs/runtime.generated.json` or local shim `hermes.runtime.config.yaml`.
 2. Load Yayak system identity.
 3. Load shared guardrail skill.
 4. Restrict role routing to `active_roles`.
