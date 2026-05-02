@@ -53,7 +53,31 @@ ANSI_CLEAR = '\033[2J\033[H'
 ANSI_RESET = '\033[0m'
 ANSI_ACTIVE = '\033[7m'
 ANSI_DIM = '\033[2m'
+ANSI_CYAN = '\033[96m'
+ANSI_BLUE = '\033[94m'
+ANSI_MAGENTA = '\033[95m'
+ANSI_BOLD = '\033[1m'
 
+
+
+
+GOV_AGENT_ASCII = [
+    r' ______     ______     __   __   ______     ______     ______     __   __     ______  ',
+    r'/\  ___\   /\  __ \   /\ \ / /  /\  __ \   /\  ___\   /\  ___\   /\ "-.\ \   /\__  _\ ',
+    r'\ \ \__ \  \ \ \/\ \  \ \'/   \ \  __ \  \ \ \__ \  \ \  __\   \ \ \-.  \  \/_/\ \/ ',
+    r' \ \_____\  \ \_____\  \__|    \ \_\ \_\  \ \_____\  \ \_____\  \ \_\\"\_\    \ \_\ ',
+    r'  \/_____/   \/_____/   \/_/      \/_/\/_/   \/_____/   \/_____/   \/_/ \/_/     \/_/ ',
+]
+
+
+def render_brand_header() -> None:
+    palette = [ANSI_CYAN, ANSI_BLUE, ANSI_MAGENTA, ANSI_CYAN, ANSI_BLUE]
+    print(f'{ANSI_BOLD}Gov-Agentic AI Installer{ANSI_RESET}')
+    print()
+    for idx, line in enumerate(GOV_AGENT_ASCII):
+        color = palette[idx % len(palette)]
+        print(f'{color}{line}{ANSI_RESET}')
+    print()
 
 CLUSTER_GROUPS = [
     ('Leadership & Governance', ['top-layer', 'bottom-gate', 'kebijakan-dan-hukum']),
@@ -132,7 +156,7 @@ def show_welcome_screen(output_path: Path, active_deployment_path: Path) -> None
     if not supports_arrow_ui():
         return
     print(ANSI_CLEAR, end='')
-    print('Gov-Agentic AI Installer')
+    render_brand_header()
     print('This wizard prepares a runtime activation config for government agent deployment.\n')
     print('What this installer will do:')
     print(f'  - Write runtime config: {output_path}')
