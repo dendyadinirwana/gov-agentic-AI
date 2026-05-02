@@ -48,3 +48,17 @@ This pack turns the repository into a practical onboarding surface for real agen
 - Never put sensitive material in the repo if the proper controlled system should hold it instead.
 - Do not overwrite current active knowledge without archiving or version rationale.
 - Keep bundle verification evidence so maintainers can explain why a document was admitted.
+
+
+## Semi-Automated Publish
+Once a bundle is reviewed and its `bundle_status` is set to `approved`, you can publish it with:
+
+- `python3 scripts/publish_ingestion_bundle.py knowledge-base/<cluster>/<role>/08-ingestion-ready --dry-run`
+- `python3 scripts/publish_ingestion_bundle.py knowledge-base/<cluster>/<role>/08-ingestion-ready --archive-existing --refresh-quality`
+
+### Publish Safety Rules
+- The publisher only accepts bundles with `bundle_status: approved`.
+- Each document must have `publish_status: approved` or `ready`.
+- Existing target files are only replaced when `--archive-existing` is set.
+- Replaced files are moved into the role's `09-archive/` folder.
+- Use `--dry-run` first for every new batch.

@@ -49,3 +49,5 @@ This guide explains the minimum contract for moving real institutional documents
 - `python3 scripts/verify_ingestion_bundle.py <cluster/role_path>/08-ingestion-ready`
 - `python3 scripts/verify_knowledge_base.py`
 - `python3 scripts/generate_role_knowledge.py`
+
+- `python3 scripts/publish_ingestion_bundle.py <cluster/role_path>/08-ingestion-ready --dry-run`

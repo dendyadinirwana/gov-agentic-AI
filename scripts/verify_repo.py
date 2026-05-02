@@ -23,6 +23,7 @@ required_root = [
     'scripts/verify_knowledge_base.py',
     'scripts/scaffold_ingestion_bundle.py',
     'scripts/verify_ingestion_bundle.py',
+    'scripts/publish_ingestion_bundle.py',
 ]
 missing = []
 for rel in required_root:
