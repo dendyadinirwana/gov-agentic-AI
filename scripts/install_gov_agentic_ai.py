@@ -225,7 +225,42 @@ def render_footer(lines: list[str]) -> None:
 
 
 
-def show_welcome_screen(output_path: Path, active_deployment_path: Path) -> None:
+
+
+def scan_runtime_targets(runtimes: list[str]) -> dict[str, dict[str, Any]]:
+    return {runtime: discover_runtime(runtime) for runtime in runtimes}
+
+
+def order_runtime_options(runtimes: list[str], scan_map: dict[str, dict[str, Any]]) -> list[str]:
+    detected = [runtime for runtime in runtimes if scan_map.get(runtime, {}).get('status') == 'found']
+    missing = [runtime for runtime in runtimes if runtime not in detected]
+    default_tail = [runtime for runtime in missing if runtime != 'generic']
+    if 'generic' in missing:
+        default_tail.append('generic')
+    return detected + default_tail
+
+
+def runtime_option_label(runtime: str, scan_map: dict[str, dict[str, Any]] | None = None) -> str:
+    if not scan_map:
+        return runtime
+    status = scan_map.get(runtime, {}).get('status')
+    badge = 'DETECTED' if status == 'found' else 'NOT FOUND'
+    return f'{runtime} [{badge}]'
+
+
+def render_runtime_scan_summary(scan_map: dict[str, dict[str, Any]]) -> None:
+    print('Detected runtime homes on this machine:')
+    for runtime in RUNTIMES:
+        info = scan_map[runtime]
+        status = info.get('status')
+        icon = '✓' if status == 'found' else '·'
+        target = info.get('selected_runtime_home') or (info.get('candidate_paths') or [None])[0]
+        label = 'detected' if status == 'found' else 'not found'
+        preferred = ' (recommended)' if runtime != 'generic' and status == 'found' else ''
+        print(f'  {icon} {runtime:<12} {label:<10} {display_path(target)}{preferred}')
+    print('')
+
+def show_welcome_screen(output_path: Path, active_deployment_path: Path, runtime_scan: dict[str, dict[str, Any]]) -> None:
     if not supports_arrow_ui():
         return
     print(ANSI_CLEAR, end='')
@@ -241,6 +276,7 @@ def show_welcome_screen(output_path: Path, active_deployment_path: Path) -> None
     print('  - It will not rewrite knowledge-base content')
     print('  - It will not write into external runtime homes by default')
     print('')
+    render_runtime_scan_summary(runtime_scan)
     print('You stay in control during the wizard.')
     render_footer([
         'Enter = start installer',
@@ -255,7 +291,7 @@ def show_welcome_screen(output_path: Path, active_deployment_path: Path) -> None
         if key in {'q', 'Q'}:
             raise SystemExit('Interactive installer cancelled by user before start.')
 
-def render_single_select(label: str, options: list[str], selected_idx: int, default: str, description_group: str | None = None) -> None:
+def render_single_select(label: str, options: list[str], selected_idx: int, default: str, description_group: str | None = None, scan_map: dict[str, dict[str, Any]] | None = None) -> None:
     descriptions = OPTION_DESCRIPTIONS.get(description_group or '', {})
     print(ANSI_CLEAR, end='')
     print(label)
@@ -266,7 +302,8 @@ def render_single_select(label: str, options: list[str], selected_idx: int, defa
         reset = ANSI_RESET if idx == selected_idx else ''
         marker = ' (default)' if option == default else ''
         detail = f' - {descriptions[option]}' if option in descriptions else ''
-        print(f'{active}{prefix} {option}{marker}{detail}{reset}')
+        label = runtime_option_label(option, scan_map) if description_group == 'runtime' else option
+        print(f'{active}{prefix} {label}{marker}{detail}{reset}')
     render_footer([
         'Enter = confirm current option',
         'q = cancel installer gracefully',
@@ -274,10 +311,10 @@ def render_single_select(label: str, options: list[str], selected_idx: int, defa
     ])
 
 
-def prompt_choice_arrow(label: str, options: list[str], default: str, description_group: str | None = None) -> str:
+def prompt_choice_arrow(label: str, options: list[str], default: str, description_group: str | None = None, scan_map: dict[str, dict[str, Any]] | None = None) -> str:
     selected_idx = options.index(default) if default in options else 0
     while True:
-        render_single_select(label, options, selected_idx, default, description_group)
+        render_single_select(label, options, selected_idx, default, description_group, scan_map)
         key = read_key(sys.stdin)
         if key == 'up':
             selected_idx = (selected_idx - 1) % len(options)
@@ -452,8 +489,18 @@ def review_selections(runtime: str, memory: str, governance: str, active_cluster
 
 
 def collect_interactive_selection(defaults: dict[str, Any], clusters: list[str], output: Path, active_deployment: Path) -> tuple[str, str, str, list[str]]:
-    show_welcome_screen(output, active_deployment)
-    runtime = prompt_choice('Runtime target', RUNTIMES, defaults.get('runtime_target', 'generic'), 'runtime')
+    runtime_scan = scan_runtime_targets(RUNTIMES)
+    runtime_options = order_runtime_options(RUNTIMES, runtime_scan)
+    default_runtime = defaults.get('runtime_target', 'generic')
+    detected_specific = [name for name in runtime_options if name != 'generic' and runtime_scan.get(name, {}).get('status') == 'found']
+    if detected_specific:
+        default_runtime = detected_specific[0]
+    elif runtime_scan.get(default_runtime, {}).get('status') != 'found':
+        detected = [name for name in runtime_options if runtime_scan.get(name, {}).get('status') == 'found']
+        if detected:
+            default_runtime = detected[0]
+    show_welcome_screen(output, active_deployment, runtime_scan)
+    runtime = prompt_choice('Runtime target', runtime_options, default_runtime, 'runtime', runtime_scan)
     memory = prompt_choice('Memory mode', MEMORY_MODES, defaults.get('memory_mode', 'hybrid'), 'memory')
     active_clusters = prompt_clusters(clusters)
     governance = prompt_choice('Governance mode', GOVERNANCE_MODES, defaults.get('governance_mode', 'production'), 'governance')
@@ -467,7 +514,9 @@ def collect_interactive_selection(defaults: dict[str, Any], clusters: list[str],
         if action == 'back':
             step = choose_back_step()
             if step == 'runtime':
-                runtime = prompt_choice('Runtime target', RUNTIMES, runtime, 'runtime')
+                runtime_scan = scan_runtime_targets(RUNTIMES)
+                runtime_options = order_runtime_options(RUNTIMES, runtime_scan)
+                runtime = prompt_choice('Runtime target', runtime_options, runtime, 'runtime', runtime_scan)
             elif step == 'memory':
                 memory = prompt_choice('Memory mode', MEMORY_MODES, memory, 'memory')
             elif step == 'clusters':
@@ -502,15 +551,16 @@ def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text())
 
 
-def prompt_choice(label: str, options: list[str], default: str, description_group: str | None = None) -> str:
+def prompt_choice(label: str, options: list[str], default: str, description_group: str | None = None, scan_map: dict[str, dict[str, Any]] | None = None) -> str:
     if supports_arrow_ui():
-        return prompt_choice_arrow(label, options, default, description_group)
+        return prompt_choice_arrow(label, options, default, description_group, scan_map)
     print(f'\n{label}')
     descriptions = OPTION_DESCRIPTIONS.get(description_group or '', {})
     for option in options:
         marker = ' (default)' if option == default else ''
         detail = f' - {descriptions[option]}' if option in descriptions else ''
-        print(f'  - {option}{marker}{detail}')
+        label = runtime_option_label(option, scan_map) if description_group == 'runtime' else option
+        print(f'  - {label}{marker}{detail}')
     raw = input('Type value, or press Enter for default: ').strip()
     if not raw:
         return default
