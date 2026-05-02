@@ -63,11 +63,11 @@ ANSI_BOLD = '\033[1m'
 
 
 GOV_AGENT_ASCII = [
-    r"  e88'Y88    e88 88e   Y8b Y88888P         e Y8b       e88'Y88  888'Y88 Y88b Y88 88P'888'Y88 ",
-    r" d888  'Y   d888 888b   Y8b Y888P         d8b Y8b     d888  'Y  888 ,'Y  Y88b Y8 P'  888  'Y ",
-    r"C8888 eeee C8888 8888D   Y8b Y8P   888   d888b Y8b   C8888 eeee 888C8   b Y88b Y     888     ",
-    r" Y888 888P  Y888 888P     Y8b Y         d888888888b   Y888 888P 888 \",d 8b Y88b      888     ",
-    r"  \"88 88\"    \"88 88\"       Y8P         d8888888b Y8b   \"88 88\"  888,d88 88b Y88b     888     ",
+    "  e88'Y88    e88 88e   Y8b Y88888P         e Y8b       e88'Y88  888'Y88 Y88b Y88 88P'888'Y88 ",
+    " d888  'Y   d888 888b   Y8b Y888P         d8b Y8b     d888  'Y  888 ,'Y  Y88b Y8 P'  888  'Y ",
+    "C8888 eeee C8888 8888D   Y8b Y8P   888   d888b Y8b   C8888 eeee 888C8   b Y88b Y     888     ",
+    ' Y888 888P  Y888 888P     Y8b Y         d888888888b   Y888 888P 888 ",d 8b Y88b      888     ',
+    '  "88 88"    "88 88"       Y8P         d8888888b Y8b   "88 88"  888,d88 88b Y88b     888     ',
 ]
 
 
