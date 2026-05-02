@@ -120,8 +120,9 @@ The installer now generates two artifacts: a central home pack under `build/cent
 
 Default behavior:
 
-- generates repo-local config
-- generates runtime pack
+- generates repo-local full config
+- generates `runtime-bootstrap.generated.json` as the minimal runtime startup artifact
+- generates central-home and runtime-shim packs
 - installs by copy into the canonical runtime home unless `--local-only` is used
 
 Canonical install topology:

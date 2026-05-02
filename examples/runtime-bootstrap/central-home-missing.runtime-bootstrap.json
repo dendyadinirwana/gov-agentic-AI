@@ -1,0 +1,10 @@
+{
+  "identity": "Gov-Agentic AI",
+  "bootstrap_scope": "runtime-shim",
+  "runtime_target": "generic",
+  "default_router_alias": "Yayak",
+  "runtime_attach_mode": "thin-shim",
+  "central_home_root": "/missing/.gov-agentic-ai",
+  "failure_expected": "fail-closed",
+  "failure_reason": "central_home_root unavailable"
+}

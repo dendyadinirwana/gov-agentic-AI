@@ -58,3 +58,6 @@ Universal bootstrap guidance lives in `runtime-adapters/universal/RUNTIME_HANDSH
 
 ## Central Home + Thin Runtime Shim
 The canonical installation root is `~/.gov-agentic-ai/`. Runtime-specific homes now act as thin shims that install local `Yayak`, a minimal shared guardrail surface, and pointer metadata back to the canonical home. Role skills and knowledge stay canonical in the central home unless a runtime explicitly requires local bootstrap copies.
+
+## Minimal Runtime Ingestion Surface
+The preferred universal startup surface is now `runtime-bootstrap.generated.json`. Treat `runtime.generated.json` as the full operator/runtime config, and `runtime-bootstrap.generated.json` as the minimum boot artifact for runtimes that want low-inference startup.

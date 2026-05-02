@@ -286,7 +286,7 @@ Handling expectations are documented in:
 
 ## Install from Terminal
 
-This repository is public, so the preferred bootstrap path is direct terminal install. See [`INSTALL.md`](./INSTALL.md) and [`docs/operations/UNINSTALL_GUIDE.md`](./docs/operations/UNINSTALL_GUIDE.md).
+This repository is public, so the preferred bootstrap path is direct terminal install. See [`INSTALL.md`](./INSTALL.md) and [`docs/operations/UNINSTALL_GUIDE.md`](./docs/operations/UNINSTALL_GUIDE.md). Runtime implementers should also read `runtime-bootstrap.generated.json`, `runtime-adapters/universal/RUNTIME_HANDSHAKE.md`, and `runtime-link.json` when consuming installed shims.
 
 macOS / Linux:
 

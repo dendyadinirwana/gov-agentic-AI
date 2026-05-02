@@ -1,0 +1,11 @@
+{
+  "identity": "Gov-Agentic AI",
+  "bootstrap_scope": "runtime-shim",
+  "runtime_target": "generic",
+  "default_router_alias": "Yayak",
+  "default_router_skill": "gov-gov-ai-yayak",
+  "runtime_attach_mode": "thin-shim",
+  "central_home_root": "/home/example/.gov-agentic-ai",
+  "runtime_shim_root": "/home/example/.agents/skills/gov-agentic-ai",
+  "shim_installed_skills": ["gov-gov-ai-yayak", "gov-agentic-common"]
+}

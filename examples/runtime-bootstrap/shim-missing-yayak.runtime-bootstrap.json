@@ -1,0 +1,9 @@
+{
+  "identity": "Gov-Agentic AI",
+  "bootstrap_scope": "runtime-shim",
+  "runtime_target": "generic",
+  "default_router_alias": "Yayak",
+  "shim_installed_skills": ["gov-agentic-common"],
+  "failure_expected": "fail-closed",
+  "failure_reason": "local Yayak bootstrap missing"
+}

@@ -1,0 +1,79 @@
+{
+  "identity": "Gov-Agentic AI",
+  "bootstrap_scope": "repo-local",
+  "runtime_target": "generic",
+  "default_router_alias": "Yayak",
+  "default_router_skill": "gov-gov-ai-yayak",
+  "agent_entrypoint": "AGENT_README.md",
+  "runtime_handshake": "runtime-adapters/universal/RUNTIME_HANDSHAKE.md",
+  "bootstrap_example": "examples/BOOTSTRAP_EXAMPLE.json",
+  "governance_mode": "production",
+  "memory_mode": "hybrid",
+  "runtime_attach_mode": "thin-shim",
+  "central_home_root": "/Users/dendyadinirwana/.gov-agentic-ai",
+  "runtime_shim_root": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai",
+  "shim_installed_skills": [
+    "gov-gov-ai-yayak",
+    "gov-agentic-common"
+  ],
+  "required_output_fields": [
+    "summary",
+    "evidence_map",
+    "assumptions",
+    "confidence_status",
+    "red_flags",
+    "human_touchpoint",
+    "next_step"
+  ],
+  "human_approval_required_for": [
+    "L3",
+    "L4"
+  ],
+  "path_registry": {
+    "canonical_runtime_config": "/Users/dendyadinirwana/.gov-agentic-ai/configs/runtime.generated.json",
+    "canonical_skill_manifest": "/Users/dendyadinirwana/.gov-agentic-ai/skills/skill_manifest.json",
+    "canonical_knowledge_root": "/Users/dendyadinirwana/.gov-agentic-ai/knowledge-base",
+    "canonical_system_prompt": "/Users/dendyadinirwana/.gov-agentic-ai/prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
+    "canonical_agent_entrypoint": "/Users/dendyadinirwana/.gov-agentic-ai/AGENT_README.md",
+    "decision_engine_entrypoint": "scripts/government_decision_engine.py",
+    "authority_matrix": "configs/authority_matrix.json",
+    "government_work_logic": "docs/architecture/GOVERNMENT_WORK_LOGIC.md",
+    "local_runtime_shim_root": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai"
+  },
+  "startup_checklist": {
+    "read_first": [
+      "runtime-link.json",
+      "runtime-bootstrap.generated.json",
+      "AGENT_README.md"
+    ],
+    "cacheable": [
+      "adapter_profile",
+      "path_registry",
+      "shim_installed_skills"
+    ],
+    "dynamic": [
+      "canonical_runtime_config",
+      "human_approval_required_for",
+      "active_clusters"
+    ],
+    "fail_closed_if_missing": [
+      "central_home_root",
+      "canonical_runtime_config",
+      "canonical_skill_manifest",
+      "gov-gov-ai-yayak"
+    ],
+    "reread_canonical_on_each_session": true
+  },
+  "adapter_capabilities": {
+    "bootstrap_mode": "bootstrap-json-plus-pointer",
+    "central_home_required": true,
+    "pointer_config_required": true,
+    "symlink_optional": true,
+    "decision_engine_required": true,
+    "local_bootstrap_skills": [
+      "gov-gov-ai-yayak",
+      "gov-agentic-common"
+    ],
+    "runtime_healthcheck_supported": true
+  }
+}

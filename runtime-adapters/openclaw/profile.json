@@ -36,5 +36,17 @@
     "gov-gov-ai-yayak",
     "gov-agentic-common"
   ],
-  "canonical_role_resolution": "central-home"
+  "canonical_role_resolution": "central-home",
+  "runtime_capabilities": {
+    "bootstrap_mode": "bootstrap-json-plus-pointer",
+    "central_home_required": true,
+    "pointer_config_required": true,
+    "symlink_optional": true,
+    "decision_engine_required": true,
+    "local_bootstrap_skills": [
+      "gov-gov-ai-yayak",
+      "gov-agentic-common"
+    ],
+    "runtime_healthcheck_supported": true
+  }
 }

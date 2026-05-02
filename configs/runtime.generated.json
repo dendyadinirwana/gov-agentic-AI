@@ -1,6 +1,6 @@
 {
   "project_name": "gov-agentic-ai",
-  "project_version": "v0.1.2",
+  "project_version": "v0.1.5",
   "runtime_target": "generic",
   "runtime_adapter": {
     "adapter_name": "generic",
@@ -35,7 +35,19 @@
       "gov-gov-ai-yayak",
       "gov-agentic-common"
     ],
-    "canonical_role_resolution": "central-home"
+    "canonical_role_resolution": "central-home",
+    "runtime_capabilities": {
+      "bootstrap_mode": "bootstrap-json-plus-pointer",
+      "central_home_required": true,
+      "pointer_config_required": true,
+      "symlink_optional": true,
+      "decision_engine_required": true,
+      "local_bootstrap_skills": [
+        "gov-gov-ai-yayak",
+        "gov-agentic-common"
+      ],
+      "runtime_healthcheck_supported": true
+    }
   },
   "adapter_name": "generic",
   "adapter_profile_path": "runtime-adapters/generic/profile.json",
@@ -78,7 +90,7 @@
     "writes_external_runtime_config": true,
     "selected_runtime_home": "/Users/dendyadinirwana/.agents/skills",
     "install_applied": true,
-    "installed_at": "2026-05-02T12:53:41+00:00"
+    "installed_at": "2026-05-02T13:28:10+00:00"
   },
   "memory_mode": "hybrid",
   "memory_policy": {
@@ -657,15 +669,15 @@
     "apply_memory_policy:hybrid",
     "governance_mode:production"
   ],
-  "runtime_pack_root": "build/runtime-pack/generic/v0.1.2",
-  "central_pack_root": "build/central-home/v0.1.2",
+  "runtime_pack_root": "build/runtime-pack/generic/v0.1.5",
+  "central_pack_root": "build/central-home/v0.1.5",
   "install_target_root": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai",
   "install_target_config": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/runtime.generated.json",
   "install_target_skills": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/skills",
   "install_target_type": "global-surface",
   "install_mode": "copy",
   "install_applied": true,
-  "installed_at": "2026-05-02T12:53:41+00:00",
+  "installed_at": "2026-05-02T13:28:10+00:00",
   "central_home_root": "/Users/dendyadinirwana/.gov-agentic-ai",
   "runtime_shim_root": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai",
   "runtime_attach_mode": "thin-shim",
@@ -679,11 +691,23 @@
   "canonical_system_prompt": "/Users/dendyadinirwana/.gov-agentic-ai/prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
   "canonical_agent_entrypoint": "/Users/dendyadinirwana/.gov-agentic-ai/AGENT_README.md",
   "canonical_runtime_config": "/Users/dendyadinirwana/.gov-agentic-ai/configs/runtime.generated.json",
+  "adapter_capabilities": {
+    "bootstrap_mode": "bootstrap-json-plus-pointer",
+    "central_home_required": true,
+    "pointer_config_required": true,
+    "symlink_optional": true,
+    "decision_engine_required": true,
+    "local_bootstrap_skills": [
+      "gov-gov-ai-yayak",
+      "gov-agentic-common"
+    ],
+    "runtime_healthcheck_supported": true
+  },
   "runtime_config_targets": {
     "repo_local": "configs/runtime.generated.json",
     "active_deployment": "configs/active.deployment.yaml",
-    "runtime_pack_root": "build/runtime-pack/generic/v0.1.2",
-    "central_pack_root": "build/central-home/v0.1.2",
+    "runtime_pack_root": "build/runtime-pack/generic/v0.1.5",
+    "central_pack_root": "build/central-home/v0.1.5",
     "runtime_home_recommended": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/runtime.generated.json",
     "runtime_skill_home_recommended": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/skills",
     "write_runtime_config_default": false

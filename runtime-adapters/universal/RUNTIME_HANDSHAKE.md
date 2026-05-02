@@ -42,3 +42,11 @@ If installed under a managed runtime home, the runtime should also read:
 - `runtime-pack.manifest.json`
 
 Use them to confirm install target, source commit version, managed subtree, and pack integrity.
+
+## Runtime Startup Checklist
+- Read `runtime-link.json` first when starting from a runtime shim.
+- Read `runtime-bootstrap.generated.json` next for minimal boot identity and path registry.
+- Read `AGENT_README.md` for narrative behavior contract.
+- Re-read central `configs/runtime.generated.json` on each new session instead of caching it forever.
+- Cache adapter capabilities and local shim skill names.
+- Fail closed if central home, canonical runtime config, canonical skill manifest, or local `Yayak` is missing.

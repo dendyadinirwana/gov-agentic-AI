@@ -469,6 +469,7 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
         'canonical_system_prompt': str(Path(central_home) / 'prompts' / 'system' / 'YayakAI_Master_System_Prompt_v3.0.md'),
         'canonical_agent_entrypoint': str(Path(central_home) / 'AGENT_README.md'),
         'canonical_runtime_config': str(Path(central_home) / 'configs' / 'runtime.generated.json'),
+        'adapter_capabilities': profile.get('runtime_capabilities', {}),
     }
     config['runtime_config_targets'] = runtime_config_targets(discovery, output, active_deployment, shim_pack, central_pack)
     return config
@@ -680,6 +681,47 @@ def parse_csv(value: str | None) -> list[str] | None:
     return [part.strip() for part in value.split(',') if part.strip()]
 
 
+
+
+def runtime_bootstrap_payload(config: dict[str, Any], bootstrap_scope: str = 'repo-local') -> dict[str, Any]:
+    return {
+        'identity': 'Gov-Agentic AI',
+        'bootstrap_scope': bootstrap_scope,
+        'runtime_target': config['runtime_target'],
+        'default_router_alias': config['default_router_alias'],
+        'default_router_skill': config['default_router_skill'],
+        'agent_entrypoint': config['agent_entrypoint'],
+        'runtime_handshake': config['runtime_handshake'],
+        'bootstrap_example': config['bootstrap_example'],
+        'governance_mode': config['governance_mode'],
+        'memory_mode': config['memory_mode'],
+        'runtime_attach_mode': config['runtime_attach_mode'],
+        'central_home_root': config['central_home_root'],
+        'runtime_shim_root': config['runtime_shim_root'],
+        'shim_installed_skills': config['shim_installed_skills'],
+        'required_output_fields': config['output_contract_required_fields'],
+        'human_approval_required_for': config['human_approval_required_for'],
+        'path_registry': {
+            'canonical_runtime_config': config['canonical_runtime_config'],
+            'canonical_skill_manifest': config['canonical_skill_manifest'],
+            'canonical_knowledge_root': config['canonical_knowledge_root'],
+            'canonical_system_prompt': config['canonical_system_prompt'],
+            'canonical_agent_entrypoint': config['canonical_agent_entrypoint'],
+            'decision_engine_entrypoint': config['decision_engine_entrypoint'],
+            'authority_matrix': config['authority_matrix'],
+            'government_work_logic': config['government_work_logic'],
+            'local_runtime_shim_root': config['runtime_shim_root'],
+        },
+        'startup_checklist': {
+            'read_first': ['runtime-link.json', 'runtime-bootstrap.generated.json', 'AGENT_README.md'],
+            'cacheable': ['adapter_profile', 'path_registry', 'shim_installed_skills'],
+            'dynamic': ['canonical_runtime_config', 'human_approval_required_for', 'active_clusters'],
+            'fail_closed_if_missing': ['central_home_root', 'canonical_runtime_config', 'canonical_skill_manifest', 'gov-gov-ai-yayak'],
+            'reread_canonical_on_each_session': True,
+        },
+        'adapter_capabilities': config.get('adapter_capabilities', {}),
+    }
+
 def file_sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open('rb') as handle:
@@ -780,6 +822,7 @@ def build_central_home_pack(config: dict[str, Any]) -> dict[str, Any]:
     central_config['central_pack_root'] = '.'
     (pack_root / 'configs').mkdir(parents=True, exist_ok=True)
     (pack_root / 'configs' / 'runtime.generated.json').write_text(json.dumps(central_config, ensure_ascii=False, indent=2) + '\n')
+    (pack_root / 'configs' / 'runtime-bootstrap.generated.json').write_text(json.dumps(runtime_bootstrap_payload(config, 'central-home'), ensure_ascii=False, indent=2) + '\n')
     manifest = generate_pack_manifest(config, 'central-home')
     manifest['checksums'] = collect_pack_checksums(pack_root)
     (pack_root / 'central-home.manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
@@ -827,6 +870,7 @@ def build_runtime_pack(config: dict[str, Any], output: Path, active_deployment: 
     pack_link_path = pack_root / 'runtime-link.json'
     subset_skills = [skill for skill in config['active_skills'] if skill['name'] in SHIM_SKILL_NAMES]
     pack_config_path.write_text(json.dumps(pack_config, ensure_ascii=False, indent=2) + '\n')
+    (pack_root / 'runtime-bootstrap.generated.json').write_text(json.dumps(runtime_bootstrap_payload(config, 'runtime-shim'), ensure_ascii=False, indent=2) + '\n')
     pack_deployment_path.write_text(active_deployment.read_text())
     pack_adapter_path.write_text(json.dumps(config['runtime_adapter'], ensure_ascii=False, indent=2) + '\n')
     pack_skills_manifest.write_text(json.dumps({'skills': subset_skills}, ensure_ascii=False, indent=2) + '\n')
@@ -1089,6 +1133,8 @@ def main() -> int:
     output.parent.mkdir(parents=True, exist_ok=True)
     active_deployment.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(initial_config, ensure_ascii=False, indent=2) + '\n')
+    bootstrap_output = output.with_name('runtime-bootstrap.generated.json')
+    bootstrap_output.write_text(json.dumps(runtime_bootstrap_payload(initial_config, 'repo-local'), ensure_ascii=False, indent=2) + '\n')
     write_yaml_like(active_deployment, initial_config)
     central_pack_info = build_central_home_pack(initial_config)
     shim_pack_info = build_runtime_pack(initial_config, output, active_deployment)
@@ -1100,10 +1146,14 @@ def main() -> int:
             shim_install_result = install_runtime_pack(Path(shim_pack_info['pack_root']), Path(install_target_root), initial_config)
     final_config = build_config(runtime, memory, governance, active_clusters, output, active_deployment, install_mode='copy', install_applied=bool(central_install_result or shim_install_result), install_target_root=install_target_root, pack_root=Path(shim_pack_info['pack_root']), central_home_root=central_home_root, central_pack_root=Path(central_pack_info['pack_root']))
     output.write_text(json.dumps(final_config, ensure_ascii=False, indent=2) + '\n')
+    bootstrap_output.write_text(json.dumps(runtime_bootstrap_payload(final_config, 'repo-local'), ensure_ascii=False, indent=2) + '\n')
     write_yaml_like(active_deployment, final_config)
     Path(shim_pack_info['config_path']).write_text(json.dumps(final_config | {'runtime_pack_root': '.', 'central_pack_root': final_config['central_pack_root']}, ensure_ascii=False, indent=2) + '\n')
+    Path(Path(shim_pack_info['config_path']).parent / 'runtime-bootstrap.generated.json').write_text(json.dumps(runtime_bootstrap_payload(final_config, 'runtime-shim'), ensure_ascii=False, indent=2) + '\n')
     Path(central_pack_info['config_path']).write_text(json.dumps(final_config | {'runtime_pack_root': final_config['runtime_pack_root'], 'central_pack_root': '.'}, ensure_ascii=False, indent=2) + '\n')
+    Path(Path(central_pack_info['config_path']).parent / 'runtime-bootstrap.generated.json').write_text(json.dumps(runtime_bootstrap_payload(final_config, 'central-home'), ensure_ascii=False, indent=2) + '\n')
     print(f'wrote_runtime_config={relative_to_root(output)}')
+    print(f'wrote_runtime_bootstrap={relative_to_root(bootstrap_output)}')
     print(f'wrote_active_deployment={relative_to_root(active_deployment)}')
     print(f'runtime_target={runtime}')
     print(f'memory_mode={memory}')

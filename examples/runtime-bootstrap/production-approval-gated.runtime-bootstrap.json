@@ -1,0 +1,9 @@
+{
+  "identity": "Gov-Agentic AI",
+  "bootstrap_scope": "runtime-shim",
+  "runtime_target": "generic",
+  "governance_mode": "production",
+  "human_approval_required_for": ["L3", "L4"],
+  "default_router_alias": "Yayak",
+  "expected_behavior": "approval-gated routing before high-impact action"
+}

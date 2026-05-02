@@ -237,3 +237,6 @@ You are operating correctly when you can answer all of these without guessing:
 
 ## Runtime Handshake Companion
 Use `runtime-adapters/universal/RUNTIME_HANDSHAKE.md` together with `examples/BOOTSTRAP_EXAMPLE.json` when a runtime needs a stricter bootstrap contract or machine-readable startup example.
+
+## Minimal Bootstrap Artifact
+A runtime should prefer `runtime-bootstrap.generated.json` as the minimum machine-readable startup surface before loading the full runtime config. Use it to discover identity, canonical paths, attach mode, approval gates, and local bootstrap skill expectations.

@@ -56,7 +56,8 @@
     "canonical_knowledge_root",
     "canonical_system_prompt",
     "canonical_agent_entrypoint",
-    "canonical_runtime_config"
+    "canonical_runtime_config",
+    "adapter_capabilities"
   ],
   "properties": {
     "runtime_target": {
@@ -136,6 +137,9 @@
       "items": {
         "type": "string"
       }
+    },
+    "adapter_capabilities": {
+      "type": "object"
     }
   }
 }

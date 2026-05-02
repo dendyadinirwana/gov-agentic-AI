@@ -7,6 +7,7 @@ from pathlib import Path
 
 RUNTIME_REQUIRED = [
     'runtime.generated.json',
+    'runtime-bootstrap.generated.json',
     'active.deployment.yaml',
     'runtime-adapter.profile.json',
     'active-skills.json',
@@ -20,6 +21,7 @@ RUNTIME_REQUIRED = [
 ]
 CENTRAL_REQUIRED = [
     'configs/runtime.generated.json',
+    'configs/runtime-bootstrap.generated.json',
     'central-home.manifest.json',
     'skills/skill_manifest.json',
     'knowledge-base/kb_manifest.json',
