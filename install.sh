@@ -62,14 +62,20 @@ else
   exit 1
 fi
 
-if [[ ! -d "$TARGET_DIR/.git" ]]; then
+if [ "$TARGET_DIR" = "." ]; then
+  if [ ! -d ".git" ]; then
+    echo "--target-dir . requires running from an existing Gov-Agentic AI clone." >&2
+    exit 1
+  fi
+  echo "Using existing repository at $(pwd)"
+elif [[ ! -d "$TARGET_DIR/.git" ]]; then
   echo "Cloning $REPO_URL into $TARGET_DIR ..."
   git clone "$REPO_URL" "$TARGET_DIR"
+  cd "$TARGET_DIR"
 else
   echo "Using existing repository at $TARGET_DIR"
+  cd "$TARGET_DIR"
 fi
-
-cd "$TARGET_DIR"
 
 echo "Running Gov-Agentic AI installer ..."
 "$PYTHON_BIN" scripts/install_gov_agentic_ai.py "${INSTALLER_ARGS[@]}"

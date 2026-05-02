@@ -29,14 +29,19 @@ if (Get-Command py -ErrorAction SilentlyContinue) {
   throw "Missing Python 3. Please install Python 3 and re-run."
 }
 
-if (-not (Test-Path (Join-Path $TargetDir ".git"))) {
+if ($TargetDir -eq ".") {
+  if (-not (Test-Path ".git")) {
+    throw "-TargetDir . requires running from an existing Gov-Agentic AI clone."
+  }
+  Write-Host "Using existing repository at $(Get-Location)"
+} elseif (-not (Test-Path (Join-Path $TargetDir ".git"))) {
   Write-Host "Cloning $RepoUrl into $TargetDir ..."
   git clone $RepoUrl $TargetDir
+  Set-Location $TargetDir
 } else {
   Write-Host "Using existing repository at $TargetDir"
+  Set-Location $TargetDir
 }
-
-Set-Location $TargetDir
 
 $InstallerArgs = @()
 if ($Defaults) { $InstallerArgs += "--defaults" }
