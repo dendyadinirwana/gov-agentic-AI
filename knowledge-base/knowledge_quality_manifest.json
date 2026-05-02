@@ -114,7 +114,7 @@
       "alias": "Audy",
       "role_class": "specialist",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.38,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -138,8 +138,8 @@
           "present": true
         },
         "review_note_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "ingestion_readiness": {
@@ -166,7 +166,7 @@
       "alias": "Edi",
       "role_class": "monitor",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.38,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -190,8 +190,8 @@
           "present": true
         },
         "review_note_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "ingestion_readiness": {
@@ -218,7 +218,7 @@
       "alias": "Faris",
       "role_class": "specialist",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.38,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -227,8 +227,8 @@
           "present": true
         },
         "sop_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "template_coverage": {
@@ -1206,7 +1206,7 @@
       "alias": "Woro",
       "role_class": "specialist",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.38,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -1215,8 +1215,8 @@
           "present": true
         },
         "sop_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "template_coverage": {
@@ -1258,7 +1258,7 @@
       "alias": "Sovia",
       "role_class": "specialist",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.38,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -1267,8 +1267,8 @@
           "present": true
         },
         "sop_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "template_coverage": {
@@ -1361,8 +1361,8 @@
       "role": "Admin Layanan Internal",
       "alias": "Ika",
       "role_class": "specialist",
-      "readiness": "operational",
-      "average_score": 3.38,
+      "readiness": "high-confidence",
+      "average_score": 3.5,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -1371,8 +1371,8 @@
           "present": true
         },
         "sop_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "template_coverage": {
@@ -1414,7 +1414,7 @@
       "alias": "Izza",
       "role_class": "monitor",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.38,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -1438,8 +1438,8 @@
           "present": true
         },
         "review_note_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "ingestion_readiness": {
@@ -1515,7 +1515,7 @@
   "summary": {
     "seed": 0,
     "usable": 0,
-    "operational": 29,
-    "high_confidence": 0
+    "operational": 28,
+    "high_confidence": 1
   }
 }

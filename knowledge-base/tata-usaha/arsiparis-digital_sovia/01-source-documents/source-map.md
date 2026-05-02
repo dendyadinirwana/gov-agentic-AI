@@ -1,16 +1,15 @@
 # Source Map — Arsiparis Digital (Sovia)
 
 ## Source Priority Rules
-1. Role-local primary evidence in `../01-source-documents`.
-2. Role-local policy interpretation in `../02-regulations-and-policies`.
-3. Shared canonical references linked from `_shared-links`.
-4. Templates and golden outputs for formatting support only.
-5. If evidence conflicts, stop and escalate instead of reconciling silently.
+1. Archive only from final approved artifacts, issued correspondence, signed records, or explicitly designated audit material.
+2. Use the implementation pack audit and arsip workflow to distinguish draft, review, final, and archive-ready states.
+3. Retention tags, version status, and provenance metadata are required before a record is treated as final archive input.
+4. If the record is still disputed, unsigned, or missing source provenance, hold it out of final archive status.
 
 ## Canonical vs Supporting Sources
-- Canonical: signed/issued regulations, official workflow instructions, approved templates, final approved records.
-- Supporting: draft notes, prior examples, working spreadsheets, meeting notes, inferred summaries.
-- Non-authoritative: unsourced claims, screenshots without provenance, copied text with no issuing owner.
+- Canonical: final approved letters, signed notes, issued outputs, retention policy, approved archive indexes.
+- Supporting: working drafts, review notes, previous filing examples.
+- Non-authoritative: incomplete drafts, files with no issuing owner, or outputs lacking final status confirmation.
 
 ## Mandatory Shared Directories
 - `../_shared-links/00-governance-and-routing`
@@ -21,12 +20,6 @@
 - `../_shared-links/03-template-global`
 - `../_shared-links/06-audit-and-observability`
 
-## Local Overrides
-- `../02-regulations-and-policies/policy-map.md` for role-specific policy interpretation
-- `../04-sop-and-workflows/workflow-map.md` for actual operating sequence
-- `../06-output-samples/starter-output-examples.md` for response shaping
-
-## Intake Inventory Expectations
-- Track source title, owner, issue date, revision status, and classification.
-- Prefer filenames that preserve provenance and are stable for retrieval.
-- Move stale or replaced records to `../09-archive` with a note explaining why.
+## Archive-Specific Source Inventory
+- Implementation pack: Sovia is responsible for audit archive outputs after human approval in surat workflow.
+- Retain trace_id, final status, reviewer/approver identity, and source provenance for every archived item.

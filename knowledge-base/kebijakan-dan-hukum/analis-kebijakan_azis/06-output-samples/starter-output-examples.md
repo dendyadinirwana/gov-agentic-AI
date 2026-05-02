@@ -1,28 +1,13 @@
 # Starter Output Examples — Analis Kebijakan (Azis)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `kebijakan-dan-hukum`
-- **Expected artifact:** policy brief
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — Policy Option Note
+- **Task shape:** compare policy options or implementation paths.
+- **Expected artifact:** option note listing issue statement, policy basis, options, tradeoffs, and human decision point.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** regulatory mapping
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — Alignment Review
+- **Task shape:** check whether a draft KAK/ToR or workflow is aligned with policy direction.
+- **Expected artifact:** policy-alignment memo highlighting fit, gaps, and consulted roles.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** policy options memo
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Escalation Memo
+- **Task shape:** policy source is conflicting or the recommendation would imply formal adoption.
+- **Expected artifact:** escalation memo naming the conflict, affected workflow, and accountable policy owner.

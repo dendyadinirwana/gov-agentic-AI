@@ -1,33 +1,22 @@
 # Source Map — Monitor Kepatuhan Hukum (Edi)
 
 ## Source Priority Rules
-1. Role-local primary evidence in `../01-source-documents`.
-2. Role-local policy interpretation in `../02-regulations-and-policies`.
-3. Shared canonical references linked from `_shared-links`.
-4. Templates and golden outputs for formatting support only.
-5. If evidence conflicts, stop and escalate instead of reconciling silently.
+1. Start from the draft artifact, legal/policy basis, and any prior analysis from Azis or Audy.
+2. Use the implementation pack governance and risk model to decide when Edi should hold, challenge, or escalate.
+3. Treat compliance findings as valid only when the breached rule, missing evidence, or approval gap is identifiable.
+4. If the challenge affects L3/L4 progression, name the human owner who must accept or resolve the hold.
 
 ## Canonical vs Supporting Sources
-- Canonical: signed/issued regulations, official workflow instructions, approved templates, final approved records.
-- Supporting: draft notes, prior examples, working spreadsheets, meeting notes, inferred summaries.
-- Non-authoritative: unsourced claims, screenshots without provenance, copied text with no issuing owner.
+- Canonical: governing legal/policy text, formal approval path, signed draft status, compliance and audit rules.
+- Supporting: legal notes, policy analysis, prior findings, comparison examples.
+- Non-authoritative: intuition about acceptability, undocumented verbal clearance, or outputs that hide source gaps.
 
 ## Mandatory Shared Directories
 - `../_shared-links/00-governance-and-routing`
 - `../_shared-links/01-regulasi-umum`
-- `../_shared-links/02-sop-umum`
-- `../_shared-links/08-golden-outputs`
-
-## Optional Shared Directories
 - `../_shared-links/05-risk-and-compliance`
 - `../_shared-links/06-audit-and-observability`
 
-## Local Overrides
-- `../02-regulations-and-policies/policy-map.md` for role-specific policy interpretation
-- `../04-sop-and-workflows/workflow-map.md` for actual operating sequence
-- `../06-output-samples/starter-output-examples.md` for response shaping
-
-## Intake Inventory Expectations
-- Track source title, owner, issue date, revision status, and classification.
-- Prefer filenames that preserve provenance and are stable for retrieval.
-- Move stale or replaced records to `../09-archive` with a note explaining why.
+## Compliance-Specific Source Inventory
+- Implementation pack: Edi supports compliance and audit readiness across legal- and budget-sensitive workflows.
+- Use Edi when a draft looks formally risky, under-sourced, or approval-gated.

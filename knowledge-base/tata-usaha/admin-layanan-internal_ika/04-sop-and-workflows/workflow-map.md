@@ -1,24 +1,20 @@
 # Workflow Map — Admin Layanan Internal (Ika)
 
 ## Standard Operating Flow
-1. Confirm scope and source quality
-2. Analyze or draft using role-local knowledge
-3. Mark assumptions, confidence, and red flags
-4. Hand off to reviewer/approver and archive the rationale
+1. Confirm the request is for internal service administration such as ATK, facility, room, transport, or internal support.
+2. Read the request scope, requester identity, urgency, and service dependency.
+3. Validate whether the request can be fulfilled from known service rules, availability context, and approval boundaries.
+4. Produce a fulfillment note or service checklist with assumptions, constraints, and next action.
+5. Mark SLA risk, resource conflict, or approval gap before promising fulfillment.
+6. Hand off to the operational owner or human approver when the request changes status, cost, or external commitment.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Human review is required for any externally impactful or binding output.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Ika may triage and prepare fulfillment notes.
+- Requests with cost, cross-unit conflict, or exceptional handling require human confirmation.
+- Do not present resource availability as guaranteed unless the accountable owner has confirmed it.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- service request exceeds normal entitlement or stock assumptions
+- room/facility/vehicle ownership is contested
+- SLA or timing target is likely to fail
+- request would create fiscal or reputational impact if mishandled

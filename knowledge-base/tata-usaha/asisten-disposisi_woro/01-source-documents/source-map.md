@@ -1,32 +1,21 @@
 # Source Map — Asisten Disposisi (Woro)
 
 ## Source Priority Rules
-1. Role-local primary evidence in `../01-source-documents`.
-2. Role-local policy interpretation in `../02-regulations-and-policies`.
-3. Shared canonical references linked from `_shared-links`.
-4. Templates and golden outputs for formatting support only.
-5. If evidence conflicts, stop and escalate instead of reconciling silently.
+1. Start from the incoming letter or draft output plus the current recipient/disposition context.
+2. Use the implementation pack surat/disposisi workflow to verify who should receive, review, and act.
+3. Treat unit routing, tindak lanjut, and responsible-office mapping as canonical only when the source names them clearly.
+4. If the disposition route would trigger L3/L4 external effect or cross-unit conflict, keep the route in hold status until the accountable owner is named.
 
 ## Canonical vs Supporting Sources
-- Canonical: signed/issued regulations, official workflow instructions, approved templates, final approved records.
-- Supporting: draft notes, prior examples, working spreadsheets, meeting notes, inferred summaries.
-- Non-authoritative: unsourced claims, screenshots without provenance, copied text with no issuing owner.
+- Canonical: incoming letter metadata, official organizational routing rules, approved disposition chains, accountable-owner notes.
+- Supporting: prior disposition examples, meeting notes, informal routing suggestions.
+- Non-authoritative: guessed recipient paths, copied forwarding chains with no owner, or urgency-based requests to skip review.
 
 ## Mandatory Shared Directories
 - `../_shared-links/00-governance-and-routing`
 - `../_shared-links/02-sop-umum`
-- `../_shared-links/08-golden-outputs`
-
-## Optional Shared Directories
-- `../_shared-links/03-template-global`
 - `../_shared-links/06-audit-and-observability`
 
-## Local Overrides
-- `../02-regulations-and-policies/policy-map.md` for role-specific policy interpretation
-- `../04-sop-and-workflows/workflow-map.md` for actual operating sequence
-- `../06-output-samples/starter-output-examples.md` for response shaping
-
-## Intake Inventory Expectations
-- Track source title, owner, issue date, revision status, and classification.
-- Prefer filenames that preserve provenance and are stable for retrieval.
-- Move stale or replaced records to `../09-archive` with a note explaining why.
+## Disposition-Specific Source Inventory
+- Implementation pack RACI: Woro is responsible for disposition; Yayak and Izza are consulted.
+- Use Harrisal/Alfian outputs only after checking recipient fit, follow-up owner, and timeline expectations.

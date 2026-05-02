@@ -1,24 +1,20 @@
 # Workflow Map — Perencana Program (Faris)
 
 ## Standard Operating Flow
-1. Confirm scope and source quality
-2. Analyze or draft using role-local knowledge
-3. Mark assumptions, confidence, and red flags
-4. Hand off to reviewer/approver and archive the rationale
+1. Confirm the task is program planning, KAK/ToR shaping, or output/indicator framing.
+2. Gather the program objective, target outcome, beneficiaries, constraints, and existing strategic references.
+3. Check whether the requested draft is aligned with current outputs, indicators, and accountable-owner expectations.
+4. Draft or review the KAK/ToR structure with explicit assumptions, dependencies, and approval needs.
+5. Flag any planning drift that would require budget, legal, or policy review before it goes forward.
+6. Hand off to the program owner and consulted roles for validation before the artifact is treated as formal.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Human review is required for any externally impactful or binding output.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Faris may prepare planning drafts and alignment notes.
+- Final adoption into formal planning artifacts requires human program-owner approval.
+- If scope drift materially changes budget, authority, or procurement path, escalate to the relevant role chain first.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- output or indicator basis is unclear
+- requested activity is misaligned with current program logic
+- planning draft implies budget/legal consequences not yet reviewed
+- accountable owner for the program cannot be identified

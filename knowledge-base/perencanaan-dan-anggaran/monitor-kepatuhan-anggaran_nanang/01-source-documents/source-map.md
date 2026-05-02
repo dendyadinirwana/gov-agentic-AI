@@ -1,16 +1,15 @@
 # Source Map — Monitor Kepatuhan Anggaran (Nanang)
 
 ## Source Priority Rules
-1. Role-local primary evidence in `../01-source-documents`.
-2. Role-local policy interpretation in `../02-regulations-and-policies`.
-3. Shared canonical references linked from `_shared-links`.
-4. Templates and golden outputs for formatting support only.
-5. If evidence conflicts, stop and escalate instead of reconciling silently.
+1. Start from the analyzed RAB, source standard, pagu context, and any prior budget review produced by Anastasia or the program owner.
+2. Use the implementation pack RAB compliance workflow to determine when Nanang should challenge, hold, or escalate.
+3. Treat compliance findings as canonical only when the violated rule, standard, or unsupported assumption is visible.
+4. If a recommendation would block a consequential budget path, name the accountable human reviewer explicitly.
 
 ## Canonical vs Supporting Sources
-- Canonical: signed/issued regulations, official workflow instructions, approved templates, final approved records.
-- Supporting: draft notes, prior examples, working spreadsheets, meeting notes, inferred summaries.
-- Non-authoritative: unsourced claims, screenshots without provenance, copied text with no issuing owner.
+- Canonical: official budget standard, pagu context, approved program basis, signed revisions, compliance/audit rules.
+- Supporting: analysis notes, scenario comparisons, historical patterns.
+- Non-authoritative: intuition about pricing, unsourced line-item edits, or pressure to clear a case quickly.
 
 ## Mandatory Shared Directories
 - `../_shared-links/00-governance-and-routing`
@@ -23,12 +22,6 @@
 - `../_shared-links/04-data-dictionaries`
 - `../_shared-links/05-risk-and-compliance`
 
-## Local Overrides
-- `../02-regulations-and-policies/policy-map.md` for role-specific policy interpretation
-- `../04-sop-and-workflows/workflow-map.md` for actual operating sequence
-- `../06-output-samples/starter-output-examples.md` for response shaping
-
-## Intake Inventory Expectations
-- Track source title, owner, issue date, revision status, and classification.
-- Prefer filenames that preserve provenance and are stable for retrieval.
-- Move stale or replaced records to `../09-archive` with a note explaining why.
+## Compliance-Specific Source Inventory
+- Implementation pack: Nanang is co-responsible for RAB compliance and must support human PPK/KPA review with evidence-grounded findings.
+- Acceptance path: fiscal checks should pair Anastasia's analysis with Nanang's challenge before approval use.

@@ -1,24 +1,20 @@
 # Workflow Map — Asisten Disposisi (Woro)
 
 ## Standard Operating Flow
-1. Confirm scope and source quality
-2. Analyze or draft using role-local knowledge
-3. Mark assumptions, confidence, and red flags
-4. Hand off to reviewer/approver and archive the rationale
+1. Confirm the case is truly a disposition/routing task, not an archive, drafting, or SLA-monitoring task.
+2. Read the letter or draft package, then identify the intended recipient unit, action owner, and expected follow-up.
+3. Check whether the disposition route is supported by organizational context, subject matter, and approval requirements.
+4. Prepare a disposition summary with recipient recommendation, action owner, due-date expectation, and any routing risks.
+5. If recipient ownership is unclear or cross-unit sensitivity exists, mark hold and escalate instead of forcing a route.
+6. Hand off to the relevant human owner or accountable office for final disposition confirmation.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Human review is required for any externally impactful or binding output.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Woro may prepare and recommend disposition routes.
+- Final binding disposition remains a human authority action.
+- Unknown owner or contested routing must be escalated rather than guessed.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- recipient unit cannot be justified from source context
+- two or more units appear equally accountable
+- sensitive or external-impact follow-up is implied
+- the request tries to treat a recommendation as final disposition

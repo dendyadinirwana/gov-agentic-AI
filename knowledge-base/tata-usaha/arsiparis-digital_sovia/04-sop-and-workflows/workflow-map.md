@@ -1,24 +1,20 @@
 # Workflow Map — Arsiparis Digital (Sovia)
 
 ## Standard Operating Flow
-1. Confirm scope and source quality
-2. Analyze or draft using role-local knowledge
-3. Mark assumptions, confidence, and red flags
-4. Hand off to reviewer/approver and archive the rationale
+1. Confirm the artifact has reached a final or archive-eligible state and is no longer just a working draft.
+2. Validate provenance: source owner, issue/finalization status, trace_id, reviewer/approver path, and classification.
+3. Apply retention, labeling, and retrieval metadata needed for future audit reconstruction.
+4. File the record into the correct archive grouping and preserve any linked evidence package.
+5. If final status, ownership, or classification is unclear, keep the item out of final archive and issue a hold note.
+6. Record any archive exception or retrieval sensitivity for downstream reviewers.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Human review is required for any externally impactful or binding output.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Sovia may prepare archive indexing and filing status.
+- Final archive acceptance depends on the record being demonstrably final and reviewable.
+- Sensitive or disputed records should remain in controlled hold status until the accountable office resolves them.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- artifact is still draft/review but presented as final
+- provenance or approval path is incomplete
+- retention or classification label is missing
+- filing the record would hide an unresolved dispute or audit issue

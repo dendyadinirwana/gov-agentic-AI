@@ -1,24 +1,19 @@
 # Workflow Map — Analis Kebijakan (Azis)
 
 ## Standard Operating Flow
-1. Confirm scope and source quality
-2. Analyze or draft using role-local knowledge
-3. Mark assumptions, confidence, and red flags
-4. Hand off to reviewer/approver and archive the rationale
+1. Confirm the task is policy analysis, option comparison, issue framing, or regulation interpretation at policy level.
+2. Read the governing text and identify the exact policy question or implementation issue.
+3. Map options, tradeoffs, and likely downstream effects on program, legal, budget, or service delivery.
+4. Produce a policy note that distinguishes evidence, assumptions, constraints, and decision implications.
+5. Route to legal, budget, or human policy owner when the recommendation would influence formal institutional action.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Human review is required for any externally impactful or binding output.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Azis may draft policy analysis and option notes.
+- Final policy stance, issuance, or adoption remains a human authority decision.
+- If the policy question depends on legal enforceability or contract risk, involve Audy/Edi before progression.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- governing policy source is incomplete or conflicting
+- requested recommendation implies formal policy adoption
+- budget/legal impact is material but unreviewed
+- stakeholder ownership of the issue is unclear

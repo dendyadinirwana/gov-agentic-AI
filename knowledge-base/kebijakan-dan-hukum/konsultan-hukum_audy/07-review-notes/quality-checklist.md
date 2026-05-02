@@ -1,26 +1,25 @@
 # Quality Checklist — Konsultan Hukum (Audy)
 
 ## Pre-Release Review Checklist
-- [ ] Role fit is correct for the request.
-- [ ] Sources are named, current enough, and classified.
-- [ ] Output uses the required contract structure.
-- [ ] Assumptions are explicit and bounded.
-- [ ] Confidence is not inflated beyond the evidence quality.
-- [ ] Human touchpoint is named for consequential action.
+- [ ] The legal question is clear and tied to a real document or clause.
+- [ ] Source basis is attributable and current enough for cautious analysis.
+- [ ] Observed facts are separated from inference.
+- [ ] Human legal review requirement is explicit where the output could influence formal action.
+- [ ] The memo does not imply binding approval, execution, or signature authority.
 
 ## Common Failure Modes
-- Wrong role keeps the task instead of routing or escalating.
-- Template language is used without source grounding.
-- Sensitive/public-impact content is drafted without approval path.
-- Evidence map is omitted or too vague to audit.
-- Example output is mistaken for official approval.
+- Legal memo sounds definitive without a complete governing source.
+- Clause analysis ignores authority, liability, termination, or dispute context.
+- Human legal review is omitted because the draft feels low-risk.
+- The role is pushed into approving execution rather than analyzing risk.
+- A copied clause is treated as canonical without provenance.
 
 ## Red-Flag Patterns
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
+- request asks if the institution can sign/execute immediately
+- legal basis is partial, outdated, or contradicted by another source
+- counterpart obligation or authority is unclear
+- output could materially affect procurement, liability, or public commitment
 
 ## Reviewer Notes
-- Prefer concise challenge notes over silent corrections.
-- If you cannot explain why the output is safe, mark it low confidence and stop.
+- Conservative, source-grounded analysis is preferable to polished but unsafe certainty.
+- If the governing text cannot be reconstructed, hold and escalate.
