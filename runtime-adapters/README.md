@@ -47,3 +47,8 @@ Discovery is advisory by default. The installer does not mutate Hermes, OpenClaw
 ## Memory Precedence
 
 In `hybrid`, local repo knowledge remains the canonical source of truth. mem9 can store preferences, session memory, and operational recall, but must not overwrite canonical knowledge from this repository.
+
+
+## Install Contract
+
+Each adapter profile now acts as an install contract and should define canonical home roots, managed install subtree, config target, and skill target expectations. The installer uses those semantics to generate a runtime pack and install it by copy into the managed `gov-agentic-ai` subtree.

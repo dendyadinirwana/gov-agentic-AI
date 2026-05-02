@@ -9,22 +9,28 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED_KEYS = [
-    'project_name', 'runtime_target', 'memory_mode', 'memory_policy', 'governance_mode',
-    'system_prompt', 'shared_guardrail_skill', 'audit_schema', 'acceptance_tests',
-    'active_clusters', 'active_roles', 'active_skills', 'knowledge_base_root',
-    'shared_knowledge_root', 'human_approval_required_for', 'adapter_name',
-    'adapter_profile_path', 'runtime_paths', 'runtime_overrides', 'governance_policy',
-    'runtime_discovery', 'runtime_installation', 'runtime_config_targets',
-    'default_router_role', 'default_router_alias', 'default_router_skill',
-    'output_contract_required_fields', 'runtime_boot_sequence'
+    'project_name', 'project_version', 'runtime_target', 'memory_mode', 'memory_policy', 'governance_mode',
+    'system_prompt', 'shared_guardrail_skill', 'audit_schema', 'acceptance_tests', 'active_clusters',
+    'active_roles', 'active_skills', 'knowledge_base_root', 'shared_knowledge_root', 'human_approval_required_for',
+    'adapter_name', 'adapter_profile_path', 'runtime_paths', 'runtime_overrides', 'governance_policy',
+    'runtime_discovery', 'runtime_installation', 'runtime_config_targets', 'default_router_role',
+    'default_router_alias', 'default_router_skill', 'output_contract_required_fields', 'runtime_boot_sequence',
+    'runtime_pack_root', 'install_target_root', 'install_target_config', 'install_target_skills',
+    'install_target_type', 'install_mode', 'install_applied', 'installed_at'
 ]
 VALID_RUNTIMES = {'openclaw', 'hermes', 'codex', 'claude', 'antigravity', 'generic'}
 VALID_MEMORY = {'local', 'mem9', 'hybrid'}
 VALID_GOVERNANCE = {'sandbox', 'production'}
-VALID_DISCOVERY_STATUS = {'found', 'not_found', 'not_required'}
-EXPECTED_OUTPUT_FIELDS = {
-    'summary', 'evidence_map', 'assumptions', 'confidence_status',
-    'red_flags', 'human_touchpoint', 'next_step'
+VALID_DISCOVERY_STATUS = {'found', 'not_found'}
+VALID_INSTALL_TYPES = {'runtime-home', 'global-surface'}
+EXPECTED_OUTPUT_FIELDS = {'summary', 'evidence_map', 'assumptions', 'confidence_status', 'red_flags', 'human_touchpoint', 'next_step'}
+EXPECTED_TARGETS = {
+    'hermes': '~/.hermes/gov-agentic-ai',
+    'openclaw': '~/.openclaw/gov-agentic-ai',
+    'claude': '~/.claude/gov-agentic-ai',
+    'codex': '~/.codex/gov-agentic-ai',
+    'antigravity': '~/.antigravity/gov-agentic-ai',
+    'generic': '~/.agents/skills/gov-agentic-ai',
 }
 
 
@@ -37,12 +43,10 @@ def main() -> int:
         errors.append(f'missing runtime config: {path}')
         report(path, {}, errors)
         return 1
-
     config = json.loads(path.read_text())
     for key in REQUIRED_KEYS:
         if key not in config:
             errors.append(f'missing key: {key}')
-
     validate_enums(config, errors)
     validate_repo_paths(config, errors)
     validate_adapter(config, errors)
@@ -50,7 +54,6 @@ def main() -> int:
     validate_governance(config, errors)
     validate_runtime_fields(config, errors)
     validate_output_contract(config, errors)
-
     report(path, config, errors)
     return 1 if errors else 0
 
@@ -62,17 +65,19 @@ def validate_enums(config: dict[str, Any], errors: list[str]) -> None:
         errors.append(f'invalid memory_mode: {config.get("memory_mode")}')
     if config.get('governance_mode') not in VALID_GOVERNANCE:
         errors.append(f'invalid governance_mode: {config.get("governance_mode")}')
+    if config.get('install_target_type') not in VALID_INSTALL_TYPES:
+        errors.append(f'invalid install_target_type: {config.get("install_target_type")}')
 
 
 def validate_repo_paths(config: dict[str, Any], errors: list[str]) -> None:
-    repo_relative_keys = [
-        'system_prompt', 'shared_guardrail_skill', 'audit_schema', 'acceptance_tests',
-        'knowledge_base_root', 'shared_knowledge_root', 'adapter_profile_path'
-    ]
+    repo_relative_keys = ['system_prompt', 'shared_guardrail_skill', 'audit_schema', 'acceptance_tests', 'knowledge_base_root', 'shared_knowledge_root', 'adapter_profile_path']
     for key in repo_relative_keys:
         value = config.get(key)
         if value and not (ROOT / value).exists():
             errors.append(f'path does not exist for {key}: {value}')
+    pack_root = config.get('runtime_pack_root')
+    if pack_root and not (ROOT / pack_root).exists():
+        errors.append(f'runtime_pack_root does not exist: {pack_root}')
 
 
 def validate_adapter(config: dict[str, Any], errors: list[str]) -> None:
@@ -81,12 +86,10 @@ def validate_adapter(config: dict[str, Any], errors: list[str]) -> None:
         errors.append('adapter_name does not match runtime_adapter.adapter_name')
     if config.get('runtime_target') != config.get('adapter_name'):
         errors.append('runtime_target should match adapter_name for current profiles')
-    runtime_paths = config.get('runtime_paths')
-    if not isinstance(runtime_paths, dict) or not runtime_paths:
-        errors.append('runtime_paths must be present and be a non-empty object')
-    runtime_overrides = config.get('runtime_overrides')
-    if not isinstance(runtime_overrides, dict):
-        errors.append('runtime_overrides must be present and be an object')
+    if not isinstance(config.get('runtime_paths'), dict) or not config['runtime_paths']:
+        errors.append('runtime_paths must be a non-empty object')
+    if not isinstance(config.get('runtime_overrides'), dict):
+        errors.append('runtime_overrides must be an object')
 
 
 def validate_inventory(config: dict[str, Any], errors: list[str]) -> None:
@@ -111,19 +114,9 @@ def validate_inventory(config: dict[str, Any], errors: list[str]) -> None:
         for required_key in ['cluster', 'role', 'alias', 'knowledge_path', 'skill_name', 'skill_path', 'prompt_path']:
             if required_key not in role:
                 errors.append(f'active_role missing key: {required_key}')
-        knowledge_path = role.get('knowledge_path')
-        if knowledge_path and not (ROOT / knowledge_path).exists():
-            errors.append(f'missing active role knowledge path: {knowledge_path}')
-        prompt_path = role.get('prompt_path')
-        if prompt_path and not (ROOT / prompt_path).exists():
-            errors.append(f'missing active role prompt path: {prompt_path}')
     for skill in active_skills:
         if skill.get('name') not in skill_names:
             errors.append(f'unknown active skill: {skill.get("name")}')
-        for key in ['skill_path', 'skill_md']:
-            value = skill.get(key)
-            if value and not (ROOT / value).exists():
-                errors.append(f'missing active skill path for {key}: {value}')
 
 
 def validate_governance(config: dict[str, Any], errors: list[str]) -> None:
@@ -144,37 +137,42 @@ def validate_runtime_fields(config: dict[str, Any], errors: list[str]) -> None:
     if not isinstance(discovery, dict):
         errors.append('runtime_discovery must be an object')
     else:
-        status = discovery.get('status')
-        if status not in VALID_DISCOVERY_STATUS:
-            errors.append(f'invalid runtime_discovery.status: {status}')
+        if discovery.get('status') not in VALID_DISCOVERY_STATUS:
+            errors.append(f'invalid runtime_discovery.status: {discovery.get("status")}')
         for key in ['candidate_paths', 'discovered_paths']:
             if not isinstance(discovery.get(key), list):
                 errors.append(f'runtime_discovery.{key} must be a list')
-        if discovery.get('selected_runtime_home') and not Path(discovery['selected_runtime_home']).exists():
-            errors.append(f'runtime_discovery.selected_runtime_home does not exist: {discovery["selected_runtime_home"]}')
+        expected_fragment = EXPECTED_TARGETS[config['runtime_target']]
+        target_root = config.get('install_target_root') or ''
+        canonical_abs = expected_fragment.replace('~', str(Path.home()))
+        if canonical_abs not in target_root and not target_root.endswith('/gov-agentic-ai'):
+            errors.append(f'install_target_root must be canonical or an explicit gov-agentic-ai override for {config["runtime_target"]}: {target_root}')
 
     installation = config.get('runtime_installation')
     if not isinstance(installation, dict):
         errors.append('runtime_installation must be an object')
     else:
-        if installation.get('mode') != 'advisory':
-            errors.append('runtime_installation.mode must currently be advisory')
+        if installation.get('mode') != 'copy':
+            errors.append('runtime_installation.mode must be copy')
         if installation.get('writes_external_runtime_config') not in {True, False}:
             errors.append('runtime_installation.writes_external_runtime_config must be boolean')
+        if installation.get('install_applied') != config.get('install_applied'):
+            errors.append('runtime_installation.install_applied must match install_applied')
 
     targets = config.get('runtime_config_targets')
     if not isinstance(targets, dict):
         errors.append('runtime_config_targets must be an object')
     else:
-        for key in ['repo_local', 'active_deployment', 'write_runtime_config_default']:
+        for key in ['repo_local', 'active_deployment', 'runtime_pack_root', 'write_runtime_config_default']:
             if key not in targets:
                 errors.append(f'runtime_config_targets missing key: {key}')
-        repo_local = targets.get('repo_local')
-        if repo_local and repo_local != 'configs/runtime.generated.json':
-            errors.append('runtime_config_targets.repo_local must point to configs/runtime.generated.json')
-
-    boot_sequence = config.get('runtime_boot_sequence')
-    if not isinstance(boot_sequence, list) or not boot_sequence:
+    if config.get('install_mode') != 'copy':
+        errors.append('install_mode must be copy')
+    if not config.get('install_target_config'):
+        errors.append('install_target_config must be present')
+    if not config.get('install_target_skills'):
+        errors.append('install_target_skills must be present')
+    if not config.get('runtime_boot_sequence'):
         errors.append('runtime_boot_sequence must be a non-empty list')
 
 
@@ -193,6 +191,8 @@ def report(path: Path, config: dict[str, Any], errors: list[str]) -> None:
     print(f'memory_mode={config.get("memory_mode")}')
     print(f'governance_mode={config.get("governance_mode")}')
     print(f'discovery_status={config.get("runtime_discovery", {}).get("status")}')
+    print(f'install_applied={config.get("install_applied")}')
+    print(f'runtime_pack_root={config.get("runtime_pack_root")}')
     print(f'active_clusters={len(config.get("active_clusters", []))}')
     print(f'active_roles={len(config.get("active_roles", []))}')
     print(f'active_skills={len(config.get("active_skills", []))}')

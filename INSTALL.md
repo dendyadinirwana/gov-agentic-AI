@@ -79,6 +79,8 @@ The installer does not write external runtime folders by default. It generates r
 ## Supported Installer Options
 
 - `--defaults`
+- `--local-only`
+- `--install-target-root <path>`
 - `--runtime <openclaw|hermes|codex|claude|antigravity|generic>`
 - `--memory <local|mem9|hybrid>`
 - `--governance <sandbox|production>`
@@ -110,3 +112,23 @@ Windows PowerShell:
 ```powershell
 $env:GOV_AGENTIC_INSTALL_ARGS='-Defaults -Runtime hermes -Memory hybrid -Governance production -Clusters tata-usaha,perencanaan-dan-anggaran,kebijakan-dan-hukum'; irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
 ```
+
+
+## Generated Runtime Pack
+
+The installer now generates a runtime pack under `build/runtime-pack/<runtime>/...` or a sibling `runtime-pack/` directory when custom output paths are used.
+
+Default behavior:
+
+- generates repo-local config
+- generates runtime pack
+- installs by copy into the canonical runtime home unless `--local-only` is used
+
+Canonical install homes:
+
+- `~/.hermes/gov-agentic-ai`
+- `~/.openclaw/gov-agentic-ai`
+- `~/.claude/gov-agentic-ai`
+- `~/.codex/gov-agentic-ai`
+- `~/.antigravity/gov-agentic-ai`
+- `~/.agents/skills/gov-agentic-ai` for generic global skills

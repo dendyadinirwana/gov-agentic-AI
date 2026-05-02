@@ -5,7 +5,10 @@
   "folder_strategy": "repo-relative-persistent-agent-home",
   "skill_loading": "Load active role skills and shared guardrail skill at session boot; preserve active role restrictions in persistent memory.",
   "config_entrypoint": "configs/runtime.generated.json",
-  "adapter_docs": ["runtime-adapters/hermes/HERMES.md", "runtime-adapters/universal/BOOT_SEQUENCE.md"],
+  "adapter_docs": [
+    "runtime-adapters/hermes/HERMES.md",
+    "runtime-adapters/universal/BOOT_SEQUENCE.md"
+  ],
   "runtime_paths": {
     "agent_home": ".",
     "system_prompt_mount": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
@@ -18,5 +21,10 @@
     "memory_precedence": "local_knowledge_wins_over_mem9_when_conflicting",
     "session_memory_backend": "mem9_when_memory_mode_is_mem9_or_hybrid",
     "canonical_knowledge_mutability": "read_only_by_default"
-  }
+  },
+  "canonical_home_root": "~/.hermes",
+  "install_target_root": "~/.hermes/gov-agentic-ai",
+  "install_target_config": "~/.hermes/gov-agentic-ai/runtime.generated.json",
+  "install_target_skills": "~/.hermes/gov-agentic-ai/skills",
+  "install_layout": "runtime-home"
 }

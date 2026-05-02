@@ -3,9 +3,17 @@
 ## Purpose
 The Gov-Agentic AI installer creates a repo-local runtime activation config that tells an agent runtime: "you are now Gov-Agentic AI, Yayak is the default router, these clusters/roles/skills are active, and these governance rules apply."
 
-The installer uses selective activation. It never deletes physical folders from `knowledge-base/`, `skills/`, `prompts/`, or `runtime-adapters/`; it only writes active selections into generated config files.
+The installer uses selective activation. It never deletes physical folders from `knowledge-base/`, `skills/`, `prompts/`, or `runtime-adapters/`; it generates active runtime artifacts and can install them into canonical runtime homes by copy.
 
 ## Run
+
+## Install Phases
+
+1. Select runtime, memory, governance, and clusters.
+2. Generate repo-local config and runtime pack.
+3. Review canonical install destination.
+4. Apply local-only or install-to-runtime-home.
+
 
 ```bash
 python3 scripts/install_gov_agentic_ai.py
@@ -94,6 +102,8 @@ Discovery statuses:
 By default, the installer is advisory and safe: it does not write into external runtime folders. It writes repo-local config and recommends where a runtime config could be copied or mounted.
 
 ## Output Files
+
+- `build/runtime-pack/<runtime>/...` or sibling runtime-pack folder for custom output roots
 
 - `configs/runtime.generated.json`: machine-readable runtime config.
 - `configs/active.deployment.yaml`: human-readable active deployment summary.

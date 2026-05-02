@@ -5,12 +5,22 @@
   "folder_strategy": "skill-folder-import",
   "skill_loading": "Import skills/_shared/gov-agentic-common and selected skills/roles folders.",
   "config_entrypoint": "configs/runtime.generated.json",
-  "adapter_docs": ["runtime-adapters/universal/AGENT_RUNTIME.md", "runtime-adapters/universal/BOOT_SEQUENCE.md"],
+  "adapter_docs": [
+    "runtime-adapters/universal/AGENT_RUNTIME.md",
+    "runtime-adapters/universal/BOOT_SEQUENCE.md"
+  ],
   "runtime_paths": {
     "system_prompt_mount": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
     "skills_mount": "skills",
     "knowledge_mount": "knowledge-base",
     "schemas_mount": "schemas"
   },
-  "runtime_overrides": {"skill_format": "SKILL.md"}
+  "runtime_overrides": {
+    "skill_format": "SKILL.md"
+  },
+  "canonical_home_root": "~/.claude",
+  "install_target_root": "~/.claude/gov-agentic-ai",
+  "install_target_config": "~/.claude/gov-agentic-ai/runtime.generated.json",
+  "install_target_skills": "~/.claude/gov-agentic-ai/skills",
+  "install_layout": "runtime-home"
 }

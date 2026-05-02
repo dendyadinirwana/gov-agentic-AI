@@ -5,7 +5,10 @@
   "folder_strategy": "repo-relative-mounted",
   "skill_loading": "Load active skills from skills/skill_manifest.json and runtime.generated.json.",
   "config_entrypoint": "configs/runtime.generated.json",
-  "adapter_docs": ["runtime-adapters/universal/AGENT_RUNTIME.md", "runtime-adapters/universal/BOOT_SEQUENCE.md"],
+  "adapter_docs": [
+    "runtime-adapters/universal/AGENT_RUNTIME.md",
+    "runtime-adapters/universal/BOOT_SEQUENCE.md"
+  ],
   "runtime_paths": {
     "repo_mount": ".",
     "system_prompt_mount": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
@@ -13,5 +16,12 @@
     "knowledge_mount": "knowledge-base",
     "schemas_mount": "schemas"
   },
-  "runtime_overrides": {"router_mode": "manifest-driven"}
+  "runtime_overrides": {
+    "router_mode": "manifest-driven"
+  },
+  "canonical_home_root": "~/.antigravity",
+  "install_target_root": "~/.antigravity/gov-agentic-ai",
+  "install_target_config": "~/.antigravity/gov-agentic-ai/runtime.generated.json",
+  "install_target_skills": "~/.antigravity/gov-agentic-ai/skills",
+  "install_layout": "runtime-home"
 }

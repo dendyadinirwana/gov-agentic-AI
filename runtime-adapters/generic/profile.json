@@ -5,12 +5,20 @@
   "folder_strategy": "repo-relative",
   "skill_loading": "Read skills/skill_manifest.json and load active_skills only.",
   "config_entrypoint": "configs/runtime.generated.json",
-  "adapter_docs": ["runtime-adapters/universal/AGENT_RUNTIME.md", "runtime-adapters/universal/BOOT_SEQUENCE.md"],
+  "adapter_docs": [
+    "runtime-adapters/universal/AGENT_RUNTIME.md",
+    "runtime-adapters/universal/BOOT_SEQUENCE.md"
+  ],
   "runtime_paths": {
     "system_prompt_mount": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
     "skills_mount": "skills",
     "knowledge_mount": "knowledge-base",
     "schemas_mount": "schemas"
   },
-  "runtime_overrides": {}
+  "runtime_overrides": {},
+  "canonical_home_root": "~/.agents/skills",
+  "install_target_root": "~/.agents/skills/gov-agentic-ai",
+  "install_target_config": "~/.agents/skills/gov-agentic-ai/runtime.generated.json",
+  "install_target_skills": "~/.agents/skills/gov-agentic-ai/skills",
+  "install_layout": "global-skill-surface"
 }
