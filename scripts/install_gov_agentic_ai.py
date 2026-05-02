@@ -296,6 +296,79 @@ def prompt_clusters_arrow(clusters: list[str], default_all: bool = True) -> list
             raise SystemExit('Interactive installer cancelled by user.')
 
 
+
+
+def render_cluster_summary(active_clusters: list[str]) -> None:
+    current_group = None
+    for group_name, cluster in ordered_clusters_with_groups(active_clusters):
+        if group_name != current_group:
+            if current_group is not None:
+                print()
+            print(f'{group_name}:')
+            current_group = group_name
+        print(f'  - {cluster}')
+
+
+def review_selections(runtime: str, memory: str, governance: str, active_clusters: list[str], output_path: Path, active_deployment_path: Path) -> str:
+    if not supports_arrow_ui():
+        return 'apply'
+    options = ['apply', 'back', 'cancel']
+    cursor = 0
+    while True:
+        print(ANSI_CLEAR, end='')
+        render_brand_header()
+        print('Review your Gov-Agentic AI deployment setup before files are written.\n')
+        print('Selection summary:')
+        print(f'  - runtime target: {runtime}')
+        print(f'  - memory mode: {memory}')
+        print(f'  - governance mode: {governance}')
+        print(f'  - runtime config output: {output_path}')
+        print(f'  - deployment summary output: {active_deployment_path}')
+        print(f'  - active cluster count: {len(active_clusters)}')
+        print('')
+        render_cluster_summary(active_clusters)
+        print('')
+        print('Choose next action:\n')
+        for idx, option in enumerate(options):
+            prefix = '›' if idx == cursor else ' '
+            active = ANSI_ACTIVE if idx == cursor else ''
+            reset = ANSI_RESET if idx == cursor else ''
+            label = {
+                'apply': 'Apply and write files',
+                'back': 'Back and edit selections',
+                'cancel': 'Cancel without writing files',
+            }[option]
+            print(f'{active}{prefix} {label}{reset}')
+        render_footer([
+            'Enter = confirm action',
+            'Use ↑/↓ to choose Apply, Back, or Cancel',
+            'q = cancel installer gracefully | Ctrl+C = force stop immediately',
+        ])
+        key = read_key(sys.stdin)
+        if key == 'up':
+            cursor = (cursor - 1) % len(options)
+        elif key == 'down':
+            cursor = (cursor + 1) % len(options)
+        elif key == 'enter':
+            print(ANSI_RESET, end='')
+            return options[cursor]
+        elif key in {'q', 'Q'}:
+            return 'cancel'
+
+
+def collect_interactive_selection(defaults: dict[str, Any], clusters: list[str], output: Path, active_deployment: Path) -> tuple[str, str, str, list[str]]:
+    while True:
+        show_welcome_screen(output, active_deployment)
+        runtime = prompt_choice('Runtime target', RUNTIMES, defaults.get('runtime_target', 'generic'), 'runtime')
+        memory = prompt_choice('Memory mode', MEMORY_MODES, defaults.get('memory_mode', 'hybrid'), 'memory')
+        active_clusters = prompt_clusters(clusters)
+        governance = prompt_choice('Governance mode', GOVERNANCE_MODES, defaults.get('governance_mode', 'production'), 'governance')
+        action = review_selections(runtime, memory, governance, active_clusters, output, active_deployment)
+        if action == 'apply':
+            return runtime, memory, governance, active_clusters
+        if action == 'cancel':
+            raise SystemExit('Interactive installer cancelled by user before write.')
+
 OPTION_DESCRIPTIONS = {
     'runtime': {
         'openclaw': 'OpenClaw adapter: repo-mounted runtime using skill_manifest and active role skills.',
@@ -620,11 +693,7 @@ def main() -> None:
         governance = args.governance or defaults.get('governance_mode', 'production')
         active_clusters = parse_csv(args.clusters) or defaults.get('active_clusters') or clusters
     else:
-        show_welcome_screen(output, active_deployment)
-        runtime = args.runtime or prompt_choice('Runtime target', RUNTIMES, defaults.get('runtime_target', 'generic'), 'runtime')
-        memory = args.memory or prompt_choice('Memory mode', MEMORY_MODES, defaults.get('memory_mode', 'hybrid'), 'memory')
-        active_clusters = parse_csv(args.clusters) or prompt_clusters(clusters)
-        governance = args.governance or prompt_choice('Governance mode', GOVERNANCE_MODES, defaults.get('governance_mode', 'production'), 'governance')
+        runtime, memory, governance, active_clusters = collect_interactive_selection(defaults, clusters, output, active_deployment)
 
     unknown = sorted(set(active_clusters) - set(clusters))
     if unknown:
