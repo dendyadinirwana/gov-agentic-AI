@@ -55,7 +55,7 @@ cd gov-agentic-AI
 
 ## Interactive Checklist UX
 
-The installer prompts are keyboard-first in interactive terminals. Runtime, memory, and governance prompts use ↑/↓ plus Enter. Cluster activation displays a checklist; use ↑/↓ to move and Space to toggle. If the terminal does not support arrow keys, the installer falls back to typed values.
+The installer prompts are keyboard-first in interactive terminals. Runtime, memory, and governance prompts use ↑/↓ plus Enter. Cluster activation displays a checklist grouped by section; use ↑/↓ to move and Space to toggle. If the terminal does not support arrow keys, the installer falls back to typed values.
 
 Useful cluster commands:
 

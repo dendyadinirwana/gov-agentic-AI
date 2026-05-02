@@ -54,6 +54,30 @@ ANSI_RESET = '\033[0m'
 ANSI_ACTIVE = '\033[7m'
 
 
+CLUSTER_GROUPS = [
+    ('Leadership & Governance', ['top-layer', 'bottom-gate', 'kebijakan-dan-hukum']),
+    ('Operations & Administration', ['tata-usaha', 'komunikasi-dan-dokumen', 'sdm-dan-kinerja']),
+    ('Planning & Execution', ['perencanaan-dan-anggaran', 'pengadaan-barang-dan-jasa']),
+    ('Data & Field', ['data-dan-analitik', 'hubungan-eksternal-dan-lapangan']),
+]
+
+
+def ordered_clusters_with_groups(clusters: list[str]) -> list[tuple[str, str]]:
+    cluster_set = set(clusters)
+    ordered: list[tuple[str, str]] = []
+    seen: set[str] = set()
+    for group_name, group_clusters in CLUSTER_GROUPS:
+        for cluster in group_clusters:
+            if cluster in cluster_set and cluster not in seen:
+                ordered.append((group_name, cluster))
+                seen.add(cluster)
+    for cluster in clusters:
+        if cluster not in seen:
+            ordered.append(('Other', cluster))
+            seen.add(cluster)
+    return ordered
+
+
 def supports_arrow_ui(stream: TextIO | None = None) -> bool:
     stream = stream or sys.stdin
     return bool(hasattr(stream, 'isatty') and stream.isatty() and os.name != 'nt')
@@ -126,7 +150,14 @@ def render_multi_select(label: str, options: list[str], selected: set[str], curs
     print(ANSI_CLEAR, end='')
     print(label)
     print('Use ↑/↓ to move, Space to toggle, a=all, n=none, Enter=confirm.\n')
-    for idx, option in enumerate(options):
+    grouped = ordered_clusters_with_groups(options)
+    current_group = None
+    for idx, (group_name, option) in enumerate(grouped):
+        if group_name != current_group:
+            if current_group is not None:
+                print('')
+            print(f'{group_name}:')
+            current_group = group_name
         prefix = '›' if idx == cursor else ' '
         active = ANSI_ACTIVE if idx == cursor else ''
         reset = ANSI_RESET if idx == cursor else ''
@@ -136,29 +167,30 @@ def render_multi_select(label: str, options: list[str], selected: set[str], curs
 
 def prompt_clusters_arrow(clusters: list[str], default_all: bool = True) -> list[str]:
     selected = set(clusters if default_all else [])
+    ordered = [cluster for _, cluster in ordered_clusters_with_groups(clusters)]
     cursor = 0
     while True:
-        render_multi_select('Cluster activation checklist', clusters, selected, cursor)
+        render_multi_select('Cluster activation checklist', ordered, selected, cursor)
         key = read_key(sys.stdin)
         if key == 'up':
-            cursor = (cursor - 1) % len(clusters)
+            cursor = (cursor - 1) % len(ordered)
         elif key == 'down':
-            cursor = (cursor + 1) % len(clusters)
+            cursor = (cursor + 1) % len(ordered)
         elif key == 'space':
-            cluster = clusters[cursor]
+            cluster = ordered[cursor]
             if cluster in selected:
                 selected.remove(cluster)
             else:
                 selected.add(cluster)
         elif key in {'a', 'A'}:
-            selected = set(clusters)
+            selected = set(ordered)
         elif key in {'n', 'N'}:
             selected = set()
         elif key == 'enter':
             if not selected:
                 continue
             print(ANSI_RESET, end='')
-            return [cluster for cluster in clusters if cluster in selected]
+            return [cluster for cluster in ordered if cluster in selected]
         elif key in {'q', 'Q'}:
             raise SystemExit('Interactive installer cancelled by user.')
 
@@ -218,17 +250,24 @@ def prompt_clusters(clusters: list[str], default_all: bool = True) -> list[str]:
     selected = set(clusters if default_all else [])
     print('\nCluster activation checklist')
     print('Toggle by typing a cluster name. Commands: all, none, done. Press Enter to accept current selection.')
+    ordered = ordered_clusters_with_groups(clusters)
     while True:
         print('')
-        for cluster in clusters:
+        current_group = None
+        for group_name, cluster in ordered:
+            if group_name != current_group:
+                if current_group is not None:
+                    print('')
+                print(f'  {group_name}:')
+                current_group = group_name
             marker = 'x' if cluster in selected else ' '
-            print(f'  [{marker}] {cluster}')
+            print(f'    [{marker}] {cluster}')
         raw = input('Selection: ').strip()
         if not raw or raw == 'done':
             if not selected:
                 print('At least one cluster must be selected.')
                 continue
-            return [cluster for cluster in clusters if cluster in selected]
+            return [cluster for _, cluster in ordered if cluster in selected]
         if raw == 'all':
             selected = set(clusters)
             continue

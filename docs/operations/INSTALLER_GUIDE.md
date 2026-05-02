@@ -44,7 +44,7 @@ The prompt is keyboard-first in interactive terminals: use ↑/↓ and Enter to 
 
 ### Cluster Activation Checklist
 
-Cluster selection is checklist-style:
+Cluster selection is checklist-style and grouped by domain section:
 
 - `[x]` means active.
 - `[ ]` means inactive.
