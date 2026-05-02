@@ -5,6 +5,7 @@ import argparse
 import json
 import os
 import platform
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any, TextIO
@@ -62,17 +63,47 @@ ANSI_BOLD = '\033[1m'
 
 
 GOV_AGENT_ASCII = [
-    r' ______     ______     __   __   ______     ______     ______     __   __     ______  ',
-    r'/\  ___\   /\  __ \   /\ \ / /  /\  __ \   /\  ___\   /\  ___\   /\ "-.\ \   /\__  _\ ',
-    r'\ \ \__ \  \ \ \/\ \  \ \'/   \ \  __ \  \ \ \__ \  \ \  __\   \ \ \-.  \  \/_/\ \/ ',
-    r' \ \_____\  \ \_____\  \__|    \ \_\ \_\  \ \_____\  \ \_____\  \ \_\\"\_\    \ \_\ ',
-    r'  \/_____/   \/_____/   \/_/      \/_/\/_/   \/_____/   \/_____/   \/_/ \/_/     \/_/ ',
+    r'      ___           ___                         ___           ___           ___           ___                   ',
+    r'     /\__\         /\  \          ___          /\  \         /\__\         /\__\         /\  \                  ',
+    r'    /:/ _/_       /::\  \        /\  \        /::\  \       /:/ _/_       /:/ _/_        \:\  \         ___     ',
+    r'   /:/ /\  \     /:/\:\  \       \:\  \      /:/\:\  \     /:/ /\  \     /:/ /\__\        \:\  \       /\__\    ',
+    r'  /:/ /::\  \   /:/  \:\  \       \:\  \    /:/ /::\  \   /:/ /::\  \   /:/ /:/ _/_   _____\:\  \     /:/  /    ',
+    r' /:/__/\:\__\ /:/__/ \:\__\  ___  \:\__\  /:/_/:/\:\__\ /:/__/\:\__\ /:/_/:/ /\__\ /::::::::\__\   /:/__/     ',
+    r' \:\  \ /:/  / \:\  \ /:/  / /\  \ |:|  |  \:\/:/  \/__/ \:\  \ /:/  / \:\/:/ /:/  / \:\~~\~~\/__/  /::\  \     ',
+    r'  \:\  /:/  /   \:\  /:/  /  \:\  \|:|  |   \::/__/       \:\  /:/  /   \::/_/:/  /   \:\  \       /:/\:\  \    ',
+    r'   \:/:/  /     \:/:/  /    \:\__|:|__|    \:\  \        \:/:/  /     \:/:/  /     \:\  \      \/__\:\  \   ',
+    r'    \::/  /       \::/  /      \::::/__/      \:\__\        \::/  /       \::/  /       \:\__\          \:\__\  ',
+    r'     \/__/         \/__/        ~~~~           \/__/         \/__/         \/__/         \/__/           \/__/  ',
 ]
 
 
+
+
+def detect_repo_version() -> str:
+    env_version = os.environ.get('GOV_AGENTIC_AI_VERSION')
+    if env_version:
+        return env_version
+    try:
+        result = subprocess.run(
+            ['git', 'describe', '--tags', '--always'],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        version = result.stdout.strip()
+        if version:
+            return version
+    except Exception:
+        pass
+    return 'unknown-version'
+
+
 def render_brand_header() -> None:
-    palette = [ANSI_CYAN, ANSI_BLUE, ANSI_MAGENTA, ANSI_CYAN, ANSI_BLUE]
+    palette = [ANSI_CYAN, ANSI_BLUE, ANSI_MAGENTA, ANSI_CYAN, ANSI_BLUE, ANSI_MAGENTA, ANSI_CYAN, ANSI_BLUE, ANSI_MAGENTA, ANSI_CYAN, ANSI_BLUE]
+    version = detect_repo_version()
     print(f'{ANSI_BOLD}Gov-Agentic AI Installer{ANSI_RESET}')
+    print(f'{ANSI_DIM}Release: {version}{ANSI_RESET}')
     print()
     for idx, line in enumerate(GOV_AGENT_ASCII):
         color = palette[idx % len(palette)]
