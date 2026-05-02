@@ -121,4 +121,6 @@ fi
 
 echo
 printf 'Done. Generated config: %s\n' "$(pwd)/configs/runtime.generated.json"
+printf 'Bootstrap config: %s\n' "$(pwd)/configs/runtime-bootstrap.generated.json"
 printf 'YAML summary: %s\n' "$(pwd)/configs/active.deployment.yaml"
+printf 'Doctor command: %s\n' "python3 scripts/doctor_gov_agentic_ai.py --runtime generic"

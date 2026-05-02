@@ -60,8 +60,11 @@ if ($Output) { $InstallerArgs += @("--output", $Output) }
 if ($ActiveDeployment) { $InstallerArgs += @("--active-deployment", $ActiveDeployment) }
 
 Write-Host "Running Gov-Agentic AI installer ..."
-& $PythonCmd[0] $PythonCmd[1..($PythonCmd.Length-1)] scripts/install_gov_agentic_ai.py @InstallerArgs
+$InvokeArgs = @($PythonCmd + @("scripts/install_gov_agentic_ai.py") + $InstallerArgs)
+& $InvokeArgs[0] $InvokeArgs[1..($InvokeArgs.Length-1)]
 
 Write-Host ""
 Write-Host "Done. Generated config: $(Join-Path (Get-Location) 'configs/runtime.generated.json')"
+Write-Host "Bootstrap config: $(Join-Path (Get-Location) 'configs/runtime-bootstrap.generated.json')"
 Write-Host "YAML summary: $(Join-Path (Get-Location) 'configs/active.deployment.yaml')"
+Write-Host "Doctor command: python scripts/doctor_gov_agentic_ai.py --runtime generic"

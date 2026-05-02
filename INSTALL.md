@@ -18,6 +18,12 @@ Default install:
 curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh -s -- --defaults
 ```
 
+Doctor / health check:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/doctor.sh | sh
+```
+
 ### Windows PowerShell
 
 Interactive install:
@@ -30,6 +36,12 @@ Default install:
 
 ```powershell
 $env:GOV_AGENTIC_INSTALL_ARGS='-Defaults'; irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
+```
+
+Doctor / health check:
+
+```powershell
+irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/doctor.ps1 | iex
 ```
 
 ## Fallback Clone Path
@@ -74,7 +86,7 @@ Useful cluster commands:
 
 When you choose a runtime such as `hermes`, `openclaw`, `codex`, `claude`, or `antigravity`, the installer scans common macOS/Linux/Windows runtime config locations and records the result in `configs/runtime.generated.json`.
 
-The installer does not write external runtime folders by default. It generates repo-local config plus advisory target paths so the selected runtime can mount or import the config safely. For `generic`, the advisory global skill target is `~/.agents/skills/gov-agentic-ai`.
+The installer detects canonical runtime homes first, then generates repo-local artifacts and can apply the managed central-home plus thin-shim install. For `generic`, the canonical global skill target is `~/.agents/skills/gov-agentic-ai`.
 
 ## Supported Installer Options
 
@@ -138,6 +150,34 @@ Runtime shim homes:
 - `~/.codex/gov-agentic-ai`
 - `~/.antigravity/gov-agentic-ai`
 - `~/.agents/skills/gov-agentic-ai` for generic global skills
+
+## Doctor
+
+Run the local doctor directly:
+
+```bash
+python3 scripts/doctor_gov_agentic_ai.py --runtime generic
+```
+
+Target a specific runtime shim:
+
+```bash
+python3 scripts/doctor_gov_agentic_ai.py --runtime hermes
+```
+
+The doctor runs repo verification, skill verification, runtime-config validation, and thin-shim attach validation. Use `--skip-repo`, `--skip-skills`, `--skip-config`, or `--skip-attach` to narrow the check surface.
+
+Bootstrap doctor:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/doctor.sh | sh
+```
+
+PowerShell doctor:
+
+```powershell
+irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/doctor.ps1 | iex
+```
 
 ## Uninstall
 

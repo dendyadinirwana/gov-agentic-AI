@@ -300,10 +300,22 @@ macOS / Linux defaults:
 curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh -s -- --defaults
 ```
 
+macOS / Linux doctor:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/doctor.sh | sh
+```
+
 Windows PowerShell:
 
 ```powershell
 irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
+```
+
+Windows PowerShell doctor:
+
+```powershell
+irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/doctor.ps1 | iex
 ```
 
 ## Quick Start for Adopters
