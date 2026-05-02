@@ -74,7 +74,7 @@ Useful cluster commands:
 
 When you choose a runtime such as `hermes`, `openclaw`, `codex`, `claude`, or `antigravity`, the installer scans common macOS/Linux/Windows runtime config locations and records the result in `configs/runtime.generated.json`.
 
-The installer does not write external runtime folders by default. It generates repo-local config plus advisory target paths so the selected runtime can mount or import the config safely.
+The installer does not write external runtime folders by default. It generates repo-local config plus advisory target paths so the selected runtime can mount or import the config safely. For `generic`, the advisory global skill target is `~/.agents/skills/gov-agentic-ai`.
 
 ## Supported Installer Options
 

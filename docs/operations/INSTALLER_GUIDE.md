@@ -78,10 +78,12 @@ When a specific runtime is selected, the installer scans common OS-specific runt
 
 Examples:
 
-- macOS Hermes: `~/Library/Application Support/Hermes`, `~/.hermes`, `~/.config/hermes`
-- Linux Hermes: `~/.config/hermes`, `~/.hermes`
-- Windows Hermes: `%APPDATA%/Hermes`, `%USERPROFILE%/.hermes`
-- Codex: `${CODEX_HOME}` or `~/.codex`
+- Hermes: `~/.hermes`
+- OpenClaw: `~/.openclaw`
+- Claude: `~/.claude`
+- Codex: `~/.codex`
+- Antigravity: `~/.antigravity`
+- Generic global skills: `~/.agents/skills`
 
 Discovery statuses:
 

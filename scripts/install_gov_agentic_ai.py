@@ -22,31 +22,35 @@ MEMORY_MODES = ['local', 'mem9', 'hybrid']
 GOVERNANCE_MODES = ['sandbox', 'production']
 
 RUNTIME_DISCOVERY_CANDIDATES = {
-    'generic': {},
+    'generic': {
+        'Darwin': ['~/.agents/skills'],
+        'Linux': ['~/.agents/skills'],
+        'Windows': ['%USERPROFILE%/.agents/skills'],
+    },
     'hermes': {
-        'Darwin': ['~/Library/Application Support/Hermes', '~/.hermes', '~/.config/hermes'],
-        'Linux': ['~/.config/hermes', '~/.hermes'],
-        'Windows': ['%APPDATA%/Hermes', '%USERPROFILE%/.hermes'],
+        'Darwin': ['~/.hermes'],
+        'Linux': ['~/.hermes'],
+        'Windows': ['%USERPROFILE%/.hermes'],
     },
     'openclaw': {
-        'Darwin': ['~/.openclaw', '~/.config/openclaw'],
-        'Linux': ['~/.config/openclaw', '~/.openclaw'],
-        'Windows': ['%APPDATA%/OpenClaw', '%USERPROFILE%/.openclaw'],
+        'Darwin': ['~/.openclaw'],
+        'Linux': ['~/.openclaw'],
+        'Windows': ['%USERPROFILE%/.openclaw'],
     },
     'codex': {
-        'Darwin': ['${CODEX_HOME}', '~/.codex'],
-        'Linux': ['${CODEX_HOME}', '~/.codex'],
-        'Windows': ['%CODEX_HOME%', '%USERPROFILE%/.codex'],
+        'Darwin': ['~/.codex'],
+        'Linux': ['~/.codex'],
+        'Windows': ['%USERPROFILE%/.codex'],
     },
     'claude': {
-        'Darwin': ['~/.claude', '~/Library/Application Support/Claude'],
-        'Linux': ['~/.claude', '~/.config/claude'],
-        'Windows': ['%APPDATA%/Claude', '%USERPROFILE%/.claude'],
+        'Darwin': ['~/.claude'],
+        'Linux': ['~/.claude'],
+        'Windows': ['%USERPROFILE%/.claude'],
     },
     'antigravity': {
-        'Darwin': ['~/.antigravity', '~/.config/antigravity'],
-        'Linux': ['~/.config/antigravity', '~/.antigravity'],
-        'Windows': ['%APPDATA%/Antigravity', '%USERPROFILE%/.antigravity'],
+        'Darwin': ['~/.antigravity'],
+        'Linux': ['~/.antigravity'],
+        'Windows': ['%USERPROFILE%/.antigravity'],
     },
 }
 
@@ -548,24 +552,33 @@ def discover_runtime(runtime: str) -> dict[str, Any]:
     existing = [path for path in expanded if Path(path).exists()]
     selected = existing[0] if existing else None
     recommended = None
-    if selected:
-        recommended = str(Path(selected) / 'gov-agentic-ai' / 'runtime.generated.json')
-    elif runtime != 'generic' and expanded:
-        recommended = str(Path(expanded[0]) / 'gov-agentic-ai' / 'runtime.generated.json')
+    recommended_skill_home = None
+    if runtime == 'generic':
+        base = selected or (expanded[0] if expanded else None)
+        if base:
+            recommended_skill_home = str(Path(base) / 'gov-agentic-ai')
+            recommended = str(Path(base) / 'gov-agentic-ai' / 'runtime.generated.json')
+    else:
+        base = selected or (expanded[0] if expanded else None)
+        if base:
+            recommended = str(Path(base) / 'gov-agentic-ai' / 'runtime.generated.json')
     return {
         'os_name': os_name,
         'home_dir': home_dir,
-        'status': 'found' if selected else ('not_required' if runtime == 'generic' else 'not_found'),
+        'status': 'found' if selected else 'not_found',
         'candidate_paths': expanded,
         'discovered_paths': existing,
         'selected_runtime_home': selected,
         'message': runtime_discovery_message(runtime, selected),
         'recommended_runtime_config': recommended,
+        'recommended_skill_home': recommended_skill_home,
     }
 
 def runtime_discovery_message(runtime: str, selected: str | None) -> str:
     if runtime == 'generic':
-        return 'Generic runtime uses repo-local config only; no external runtime home is required.'
+        if selected:
+            return 'Generic agent skill home found. Repo-local config remains canonical unless copied intentionally.'
+        return 'Generic agent skill home not found. Generated repo-local config only; copy skills into ~/.agents/skills if needed.'
     if selected:
         return f'{runtime} runtime home found. Repo-local config remains canonical unless copied intentionally.'
     return f'{runtime} runtime home not found. Generated repo-local config only; mount this repo or copy runtime.generated.json manually.'
@@ -575,6 +588,7 @@ def runtime_config_targets(discovery: dict[str, Any]) -> dict[str, Any]:
         'repo_local': 'configs/runtime.generated.json',
         'active_deployment': 'configs/active.deployment.yaml',
         'runtime_home_recommended': discovery.get('recommended_runtime_config'),
+        'runtime_skill_home_recommended': discovery.get('recommended_skill_home'),
         'write_runtime_config_default': False,
     }
 
