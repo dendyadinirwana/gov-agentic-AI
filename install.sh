@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 
 REPO_URL_DEFAULT="https://github.com/dendyadinirwana/gov-agentic-AI.git"
 TARGET_DIR_DEFAULT="gov-agentic-AI"
@@ -19,36 +19,48 @@ EOF
 }
 
 need_cmd() {
-  command -v "$1" >/dev/null 2>&1 || {
+  if ! command -v "$1" >/dev/null 2>&1; then
     echo "Missing required command: $1" >&2
     exit 1
-  }
+  fi
+}
+
+append_arg() {
+  INSTALLER_ARGS="$INSTALLER_ARGS '$1'"
 }
 
 REPO_URL="$REPO_URL_DEFAULT"
 TARGET_DIR="$TARGET_DIR_DEFAULT"
-INSTALLER_ARGS=()
+INSTALLER_ARGS=""
 
-while [[ $# -gt 0 ]]; do
+while [ "$#" -gt 0 ]; do
   case "$1" in
     --repo-url)
-      REPO_URL="$2"; shift 2 ;;
+      REPO_URL="$2"
+      shift 2
+      ;;
     --target-dir)
-      TARGET_DIR="$2"; shift 2 ;;
-    --defaults|--runtime|--memory|--governance|--clusters|--output|--active-deployment)
-      INSTALLER_ARGS+=("$1")
-      if [[ "$1" == "--defaults" ]]; then
-        shift 1
-      else
-        INSTALLER_ARGS+=("$2")
-        shift 2
-      fi ;;
+      TARGET_DIR="$2"
+      shift 2
+      ;;
+    --defaults)
+      append_arg "$1"
+      shift 1
+      ;;
+    --runtime|--memory|--governance|--clusters|--output|--active-deployment)
+      append_arg "$1"
+      append_arg "$2"
+      shift 2
+      ;;
     -h|--help)
-      usage; exit 0 ;;
+      usage
+      exit 0
+      ;;
     *)
       echo "Unknown argument: $1" >&2
       usage
-      exit 1 ;;
+      exit 1
+      ;;
   esac
 done
 
@@ -68,7 +80,7 @@ if [ "$TARGET_DIR" = "." ]; then
     exit 1
   fi
   echo "Using existing repository at $(pwd)"
-elif [[ ! -d "$TARGET_DIR/.git" ]]; then
+elif [ ! -d "$TARGET_DIR/.git" ]; then
   echo "Cloning $REPO_URL into $TARGET_DIR ..."
   git clone "$REPO_URL" "$TARGET_DIR"
   cd "$TARGET_DIR"
@@ -78,7 +90,9 @@ else
 fi
 
 echo "Running Gov-Agentic AI installer ..."
-"$PYTHON_BIN" scripts/install_gov_agentic_ai.py "${INSTALLER_ARGS[@]}"
+# shellcheck disable=SC2086
+# INSTALLER_ARGS is intentionally assembled from installer flags and simple values.
+eval "\"$PYTHON_BIN\" scripts/install_gov_agentic_ai.py $INSTALLER_ARGS"
 
 echo
 printf 'Done. Generated config: %s\n' "$(pwd)/configs/runtime.generated.json"
