@@ -25,31 +25,36 @@ need_cmd() {
   fi
 }
 
-append_arg() {
-  INSTALLER_ARGS="$INSTALLER_ARGS '$1'"
-}
-
 REPO_URL="$REPO_URL_DEFAULT"
 TARGET_DIR="$TARGET_DIR_DEFAULT"
-INSTALLER_ARGS=""
+INSTALLER_ARG_FILE="${TMPDIR:-/tmp}/gov-agentic-installer-args.$$"
+: > "$INSTALLER_ARG_FILE"
+trap 'rm -f "$INSTALLER_ARG_FILE"' EXIT HUP INT TERM
+
+add_installer_arg() {
+  printf '%s\n' "$1" >> "$INSTALLER_ARG_FILE"
+}
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --repo-url)
+      if [ "$#" -lt 2 ]; then echo "Missing value for --repo-url" >&2; exit 1; fi
       REPO_URL="$2"
       shift 2
       ;;
     --target-dir)
+      if [ "$#" -lt 2 ]; then echo "Missing value for --target-dir" >&2; exit 1; fi
       TARGET_DIR="$2"
       shift 2
       ;;
     --defaults)
-      append_arg "$1"
+      add_installer_arg "$1"
       shift 1
       ;;
     --runtime|--memory|--governance|--clusters|--output|--active-deployment)
-      append_arg "$1"
-      append_arg "$2"
+      if [ "$#" -lt 2 ]; then echo "Missing value for $1" >&2; exit 1; fi
+      add_installer_arg "$1"
+      add_installer_arg "$2"
       shift 2
       ;;
     -h|--help)
@@ -90,9 +95,11 @@ else
 fi
 
 echo "Running Gov-Agentic AI installer ..."
-# shellcheck disable=SC2086
-# INSTALLER_ARGS is intentionally assembled from installer flags and simple values.
-eval "\"$PYTHON_BIN\" scripts/install_gov_agentic_ai.py $INSTALLER_ARGS"
+set --
+while IFS= read -r arg; do
+  set -- "$@" "$arg"
+done < "$INSTALLER_ARG_FILE"
+"$PYTHON_BIN" scripts/install_gov_agentic_ai.py "$@"
 
 echo
 printf 'Done. Generated config: %s\n' "$(pwd)/configs/runtime.generated.json"
