@@ -1,0 +1,73 @@
+{
+  "version": "v1.0",
+  "roles": [
+    {
+      "role_slug": "top-layer__gov-ai_yayak",
+      "role_name": "GOV-AI",
+      "cluster": "top-layer",
+      "role_class": "router",
+      "can_draft": false,
+      "can_review": true,
+      "can_recommend": true,
+      "can_escalate": true,
+      "cannot": [
+        "approve formally",
+        "issue final commitment",
+        "bypass HITL for L3/L4"
+      ],
+      "default_next_handoff": "specialist-or-monitor-role",
+      "approval_owner_hint": "human accountable owner by workflow"
+    },
+    {
+      "role_slug": "kebijakan-dan-hukum__konsultan-hukum_audy",
+      "role_name": "Konsultan Hukum",
+      "cluster": "kebijakan-dan-hukum",
+      "role_class": "specialist",
+      "can_draft": true,
+      "can_review": true,
+      "can_recommend": true,
+      "can_escalate": true,
+      "cannot": [
+        "issue binding legal approval",
+        "authorize signature",
+        "treat draft legal note as institutional decision"
+      ],
+      "default_next_handoff": "human-legal-reviewer",
+      "approval_owner_hint": "authorized legal or accountable official"
+    },
+    {
+      "role_slug": "kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi",
+      "role_name": "Monitor Kepatuhan Hukum",
+      "cluster": "kebijakan-dan-hukum",
+      "role_class": "monitor",
+      "can_draft": false,
+      "can_review": true,
+      "can_recommend": true,
+      "can_escalate": true,
+      "cannot": [
+        "replace final legal authority",
+        "clear control gaps silently",
+        "convert hold into approval"
+      ],
+      "default_next_handoff": "resolver-or-winda",
+      "approval_owner_hint": "human resolver with legal/compliance ownership"
+    },
+    {
+      "role_slug": "bottom-gate__bot-eskalasi_winda",
+      "role_name": "Bot Eskalasi",
+      "cluster": "bottom-gate",
+      "role_class": "escalation",
+      "can_draft": false,
+      "can_review": true,
+      "can_recommend": true,
+      "can_escalate": true,
+      "cannot": [
+        "approve formally",
+        "invent accountable owner",
+        "resume blocked workflow without human decision"
+      ],
+      "default_next_handoff": "human-authority",
+      "approval_owner_hint": "named human accountable owner"
+    }
+  ]
+}

@@ -23,3 +23,4 @@ Use when a request involves government documents, public-sector decisions, sensi
 - `references/action-level-policy.md`
 - `references/data-classification.md`
 - `references/hitl-and-audit.md`
+- `references/government-work-logic.md`

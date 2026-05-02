@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gov-agentic-ai/government_workflow_state.schema.json",
+  "title": "Government Workflow State",
+  "type": "object",
+  "required": [
+    "trace_id",
+    "intent_class",
+    "work_state",
+    "current_owner_role",
+    "action_level",
+    "document_status",
+    "human_touchpoint_required"
+  ],
+  "properties": {
+    "trace_id": { "type": "string", "minLength": 1 },
+    "intent_class": {
+      "type": "string",
+      "enum": [
+        "route-intake",
+        "check-completeness",
+        "draft-formal-artifact",
+        "review-compliance",
+        "review-legal-risk",
+        "review-budget-fit",
+        "review-specification-neutrality",
+        "prepare-disposition",
+        "prepare-archive-record",
+        "explain-policy-for-public",
+        "summarize-meeting-record",
+        "request-approval-path",
+        "escalate-blocker"
+      ]
+    },
+    "work_state": {
+      "type": "string",
+      "enum": [
+        "received",
+        "classified",
+        "intake-check",
+        "drafting",
+        "reviewing",
+        "awaiting-approval",
+        "approved",
+        "archived",
+        "blocked",
+        "escalated"
+      ]
+    },
+    "current_owner_role": { "type": "string", "minLength": 1 },
+    "next_owner_role": { "type": ["string", "null"] },
+    "action_level": {
+      "type": "string",
+      "enum": ["L0", "L1", "L2", "L3", "L4"]
+    },
+    "document_status": {
+      "type": "string",
+      "enum": ["draft", "review", "hold", "approved", "archived"]
+    },
+    "required_evidence": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "approval_gate": { "type": ["string", "null"] },
+    "stop_condition": { "type": ["string", "null"] },
+    "human_touchpoint_required": { "type": "boolean" },
+    "notes": { "type": "string" }
+  },
+  "additionalProperties": false
+}
