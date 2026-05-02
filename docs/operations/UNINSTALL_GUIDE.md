@@ -68,3 +68,23 @@ To remove both the runtime shim and the canonical installed home:
 ```bash
 python3 scripts/uninstall_gov_agentic_ai.py --runtime generic --yes --remove-central-home
 ```
+
+## Bootstrap Uninstall
+
+macOS/Linux:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/uninstall.sh | sh
+```
+
+Windows PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/uninstall.ps1 | iex
+```
+
+Set flags through environment variables when needed, for example:
+
+```bash
+GOV_AGENTIC_UNINSTALL_ARGS="--runtime generic --yes --remove-central-home" curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/uninstall.sh | sh
+```

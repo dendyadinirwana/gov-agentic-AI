@@ -153,3 +153,15 @@ python3 scripts/uninstall_gov_agentic_ai.py --runtime generic --yes
 ```
 
 See [`docs/operations/UNINSTALL_GUIDE.md`](./docs/operations/UNINSTALL_GUIDE.md) for runtime-specific uninstall notes and safety rules.
+
+Bootstrap uninstall:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/uninstall.sh | sh
+```
+
+PowerShell uninstall:
+
+```powershell
+irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/uninstall.ps1 | iex
+```
