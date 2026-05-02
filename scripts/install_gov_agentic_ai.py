@@ -747,11 +747,36 @@ def build_runtime_pack(config: dict[str, Any], output: Path, active_deployment: 
     }
 
 
+
+
+def summarize_tree(root: Path, max_items: int = 18) -> list[str]:
+    if not root.exists():
+        return ['(empty)']
+    items: list[str] = []
+    for child in sorted(root.rglob('*')):
+        rel = child.relative_to(root)
+        prefix = '[D]' if child.is_dir() else '[F]'
+        items.append(f'{prefix} {rel}')
+        if len(items) >= max_items:
+            break
+    total = sum(1 for _ in root.rglob('*'))
+    if total > max_items:
+        items.append(f'... and {total - max_items} more entries')
+    return items or ['(empty)']
+
+
 def collect_install_existing_summary(target_root: Path) -> dict[str, Any]:
     if not target_root.exists():
-        return {'target_exists': False, 'existing_file_count': 0}
+        return {'target_exists': False, 'existing_file_count': 0, 'existing_tree_preview': ['(target does not exist yet)']}
     existing_files = sum(1 for path in target_root.rglob('*') if path.is_file())
-    return {'target_exists': True, 'existing_file_count': existing_files}
+    return {'target_exists': True, 'existing_file_count': existing_files, 'existing_tree_preview': summarize_tree(target_root, 12)}
+
+
+def pack_preview_summary(pack_root: Path) -> dict[str, Any]:
+    return {
+        'pack_file_count': sum(1 for path in pack_root.rglob('*') if path.is_file()) if pack_root.exists() else 0,
+        'pack_tree_preview': summarize_tree(pack_root, 14),
+    }
 
 
 def render_cluster_summary(active_clusters: list[str]) -> None:
@@ -761,7 +786,7 @@ def render_cluster_summary(active_clusters: list[str]) -> None:
         print(f'    {compact}')
 
 
-def review_selections(runtime: str, memory: str, governance: str, active_clusters: list[str], output_path: Path, active_deployment_path: Path, discovery: dict[str, Any], pack_root: Path, install_summary: dict[str, Any]) -> str:
+def review_selections(runtime: str, memory: str, governance: str, active_clusters: list[str], output_path: Path, active_deployment_path: Path, discovery: dict[str, Any], pack_root: Path, install_summary: dict[str, Any], pack_summary: dict[str, Any]) -> str:
     if not supports_arrow_ui():
         return 'apply_install'
     options = INSTALL_ACTIONS
@@ -781,6 +806,10 @@ def review_selections(runtime: str, memory: str, governance: str, active_cluster
         print(f'  Pack root       : {display_path(pack_root)}')
         print(f'  Repo config     : {display_path(output_path)}')
         print(f'  YAML summary    : {display_path(active_deployment_path)}')
+        print(f'  Pack files      : {pack_summary["pack_file_count"]}')
+        print('  Pack preview    :')
+        for line in pack_summary['pack_tree_preview']:
+            print(f'    {line}')
         print('')
         print_section('Install Destination')
         print(f'  Canonical home  : {display_path(discovery.get("canonical_runtime_home"))}')
@@ -791,6 +820,9 @@ def review_selections(runtime: str, memory: str, governance: str, active_cluster
         print(f'  Detection       : {discovery.get("status")}')
         overwrite = 'new install' if not install_summary['target_exists'] else f"overwrite managed subtree ({install_summary['existing_file_count']} files)"
         print(f'  Overwrite impact: {overwrite}')
+        print('  Existing target :')
+        for line in install_summary['existing_tree_preview']:
+            print(f'    {line}')
         print('')
         print_section('Cluster Activation')
         render_cluster_summary(active_clusters)
@@ -875,8 +907,15 @@ def collect_interactive_selection(defaults: dict[str, Any], clusters: list[str],
     while True:
         discovery = discover_runtime(runtime)
         pack_root = runtime_pack_root_for(runtime, output)
-        install_summary = collect_install_existing_summary(Path(discovery['install_target_root'])) if discovery.get('install_target_root') else {'target_exists': False, 'existing_file_count': 0}
-        action = review_selections(runtime, memory, governance, active_clusters, output, active_deployment, discovery, pack_root, install_summary)
+        install_summary = collect_install_existing_summary(Path(discovery['install_target_root'])) if discovery.get('install_target_root') else {'target_exists': False, 'existing_file_count': 0, 'existing_tree_preview': ['(no install target)']}
+        temp_config = build_config(runtime, memory, governance, active_clusters, output, active_deployment, install_mode='copy', install_applied=False, install_target_root=discovery.get('install_target_root'), pack_root=pack_root)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        active_deployment.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(temp_config, ensure_ascii=False, indent=2) + '\n')
+        write_yaml_like(active_deployment, temp_config)
+        build_runtime_pack(temp_config, output, active_deployment)
+        pack_summary = pack_preview_summary(pack_root)
+        action = review_selections(runtime, memory, governance, active_clusters, output, active_deployment, discovery, pack_root, install_summary, pack_summary)
         if action in {'local_only', 'apply_install'}:
             return runtime, memory, governance, active_clusters, action
         if action == 'cancel':
