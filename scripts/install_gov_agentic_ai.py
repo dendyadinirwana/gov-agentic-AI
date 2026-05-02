@@ -108,6 +108,50 @@ def render_brand_header() -> None:
         print(f'{color}{line}{ANSI_RESET}')
     print()
 
+
+def render_mini_header(title: str, subtitle: str | None = None) -> None:
+    print(f'{ANSI_BOLD}{title}{ANSI_RESET}')
+    print(f'{ANSI_DIM}Release: {detect_repo_version()}{ANSI_RESET}')
+    if subtitle:
+        print(f'{ANSI_DIM}{subtitle}{ANSI_RESET}')
+    print()
+
+
+def display_path(value: str | Path | None, max_len: int = 72) -> str:
+    if value is None:
+        return '-'
+    text = str(value)
+    home = str(Path.home())
+    if text.startswith(home):
+        text = '~' + text[len(home):]
+    if len(text) <= max_len:
+        return text
+    keep = max_len - 3
+    left = keep // 2
+    right = keep - left
+    return f'{text[:left]}...{text[-right:]}'
+
+
+def print_section(title: str) -> None:
+    print(f'{ANSI_BOLD}{title}{ANSI_RESET}')
+
+
+def cluster_group_summary(active_clusters: list[str]) -> list[tuple[str, list[str]]]:
+    grouped: list[tuple[str, list[str]]] = []
+    current_group = None
+    current_items: list[str] = []
+    for group_name, cluster in ordered_clusters_with_groups(active_clusters):
+        if group_name != current_group:
+            if current_group is not None:
+                grouped.append((current_group, current_items))
+            current_group = group_name
+            current_items = [cluster]
+        else:
+            current_items.append(cluster)
+    if current_group is not None:
+        grouped.append((current_group, current_items))
+    return grouped
+
 CLUSTER_GROUPS = [
     ('Leadership & Governance', ['top-layer', 'bottom-gate', 'kebijakan-dan-hukum']),
     ('Operations & Administration', ['tata-usaha', 'komunikasi-dan-dokumen', 'sdm-dan-kinerja']),
@@ -320,8 +364,7 @@ def choose_back_step() -> str:
     cursor = 0
     while True:
         print(ANSI_CLEAR, end='')
-        render_brand_header()
-        print('Choose which step you want to edit.\n')
+        render_mini_header('Edit a Specific Step', 'Jump directly to the part you want to change.')
         for idx, option in enumerate(options):
             prefix = '›' if idx == cursor else ' '
             active = ANSI_ACTIVE if idx == cursor else ''
@@ -351,24 +394,34 @@ def choose_back_step() -> str:
         elif key in {'q', 'Q'}:
             return 'review'
 
-def review_selections(runtime: str, memory: str, governance: str, active_clusters: list[str], output_path: Path, active_deployment_path: Path) -> str:
+def review_selections(runtime: str, memory: str, governance: str, active_clusters: list[str], output_path: Path, active_deployment_path: Path, discovery: dict[str, Any]) -> str:
     if not supports_arrow_ui():
         return 'apply'
     options = ['apply', 'back', 'cancel']
     cursor = 0
     while True:
         print(ANSI_CLEAR, end='')
-        render_brand_header()
-        print('Review your Gov-Agentic AI deployment setup before files are written.\n')
-        print('Selection summary:')
-        print(f'  - runtime target: {runtime}')
-        print(f'  - memory mode: {memory}')
-        print(f'  - governance mode: {governance}')
-        print(f'  - runtime config output: {output_path}')
-        print(f'  - deployment summary output: {active_deployment_path}')
-        print(f'  - active cluster count: {len(active_clusters)}')
+        render_mini_header('Review Deployment Setup', 'Final check before any files are written.')
+        print_section('Overview')
+        print(f'  Runtime      : {runtime}')
+        print(f'  Memory       : {memory}')
+        print(f'  Governance   : {governance}')
+        print(f'  Active clusters: {len(active_clusters)} selected')
         print('')
-        render_cluster_summary(active_clusters)
+        print_section('Write Targets')
+        print(f'  Repo config  : {display_path(output_path)}')
+        print(f'  YAML summary : {display_path(active_deployment_path)}')
+        print(f'  Canonical    : {display_path(discovery.get("selected_runtime_home") or discovery.get("candidate_paths", [None])[0])}')
+        print(f'  Advisory cfg : {display_path(discovery.get("recommended_runtime_config"))}')
+        if discovery.get('recommended_skill_home'):
+            print(f'  Skill target : {display_path(discovery.get("recommended_skill_home"))}')
+        print(f'  Detection    : {discovery.get("status")}')
+        print('')
+        print_section('Cluster Activation')
+        for group_name, items in cluster_group_summary(active_clusters):
+            compact = ', '.join(items)
+            print(f'  {group_name} [{len(items)}]')
+            print(f'    {compact}')
         print('')
         print('Choose next action:\n')
         for idx, option in enumerate(options):
@@ -405,7 +458,8 @@ def collect_interactive_selection(defaults: dict[str, Any], clusters: list[str],
     active_clusters = prompt_clusters(clusters)
     governance = prompt_choice('Governance mode', GOVERNANCE_MODES, defaults.get('governance_mode', 'production'), 'governance')
     while True:
-        action = review_selections(runtime, memory, governance, active_clusters, output, active_deployment)
+        discovery = discover_runtime(runtime)
+        action = review_selections(runtime, memory, governance, active_clusters, output, active_deployment, discovery)
         if action == 'apply':
             return runtime, memory, governance, active_clusters
         if action == 'cancel':
