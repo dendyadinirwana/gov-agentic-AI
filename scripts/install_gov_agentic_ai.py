@@ -266,8 +266,8 @@ def render_multi_select(label: str, options: list[str], selected: set[str], curs
     ])
 
 
-def prompt_clusters_arrow(clusters: list[str], default_all: bool = True) -> list[str]:
-    selected = set(clusters if default_all else [])
+def prompt_clusters_arrow(clusters: list[str], default_all: bool = True, preselected: list[str] | None = None) -> list[str]:
+    selected = set(preselected if preselected is not None else (clusters if default_all else []))
     ordered = [cluster for _, cluster in ordered_clusters_with_groups(clusters)]
     cursor = 0
     while True:
@@ -308,6 +308,44 @@ def render_cluster_summary(active_clusters: list[str]) -> None:
             current_group = group_name
         print(f'  - {cluster}')
 
+
+
+
+def choose_back_step() -> str:
+    options = ['runtime', 'memory', 'clusters', 'governance', 'review', 'cancel']
+    cursor = 0
+    while True:
+        print(ANSI_CLEAR, end='')
+        render_brand_header()
+        print('Choose which step you want to edit.\n')
+        for idx, option in enumerate(options):
+            prefix = '›' if idx == cursor else ' '
+            active = ANSI_ACTIVE if idx == cursor else ''
+            reset = ANSI_RESET if idx == cursor else ''
+            label = {
+                'runtime': 'Edit runtime target',
+                'memory': 'Edit memory mode',
+                'clusters': 'Edit active clusters',
+                'governance': 'Edit governance mode',
+                'review': 'Return to review screen',
+                'cancel': 'Cancel installer',
+            }[option]
+            print(f'{active}{prefix} {label}{reset}')
+        render_footer([
+            'Enter = confirm step to revisit',
+            'Use ↑/↓ to choose which selection to edit',
+            'q = return to review screen | Ctrl+C = force stop immediately',
+        ])
+        key = read_key(sys.stdin)
+        if key == 'up':
+            cursor = (cursor - 1) % len(options)
+        elif key == 'down':
+            cursor = (cursor + 1) % len(options)
+        elif key == 'enter':
+            print(ANSI_RESET, end='')
+            return options[cursor]
+        elif key in {'q', 'Q'}:
+            return 'review'
 
 def review_selections(runtime: str, memory: str, governance: str, active_clusters: list[str], output_path: Path, active_deployment_path: Path) -> str:
     if not supports_arrow_ui():
@@ -357,17 +395,29 @@ def review_selections(runtime: str, memory: str, governance: str, active_cluster
 
 
 def collect_interactive_selection(defaults: dict[str, Any], clusters: list[str], output: Path, active_deployment: Path) -> tuple[str, str, str, list[str]]:
+    show_welcome_screen(output, active_deployment)
+    runtime = prompt_choice('Runtime target', RUNTIMES, defaults.get('runtime_target', 'generic'), 'runtime')
+    memory = prompt_choice('Memory mode', MEMORY_MODES, defaults.get('memory_mode', 'hybrid'), 'memory')
+    active_clusters = prompt_clusters(clusters)
+    governance = prompt_choice('Governance mode', GOVERNANCE_MODES, defaults.get('governance_mode', 'production'), 'governance')
     while True:
-        show_welcome_screen(output, active_deployment)
-        runtime = prompt_choice('Runtime target', RUNTIMES, defaults.get('runtime_target', 'generic'), 'runtime')
-        memory = prompt_choice('Memory mode', MEMORY_MODES, defaults.get('memory_mode', 'hybrid'), 'memory')
-        active_clusters = prompt_clusters(clusters)
-        governance = prompt_choice('Governance mode', GOVERNANCE_MODES, defaults.get('governance_mode', 'production'), 'governance')
         action = review_selections(runtime, memory, governance, active_clusters, output, active_deployment)
         if action == 'apply':
             return runtime, memory, governance, active_clusters
         if action == 'cancel':
             raise SystemExit('Interactive installer cancelled by user before write.')
+        if action == 'back':
+            step = choose_back_step()
+            if step == 'runtime':
+                runtime = prompt_choice('Runtime target', RUNTIMES, runtime, 'runtime')
+            elif step == 'memory':
+                memory = prompt_choice('Memory mode', MEMORY_MODES, memory, 'memory')
+            elif step == 'clusters':
+                active_clusters = prompt_clusters(clusters, default_all=False, preselected=active_clusters)
+            elif step == 'governance':
+                governance = prompt_choice('Governance mode', GOVERNANCE_MODES, governance, 'governance')
+            elif step == 'cancel':
+                raise SystemExit('Interactive installer cancelled by user before write.')
 
 OPTION_DESCRIPTIONS = {
     'runtime': {
@@ -418,10 +468,10 @@ def prompt_choice(label: str, options: list[str], default: str, description_grou
     return prompt_choice(label, options, default, description_group)
 
 
-def prompt_clusters(clusters: list[str], default_all: bool = True) -> list[str]:
+def prompt_clusters(clusters: list[str], default_all: bool = True, preselected: list[str] | None = None) -> list[str]:
     if supports_arrow_ui():
-        return prompt_clusters_arrow(clusters, default_all)
-    selected = set(clusters if default_all else [])
+        return prompt_clusters_arrow(clusters, default_all, preselected)
+    selected = set(preselected if preselected is not None else (clusters if default_all else []))
     print('\nCluster activation checklist')
     print('Toggle by typing a cluster name. Commands: all, none, done. Press Enter to accept current selection.')
     ordered = ordered_clusters_with_groups(clusters)
