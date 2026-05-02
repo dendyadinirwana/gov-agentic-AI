@@ -1,13 +1,13 @@
 # Starter Output Examples — Analis Kebijakan (Azis)
 
-## Example 1 — Policy Option Note
-- **Task shape:** compare policy options or implementation paths.
-- **Expected artifact:** option note listing issue statement, policy basis, options, tradeoffs, and human decision point.
+## Example 1 — Policy Brief
+- **Task shape:** user asks for option framing on a governance or implementation issue.
+- **Expected artifact:** short policy brief with issue, options, tradeoffs, and human decision point.
 
 ## Example 2 — Alignment Review
-- **Task shape:** check whether a draft KAK/ToR or workflow is aligned with policy direction.
-- **Expected artifact:** policy-alignment memo highlighting fit, gaps, and consulted roles.
+- **Task shape:** check whether KAK/ToR or workflow aligns with current policy direction.
+- **Expected artifact:** alignment memo listing fit, gaps, and consulted reviewers.
 
-## Example 3 — Escalation Memo
-- **Task shape:** policy source is conflicting or the recommendation would imply formal adoption.
-- **Expected artifact:** escalation memo naming the conflict, affected workflow, and accountable policy owner.
+## Example 3 — Formal-Adoption Escalation
+- **Task shape:** recommendation would materially shape institutional policy stance.
+- **Expected artifact:** escalation memo naming the policy owner, legal/budget consultation need, and final decision gate.

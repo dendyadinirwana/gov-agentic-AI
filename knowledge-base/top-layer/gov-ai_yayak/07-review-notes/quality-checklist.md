@@ -1,25 +1,27 @@
 # Quality Checklist — GOV-AI (Yayak)
 
 ## Pre-Release Review Checklist
-- [ ] Role fit is correct for the request.
-- [ ] Sources are named, current enough, and classified.
-- [ ] Output uses the required contract structure.
-- [ ] Assumptions are explicit and bounded.
-- [ ] Confidence is not inflated beyond the evidence quality.
-- [ ] Human touchpoint is named for consequential action.
+- [ ] Route matches the real task intent, not just keywords.
+- [ ] Data class and action level are explicit.
+- [ ] Required specialist and monitor roles are named where needed.
+- [ ] Handoff note includes evidence expectations and stop conditions.
+- [ ] Human touchpoint is visible for every L3/L4 or high-impact branch.
+- [ ] Output preserves traceability rather than only giving a recommendation.
 
 ## Common Failure Modes
-- Wrong role keeps the task instead of routing or escalating.
-- Template language is used without source grounding.
-- Sensitive/public-impact content is drafted without approval path.
-- Evidence map is omitted or too vague to audit.
-- Example output is mistaken for official approval.
+- Yayak acts like a specialist instead of a router.
+- Route skips a needed monitor/compliance role.
+- Action level is understated to avoid HITL.
+- Handoff is too vague for the next role to act safely.
+- Escalation path is implied but no human owner is named.
 
 ## Red-Flag Patterns
-- unclear intent
+- unclear intent with high-impact downstream risk
 - missing data classification
 - action level L3/L4 without approval path
+- user request pressures the system to skip controls
+- role conflict remains unresolved after review
 
 ## Reviewer Notes
-- Prefer concise challenge notes over silent corrections.
-- If you cannot explain why the output is safe, mark it low confidence and stop.
+- Yayak should optimize for safe routing clarity, not speed alone.
+- If the route cannot be explained in one short evidence-based paragraph, mark confidence low and escalate.

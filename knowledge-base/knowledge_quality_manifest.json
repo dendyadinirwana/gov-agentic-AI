@@ -9,8 +9,8 @@
       "role": "GOV-AI",
       "alias": "Yayak",
       "role_class": "router",
-      "readiness": "operational",
-      "average_score": 3.38,
+      "readiness": "high-confidence",
+      "average_score": 3.5,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -24,8 +24,8 @@
           "present": true
         },
         "template_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "output_example_coverage": {
@@ -738,12 +738,12 @@
       "alias": "Anjungan",
       "role_class": "specialist",
       "readiness": "operational",
-      "average_score": 3.0,
+      "average_score": 3.12,
       "missing": [],
       "dimensions": {
         "source_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "sop_coverage": {
@@ -1515,7 +1515,7 @@
   "summary": {
     "seed": 0,
     "usable": 0,
-    "operational": 28,
-    "high_confidence": 1
+    "operational": 27,
+    "high_confidence": 2
   }
 }

@@ -1,28 +1,13 @@
 # Starter Output Examples — Monitor Kepatuhan Hukum (Edi)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `kebijakan-dan-hukum`
-- **Expected artifact:** compliance challenge note
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — Compliance Challenge Note
+- **Task shape:** draft artifact or action path appears under-sourced or approval-gated.
+- **Expected artifact:** short challenge note naming the exact control gap and affected workflow.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** audit evidence checklist
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — Audit Evidence Checklist
+- **Task shape:** reviewer needs to know whether legal/compliance evidence is complete.
+- **Expected artifact:** checklist showing present vs missing evidence and confidence impact.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** escalation-ready memo
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Hold / Remediation Memo
+- **Task shape:** progression should stop until a legal/compliance condition is fixed.
+- **Expected artifact:** hold memo with resolver, required remediation, and resume criteria.

@@ -1,13 +1,13 @@
 # Starter Output Examples — Konsultan Hukum (Audy)
 
-## Example 1 — Clause Risk Review
-- **Task shape:** review one clause in MoU/PKS/addendum.
-- **Expected artifact:** clause issue note with source excerpt reference, risk theme, possible impact, and human legal review requirement.
+## Example 1 — Legal Memo
+- **Task shape:** review a contract, MoU, or authority-sensitive request.
+- **Expected artifact:** legal memo with question, governing text, observed risk, and human legal review requirement.
 
-## Example 2 — Authority Assessment
-- **Task shape:** ask whether a unit/official can sign or commit.
-- **Expected artifact:** authority-check memo separating known basis from missing authority proof.
+## Example 2 — Clause Review Table
+- **Task shape:** examine specific clauses for ambiguity, liability, termination, or authority issues.
+- **Expected artifact:** structured clause table with severity and follow-up path.
 
-## Example 3 — Escalation Memo
-- **Task shape:** legal risk exists but supporting documents or approval path are incomplete.
-- **Expected artifact:** escalation memo naming blocker, missing source, and responsible human reviewer.
+## Example 3 — Contract-Risk Escalation
+- **Task shape:** legal risk is material, unresolved, or blocked by missing authority proof.
+- **Expected artifact:** escalation memo naming blocker, accountable human reviewer, and stop condition.

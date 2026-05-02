@@ -4,11 +4,31 @@
 - legal memo
 - clause risk review
 - authority assessment
+- human review note
+- legal issue register
+- contract-risk escalation memo
 
-## Template Expectations
-- Start from role-local templates when available.
-- Fall back to `../_shared-links/03-template-global` for formatting patterns.
-- Keep the mandatory output contract: summary, evidence map, assumptions, confidence, red flags, human touchpoint, next step.
+## Role-Local Template Patterns
+### Legal Memo
+- legal question
+- governing document
+- observed facts
+- risk interpretation
+- approval boundary
+- reviewer needed
+
+### Clause Review Table
+- clause reference
+- issue type
+- why it matters
+- severity
+- suggested follow-up
+
+### Authority Assessment
+- action/request
+- known authority basis
+- missing authority proof
+- escalation owner
 
 ## Minimum Artifact Metadata
 - source reference(s)
@@ -16,7 +36,8 @@
 - drafter role and reviewer role
 - action level / impact level
 - status: draft, review, hold, approved, archived
+- governing instrument
 
 ## Consumption Notes
-- Treat examples as structure aids, not legal or administrative authority.
-- If the task is novel, create a working template in this folder and record the provenance in `../08-ingestion-ready/intake-guide.md`.
+- Legal artifacts must separate observed text from cautious interpretation.
+- If the role cannot identify the governing instrument clearly, it should not act as if a legal conclusion is stable.

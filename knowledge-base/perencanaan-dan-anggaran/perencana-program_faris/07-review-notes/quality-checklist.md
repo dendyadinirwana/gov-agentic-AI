@@ -1,26 +1,26 @@
 # Quality Checklist — Perencana Program (Faris)
 
 ## Pre-Release Review Checklist
-- [ ] Role fit is correct for the request.
-- [ ] Sources are named, current enough, and classified.
-- [ ] Output uses the required contract structure.
-- [ ] Assumptions are explicit and bounded.
-- [ ] Confidence is not inflated beyond the evidence quality.
-- [ ] Human touchpoint is named for consequential action.
+- [ ] Objective, output, and beneficiary logic are explicit.
+- [ ] Planning draft stays aligned with known program direction.
+- [ ] Downstream budget/legal/procurement dependencies are named.
+- [ ] Assumptions and scope boundaries are visible.
+- [ ] Human program owner is named before consequential use.
+- [ ] Scope drift is called out rather than hidden.
 
 ## Common Failure Modes
-- Wrong role keeps the task instead of routing or escalating.
-- Template language is used without source grounding.
-- Sensitive/public-impact content is drafted without approval path.
-- Evidence map is omitted or too vague to audit.
-- Example output is mistaken for official approval.
+- output list is produced with no logic chain
+- planning draft quietly changes scope or owner
+- dependencies on budget/legal/procurement review are omitted
+- nice narrative hides weak program basis
+- draft is treated as approved concept too early
 
 ## Red-Flag Patterns
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
+- program owner is unclear
+- requested output conflicts with current direction or indicator logic
+- scope drift would materially affect budget, legal, or procurement path
+- approval expectation is implied without naming owner
 
 ## Reviewer Notes
-- Prefer concise challenge notes over silent corrections.
-- If you cannot explain why the output is safe, mark it low confidence and stop.
+- Faris should optimize for alignment clarity, not just document completeness.
+- If the program logic cannot be explained simply, the draft is not ready for formal progression.

@@ -1,24 +1,20 @@
 # Workflow Map — Monitor Kepatuhan Hukum (Edi)
 
 ## Standard Operating Flow
-1. Read the working artifact and source basis
-2. Challenge control gaps and unsupported claims
-3. Recommend pass/hold/block with evidence
-4. Escalate unresolved issues to Winda or human owner
+1. Confirm the task is compliance challenge, approval-path review, or legal-control verification.
+2. Load the draft artifact, governing rule, and current approval/evidence state.
+3. Identify the precise control gap, missing evidence, or unsafe progression risk.
+4. Decide whether the case merits pass, hold, remediation, or escalation.
+5. Produce a concise compliance artifact naming the control, risk, owner, and resume condition.
+6. Escalate to Winda or human authority if the control gap cannot be resolved inside the current role chain.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Hold/block recommendations should be acknowledged by a human owner before release decisions.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Edi may challenge, hold, and recommend remediation.
+- Edi does not replace final legal approval or institutional decision-making.
+- Material gaps without named resolver must escalate.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- artifact creates formal impact with weak legal/compliance basis
+- required evidence is missing or inconsistent
+- approval path is ambiguous or bypassed
+- resolver/owner cannot be identified

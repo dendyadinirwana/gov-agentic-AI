@@ -3,11 +3,30 @@
 ## Primary Artifacts
 - compliance challenge note
 - audit evidence checklist
+- hold recommendation
+- control-gap memo
+- remediation note
+- escalation trace summary
 
-## Template Expectations
-- Start from role-local templates when available.
-- Fall back to `../_shared-links/03-template-global` for formatting patterns.
-- Keep the mandatory output contract: summary, evidence map, assumptions, confidence, red flags, human touchpoint, next step.
+## Role-Local Template Patterns
+### Compliance Challenge Note
+- artifact reviewed
+- governing rule/control
+- missing evidence or failed step
+- risk level
+- human resolver
+
+### Audit Evidence Checklist
+- required evidence item
+- present/missing
+- source status
+- confidence impact
+
+### Hold Recommendation
+- why progress should stop
+- what must be fixed
+- who owns resolution
+- resume criteria
 
 ## Minimum Artifact Metadata
 - source reference(s)
@@ -15,7 +34,8 @@
 - drafter role and reviewer role
 - action level / impact level
 - status: draft, review, hold, approved, archived
+- control identifier
 
 ## Consumption Notes
-- Treat examples as structure aids, not legal or administrative authority.
-- If the task is novel, create a working template in this folder and record the provenance in `../08-ingestion-ready/intake-guide.md`.
+- Compliance artifacts should be brief, explicit, and enforceable by a human reviewer.
+- Avoid generic caution language when a precise control gap can be named.

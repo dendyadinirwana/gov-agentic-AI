@@ -2,23 +2,11 @@
   "summary": {
     "seed": 0,
     "usable": 0,
-    "operational": 28,
-    "high_confidence": 1
+    "operational": 27,
+    "high_confidence": 2
   },
   "role_count": 29,
   "high_confidence_candidates": [
-    {
-      "alias": "Yayak",
-      "role": "GOV-AI",
-      "cluster": "top-layer",
-      "average_score": 3.38,
-      "current_readiness": "operational",
-      "upgrade_levers": [
-        "template_coverage",
-        "output_example_coverage",
-        "review_note_coverage"
-      ]
-    },
     {
       "alias": "Azis",
       "role": "Analis Kebijakan",
@@ -860,6 +848,58 @@
       }
     },
     {
+      "path": "top-layer/gov-ai_yayak",
+      "cluster": "top-layer",
+      "role": "GOV-AI",
+      "alias": "Yayak",
+      "role_class": "router",
+      "readiness": "high-confidence",
+      "average_score": 3.5,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
       "path": "data-dan-analitik/analisis-statistik_hanan",
       "cluster": "data-dan-analitik",
       "role": "Analisis Statistik",
@@ -1274,67 +1314,15 @@
           "present": true
         }
       }
-    },
-    {
-      "path": "tata-usaha/agenda-dan-protokol_ikhsan",
-      "cluster": "tata-usaha",
-      "role": "Agenda & Protokol",
-      "alias": "Ikhsan",
-      "role_class": "specialist",
-      "readiness": "operational",
-      "average_score": 3.38,
-      "missing": [],
-      "dimensions": {
-        "source_coverage": {
-          "score": 4,
-          "label": "high-confidence",
-          "present": true
-        },
-        "sop_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "template_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "output_example_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "review_note_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "ingestion_readiness": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "escalation_clarity": {
-          "score": 4,
-          "label": "high-confidence",
-          "present": true
-        },
-        "shared_link_quality": {
-          "score": 4,
-          "label": "high-confidence",
-          "present": true
-        }
-      }
     }
   ],
   "cluster_summary": {
     "top-layer": {
       "role_count": 1,
       "readiness": {
-        "operational": 1
+        "high-confidence": 1
       },
-      "average_score": 3.38
+      "average_score": 3.5
     },
     "kebijakan-dan-hukum": {
       "role_count": 3,
@@ -1411,7 +1399,7 @@
   "bundles": [],
   "recommended_next_actions": [
     "Deepen role-local sources and exemplars for Sauria (hubungan-eksternal-dan-lapangan) to improve its lowest-scoring dimensions.",
-    "Prioritize real approved source uploads for near-ready roles: Yayak, Azis, Audy, Edi, Faris.",
+    "Prioritize real approved source uploads for near-ready roles: Azis, Audy, Edi, Faris, Anastasia.",
     "Increase the count of approved real-world policy sources and exemplar outputs to expand high-confidence coverage."
   ]
 }

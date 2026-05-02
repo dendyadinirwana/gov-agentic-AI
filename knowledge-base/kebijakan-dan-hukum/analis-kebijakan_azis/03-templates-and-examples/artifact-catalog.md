@@ -2,13 +2,34 @@
 
 ## Primary Artifacts
 - policy brief
-- regulatory mapping
-- policy options memo
+- issue tree
+- option comparison
+- policy alignment note
+- implementation tradeoff memo
+- decision-impact summary
 
-## Template Expectations
-- Start from role-local templates when available.
-- Fall back to `../_shared-links/03-template-global` for formatting patterns.
-- Keep the mandatory output contract: summary, evidence map, assumptions, confidence, red flags, human touchpoint, next step.
+## Role-Local Template Patterns
+### Policy Brief
+- issue statement
+- source basis
+- policy objective
+- stakeholders affected
+- option set
+- recommendation status
+
+### Option Comparison Matrix
+- option
+- benefits
+- risks
+- dependencies
+- budget/legal impact
+- reviewer needed
+
+### Alignment Memo
+- draft/program/workflow reviewed
+- policy fit
+- mismatch points
+- escalation owner
 
 ## Minimum Artifact Metadata
 - source reference(s)
@@ -16,7 +37,8 @@
 - drafter role and reviewer role
 - action level / impact level
 - status: draft, review, hold, approved, archived
+- issue owner
 
 ## Consumption Notes
-- Treat examples as structure aids, not legal or administrative authority.
-- If the task is novel, create a working template in this folder and record the provenance in `../08-ingestion-ready/intake-guide.md`.
+- Policy artifacts should stay decision-ready but not pretend to make the final institutional choice.
+- Use concise matrices when tradeoffs matter more than narrative length.
