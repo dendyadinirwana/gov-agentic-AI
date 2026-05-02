@@ -106,6 +106,8 @@ def read_key(stream: TextIO) -> str:
                     'D': 'left',
                 }.get(third, 'escape')
             return 'escape'
+        if first == '\x03':
+            raise KeyboardInterrupt
         if first in ('\r', '\n'):
             return 'enter'
         if first == ' ':
@@ -602,4 +604,8 @@ def main() -> None:
     print(f'governance_summary={config.get("governance_policy", {}).get("mode_summary")}')
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('\nInstaller force-stopped by user.', file=sys.stderr)
+        raise SystemExit(130)
