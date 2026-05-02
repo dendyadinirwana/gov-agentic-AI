@@ -96,10 +96,24 @@ fi
 
 echo "Running Gov-Agentic AI installer ..."
 set --
+NEEDS_TTY=1
 while IFS= read -r arg; do
+  if [ "$arg" = "--defaults" ]; then
+    NEEDS_TTY=0
+  fi
   set -- "$@" "$arg"
 done < "$INSTALLER_ARG_FILE"
-"$PYTHON_BIN" scripts/install_gov_agentic_ai.py "$@"
+
+if [ "$NEEDS_TTY" -eq 1 ]; then
+  if [ -r /dev/tty ]; then
+    "$PYTHON_BIN" scripts/install_gov_agentic_ai.py "$@" < /dev/tty
+  else
+    echo "Interactive install needs a terminal. Re-run with --defaults for non-interactive install." >&2
+    exit 1
+  fi
+else
+  "$PYTHON_BIN" scripts/install_gov_agentic_ai.py "$@" < /dev/null
+fi
 
 echo
 printf 'Done. Generated config: %s\n' "$(pwd)/configs/runtime.generated.json"
