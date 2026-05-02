@@ -7,7 +7,7 @@ import os
 import platform
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, TextIO
 
 ROOT = Path(__file__).resolve().parents[1]
 KB_MANIFEST = ROOT / 'knowledge-base' / 'kb_manifest.json'
@@ -49,6 +49,120 @@ RUNTIME_DISCOVERY_CANDIDATES = {
     },
 }
 
+ANSI_CLEAR = '\033[2J\033[H'
+ANSI_RESET = '\033[0m'
+ANSI_ACTIVE = '\033[7m'
+
+
+def supports_arrow_ui(stream: TextIO | None = None) -> bool:
+    stream = stream or sys.stdin
+    return bool(hasattr(stream, 'isatty') and stream.isatty() and os.name != 'nt')
+
+
+def read_key(stream: TextIO) -> str:
+    try:
+        import termios
+        import tty
+    except ImportError:
+        return ''
+    fd = stream.fileno()
+    original = termios.tcgetattr(fd)
+    try:
+        tty.setraw(fd)
+        first = stream.read(1)
+        if first == '\x1b':
+            second = stream.read(1)
+            third = stream.read(1)
+            if second == '[':
+                return {
+                    'A': 'up',
+                    'B': 'down',
+                    'C': 'right',
+                    'D': 'left',
+                }.get(third, 'escape')
+            return 'escape'
+        if first in ('\r', '\n'):
+            return 'enter'
+        if first == ' ':
+            return 'space'
+        if first == '\x7f':
+            return 'backspace'
+        return first
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, original)
+
+
+def render_single_select(label: str, options: list[str], selected_idx: int, default: str, description_group: str | None = None) -> None:
+    descriptions = OPTION_DESCRIPTIONS.get(description_group or '', {})
+    print(ANSI_CLEAR, end='')
+    print(label)
+    print('Use ↑/↓ to move, Enter to confirm, q to quit interactive mode.\n')
+    for idx, option in enumerate(options):
+        prefix = '›' if idx == selected_idx else ' '
+        active = ANSI_ACTIVE if idx == selected_idx else ''
+        reset = ANSI_RESET if idx == selected_idx else ''
+        marker = ' (default)' if option == default else ''
+        detail = f' - {descriptions[option]}' if option in descriptions else ''
+        print(f'{active}{prefix} {option}{marker}{detail}{reset}')
+
+
+def prompt_choice_arrow(label: str, options: list[str], default: str, description_group: str | None = None) -> str:
+    selected_idx = options.index(default) if default in options else 0
+    while True:
+        render_single_select(label, options, selected_idx, default, description_group)
+        key = read_key(sys.stdin)
+        if key == 'up':
+            selected_idx = (selected_idx - 1) % len(options)
+        elif key == 'down':
+            selected_idx = (selected_idx + 1) % len(options)
+        elif key == 'enter':
+            print(ANSI_RESET, end='')
+            return options[selected_idx]
+        elif key in {'q', 'Q'}:
+            raise SystemExit('Interactive installer cancelled by user.')
+
+
+def render_multi_select(label: str, options: list[str], selected: set[str], cursor: int) -> None:
+    print(ANSI_CLEAR, end='')
+    print(label)
+    print('Use ↑/↓ to move, Space to toggle, a=all, n=none, Enter=confirm.\n')
+    for idx, option in enumerate(options):
+        prefix = '›' if idx == cursor else ' '
+        active = ANSI_ACTIVE if idx == cursor else ''
+        reset = ANSI_RESET if idx == cursor else ''
+        marker = 'x' if option in selected else ' '
+        print(f'{active}{prefix} [{marker}] {option}{reset}')
+
+
+def prompt_clusters_arrow(clusters: list[str], default_all: bool = True) -> list[str]:
+    selected = set(clusters if default_all else [])
+    cursor = 0
+    while True:
+        render_multi_select('Cluster activation checklist', clusters, selected, cursor)
+        key = read_key(sys.stdin)
+        if key == 'up':
+            cursor = (cursor - 1) % len(clusters)
+        elif key == 'down':
+            cursor = (cursor + 1) % len(clusters)
+        elif key == 'space':
+            cluster = clusters[cursor]
+            if cluster in selected:
+                selected.remove(cluster)
+            else:
+                selected.add(cluster)
+        elif key in {'a', 'A'}:
+            selected = set(clusters)
+        elif key in {'n', 'N'}:
+            selected = set()
+        elif key == 'enter':
+            if not selected:
+                continue
+            print(ANSI_RESET, end='')
+            return [cluster for cluster in clusters if cluster in selected]
+        elif key in {'q', 'Q'}:
+            raise SystemExit('Interactive installer cancelled by user.')
+
+
 OPTION_DESCRIPTIONS = {
     'runtime': {
         'openclaw': 'OpenClaw adapter: repo-mounted runtime using skill_manifest and active role skills.',
@@ -75,6 +189,8 @@ def load_json(path: Path) -> dict[str, Any]:
 
 
 def prompt_choice(label: str, options: list[str], default: str, description_group: str | None = None) -> str:
+    if supports_arrow_ui():
+        return prompt_choice_arrow(label, options, default, description_group)
     print(f'\n{label}')
     descriptions = OPTION_DESCRIPTIONS.get(description_group or '', {})
     for option in options:
@@ -97,6 +213,8 @@ def prompt_choice(label: str, options: list[str], default: str, description_grou
 
 
 def prompt_clusters(clusters: list[str], default_all: bool = True) -> list[str]:
+    if supports_arrow_ui():
+        return prompt_clusters_arrow(clusters, default_all)
     selected = set(clusters if default_all else [])
     print('\nCluster activation checklist')
     print('Toggle by typing a cluster name. Commands: all, none, done. Press Enter to accept current selection.')

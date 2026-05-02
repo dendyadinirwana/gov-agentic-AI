@@ -27,7 +27,7 @@ curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main
 
 ### Runtime Target
 
-The prompt uses names, not required numbers. Type a value such as `hermes`, `openclaw`, or press Enter for `generic`.
+The prompt is keyboard-first in interactive terminals: use ↑/↓ and Enter to select. If the terminal does not support arrow-key input, it falls back to typed values such as `hermes`, `openclaw`, or Enter for `generic`.
 
 - `generic`: global portable mode for any runtime that can read repo files and `configs/runtime.generated.json`.
 - `openclaw`: repo-mounted profile using `skills/skill_manifest.json`, active role skills, and role knowledge paths.
@@ -48,10 +48,12 @@ Cluster selection is checklist-style:
 
 - `[x]` means active.
 - `[ ]` means inactive.
-- Type a cluster name or prefix to toggle it.
-- Type `all` to activate all clusters.
-- Type `none` to clear selection.
-- Type `done`, or press Enter, to accept the current checklist.
+- Use ↑/↓ to move.
+- Press Space to toggle the highlighted cluster.
+- Press `a` to activate all clusters.
+- Press `n` to clear the checklist.
+- Press Enter to accept the current checklist.
+- Fallback mode also supports typing a cluster name/prefix, `all`, `none`, and `done`.
 
 Example toggles:
 

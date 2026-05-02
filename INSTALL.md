@@ -55,13 +55,14 @@ cd gov-agentic-AI
 
 ## Interactive Checklist UX
 
-The installer prompts use typed values instead of requiring numeric menu choices. For cluster activation, the installer displays a checklist and lets users toggle clusters by typing a cluster name or prefix.
+The installer prompts are keyboard-first in interactive terminals. Runtime, memory, and governance prompts use ↑/↓ plus Enter. Cluster activation displays a checklist; use ↑/↓ to move and Space to toggle. If the terminal does not support arrow keys, the installer falls back to typed values.
 
 Useful cluster commands:
 
-- `all` activates every cluster.
-- `none` clears the checklist.
-- `done` accepts the current checklist.
+- ↑/↓ moves the highlight.
+- Space toggles the highlighted cluster.
+- `a` activates every cluster.
+- `n` clears the checklist.
 - Enter accepts the current checklist.
 
 ## Runtime Discovery
