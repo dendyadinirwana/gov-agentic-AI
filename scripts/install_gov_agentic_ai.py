@@ -124,6 +124,38 @@ def render_footer(lines: list[str]) -> None:
     for line in lines:
         print(f'{ANSI_DIM}{line}{ANSI_RESET}')
 
+
+
+def show_welcome_screen(output_path: Path, active_deployment_path: Path) -> None:
+    if not supports_arrow_ui():
+        return
+    print(ANSI_CLEAR, end='')
+    print('Gov-Agentic AI Installer')
+    print('This wizard prepares a runtime activation config for government agent deployment.\n')
+    print('What this installer will do:')
+    print(f'  - Write runtime config: {output_path}')
+    print(f'  - Write deployment summary: {active_deployment_path}')
+    print('  - Ask which runtime, memory mode, governance mode, and clusters you want active')
+    print('')
+    print('What this installer will NOT do:')
+    print('  - It will not delete your repository folders')
+    print('  - It will not rewrite knowledge-base content')
+    print('  - It will not write into external runtime homes by default')
+    print('')
+    print('You stay in control during the wizard.')
+    render_footer([
+        'Enter = start installer',
+        'q = cancel installer gracefully',
+        'Ctrl+C = force stop immediately',
+    ])
+    while True:
+        key = read_key(sys.stdin)
+        if key == 'enter':
+            print(ANSI_RESET, end='')
+            return
+        if key in {'q', 'Q'}:
+            raise SystemExit('Interactive installer cancelled by user before start.')
+
 def render_single_select(label: str, options: list[str], selected_idx: int, default: str, description_group: str | None = None) -> None:
     descriptions = OPTION_DESCRIPTIONS.get(description_group or '', {})
     print(ANSI_CLEAR, end='')
@@ -528,12 +560,16 @@ def main() -> None:
     kb = load_json(KB_MANIFEST)
     clusters = sorted({role['cluster'] for role in kb['roles']})
 
+    output = (ROOT / args.output).resolve() if not Path(args.output).is_absolute() else Path(args.output)
+    active_deployment = (ROOT / args.active_deployment).resolve() if not Path(args.active_deployment).is_absolute() else Path(args.active_deployment)
+
     if args.defaults:
         runtime = args.runtime or defaults.get('runtime_target', 'generic')
         memory = args.memory or defaults.get('memory_mode', 'hybrid')
         governance = args.governance or defaults.get('governance_mode', 'production')
         active_clusters = parse_csv(args.clusters) or defaults.get('active_clusters') or clusters
     else:
+        show_welcome_screen(output, active_deployment)
         runtime = args.runtime or prompt_choice('Runtime target', RUNTIMES, defaults.get('runtime_target', 'generic'), 'runtime')
         memory = args.memory or prompt_choice('Memory mode', MEMORY_MODES, defaults.get('memory_mode', 'hybrid'), 'memory')
         active_clusters = parse_csv(args.clusters) or prompt_clusters(clusters)
@@ -544,8 +580,6 @@ def main() -> None:
         raise SystemExit(f'Unknown clusters: {", ".join(unknown)}')
 
     config = build_config(runtime, memory, governance, active_clusters)
-    output = (ROOT / args.output).resolve() if not Path(args.output).is_absolute() else Path(args.output)
-    active_deployment = (ROOT / args.active_deployment).resolve() if not Path(args.active_deployment).is_absolute() else Path(args.active_deployment)
     output.parent.mkdir(parents=True, exist_ok=True)
     active_deployment.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(config, ensure_ascii=False, indent=2) + '\n')

@@ -25,6 +25,9 @@ curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main
 
 ## Interactive Flow
 
+Interactive terminals start with a welcome screen before any selection step.
+
+
 ### Runtime Target
 
 The prompt is keyboard-first in interactive terminals: use ↑/↓ and Enter to select. A footer also reminds users that `q` exits gracefully and `Ctrl+C` force-stops immediately. If the terminal does not support arrow-key input, it falls back to typed values such as `hermes`, `openclaw`, or Enter for `generic`.
