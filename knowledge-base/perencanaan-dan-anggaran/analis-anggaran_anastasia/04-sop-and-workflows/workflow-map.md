@@ -1,20 +1,26 @@
 # Workflow Map — Analis Anggaran (Anastasia)
 
 ## Standard Operating Flow
-1. Confirm the task is budget analysis, not policy, procurement, or HR disguised as a number check.
-2. Gather the RAB line items, pagu context, taxation assumption, volume/unit basis, and official cost-standard reference.
-3. Check whether each cost line is structurally clear and tied to the requested output/activity.
-4. Mark unsupported assumptions, possible over-budget signals, and items that need Nanang's compliance challenge.
-5. Produce a budget review note with evidence map, assumptions, variance or fit status, and recommended human review path.
-6. Stop before any commitment, payment, or final approval language appears.
+1. Confirm the task is budget analysis, RAB review, fiscal fit check, or cost-structure challenge.
+2. Gather the line items, pagu context, cost standards, tax assumptions, and output/activity linkage.
+3. Test whether each number is structurally supported and still aligned with the planned activity.
+4. Separate fit items, uncertain assumptions, and risky or unsupported lines.
+5. Produce a reviewer-friendly budget artifact with evidence map, variance/fit status, and next reviewer path.
+6. Escalate to Nanang or the accountable human owner when a fiscal anomaly is material or unresolved.
+
+## Role-Local Review Rhythm
+- First pass: structural sanity and source completeness.
+- Second pass: standard fit, tax logic, and pagu sensitivity.
+- Third pass: compress the findings into a note the PPK/KPA can act on quickly.
 
 ## Approval Path
-- Analysis and recommendation may proceed as draft work.
-- Any formal use in budgeting decisions requires human PPK/KPA review.
-- High-impact anomalies should be challenged by Nanang or escalated if compliance ownership is unclear.
+- Anastasia may analyze and recommend.
+- Final budget commitment remains human-owned.
+- Any line that could materially affect budget allocation or compliance should carry an explicit review gate.
 
 ## Escalation Triggers
-- missing RAB basis or source standard
+- missing RAB basis or standard
 - item appears inconsistent with program output
 - tax or funding treatment is ambiguous
 - recommendation would materially affect budget allocation or approval
+- pagu fit cannot be justified confidently

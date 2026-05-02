@@ -62,7 +62,7 @@
       "alias": "Azis",
       "role_class": "specialist",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.38,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -86,8 +86,8 @@
           "present": true
         },
         "review_note_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "ingestion_readiness": {
@@ -113,8 +113,8 @@
       "role": "Konsultan Hukum",
       "alias": "Audy",
       "role_class": "specialist",
-      "readiness": "operational",
-      "average_score": 3.38,
+      "readiness": "high-confidence",
+      "average_score": 3.5,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -123,8 +123,8 @@
           "present": true
         },
         "sop_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "template_coverage": {
@@ -165,8 +165,8 @@
       "role": "Monitor Kepatuhan Hukum",
       "alias": "Edi",
       "role_class": "monitor",
-      "readiness": "operational",
-      "average_score": 3.38,
+      "readiness": "high-confidence",
+      "average_score": 3.5,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -175,8 +175,8 @@
           "present": true
         },
         "sop_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "template_coverage": {
@@ -217,8 +217,8 @@
       "role": "Perencana Program",
       "alias": "Faris",
       "role_class": "specialist",
-      "readiness": "operational",
-      "average_score": 3.38,
+      "readiness": "high-confidence",
+      "average_score": 3.5,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -242,8 +242,8 @@
           "present": true
         },
         "review_note_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "ingestion_readiness": {
@@ -269,8 +269,8 @@
       "role": "Analis Anggaran",
       "alias": "Anastasia",
       "role_class": "specialist",
-      "readiness": "operational",
-      "average_score": 3.38,
+      "readiness": "high-confidence",
+      "average_score": 3.5,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -279,8 +279,8 @@
           "present": true
         },
         "sop_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "template_coverage": {
@@ -1515,7 +1515,7 @@
   "summary": {
     "seed": 0,
     "usable": 0,
-    "operational": 27,
-    "high_confidence": 2
+    "operational": 23,
+    "high_confidence": 6
   }
 }

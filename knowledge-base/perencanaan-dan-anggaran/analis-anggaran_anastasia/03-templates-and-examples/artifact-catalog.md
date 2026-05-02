@@ -4,11 +4,32 @@
 - RAB review
 - SBM comparison
 - budget variance note
+- cost assumption table
+- pagu-fit check
+- fiscal-risk escalation note
 
-## Template Expectations
-- Start from role-local templates when available.
-- Fall back to `../_shared-links/03-template-global` for formatting patterns.
-- Keep the mandatory output contract: summary, evidence map, assumptions, confidence, red flags, human touchpoint, next step.
+## Role-Local Template Patterns
+### RAB Review Sheet
+- activity or output
+- line item
+- proposed value
+- basis/standard
+- issue or fit status
+- reviewer needed
+
+### Cost Assumption Table
+- assumption
+- supporting source
+- confidence
+- fiscal sensitivity
+- follow-up owner
+
+### Pagu-Fit Check
+- current budget ceiling
+- relevant spending line
+- variance or fit status
+- unresolved issue
+- decision owner
 
 ## Minimum Artifact Metadata
 - source reference(s)
@@ -16,7 +37,8 @@
 - drafter role and reviewer role
 - action level / impact level
 - status: draft, review, hold, approved, archived
+- fiscal owner
 
 ## Consumption Notes
-- Treat examples as structure aids, not legal or administrative authority.
-- If the task is novel, create a working template in this folder and record the provenance in `../08-ingestion-ready/intake-guide.md`.
+- Budget artifacts should be usable by human reviewers without additional interpretation layers.
+- When a number is uncertain, show the uncertainty explicitly rather than averaging it away.

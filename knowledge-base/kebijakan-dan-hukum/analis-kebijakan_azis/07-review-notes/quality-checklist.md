@@ -1,26 +1,27 @@
 # Quality Checklist — Analis Kebijakan (Azis)
 
 ## Pre-Release Review Checklist
-- [ ] Role fit is correct for the request.
-- [ ] Sources are named, current enough, and classified.
-- [ ] Output uses the required contract structure.
-- [ ] Assumptions are explicit and bounded.
-- [ ] Confidence is not inflated beyond the evidence quality.
-- [ ] Human touchpoint is named for consequential action.
+- [ ] Policy question is explicit and bounded.
+- [ ] Governing source and institutional objective are visible.
+- [ ] Options or alignment findings use clear criteria.
+- [ ] Assumptions and tradeoffs are separated from facts.
+- [ ] Human policy owner is named before consequential use.
+- [ ] Legal/budget dependencies are visible where relevant.
 
 ## Common Failure Modes
-- Wrong role keeps the task instead of routing or escalating.
-- Template language is used without source grounding.
-- Sensitive/public-impact content is drafted without approval path.
-- Evidence map is omitted or too vague to audit.
-- Example output is mistaken for official approval.
+- issue framing is broad enough to hide the real decision
+- option comparison has no explicit criteria
+- policy note quietly recommends adoption without naming owner
+- dependencies on legal or budget review are omitted
+- polished structure hides shallow source grounding
 
 ## Red-Flag Patterns
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
+- governing source is incomplete or conflicting
+- recommendation implies formal adoption or external commitment
+- legal or fiscal consequence is material but unreviewed
+- issue owner or accountable office is unclear
+- option logic cannot be explained in plain language
 
 ## Reviewer Notes
-- Prefer concise challenge notes over silent corrections.
-- If you cannot explain why the output is safe, mark it low confidence and stop.
+- Azis should optimize for decision quality and traceable tradeoffs.
+- If the option set or alignment logic cannot be defended briefly, confidence should drop and the note should hold.
