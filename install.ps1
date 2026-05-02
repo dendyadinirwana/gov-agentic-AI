@@ -32,6 +32,45 @@ function Need-Command($Name) {
 
 Need-Command git
 
+$SafeRepoGeneratedFiles = @(
+  "configs/runtime.generated.json",
+  "configs/runtime-bootstrap.generated.json",
+  "configs/active.deployment.yaml"
+)
+
+function Can-RetryPullAfterGeneratedCleanup {
+  $dirtyGenerated = git diff --name-only -- @SafeRepoGeneratedFiles 2>$null
+  if (-not $dirtyGenerated) {
+    return $false
+  }
+  $otherChanges = git diff --name-only -- . ':(exclude)configs/runtime.generated.json' ':(exclude)configs/runtime-bootstrap.generated.json' ':(exclude)configs/active.deployment.yaml' 2>$null
+  return [string]::IsNullOrWhiteSpace(($otherChanges | Out-String))
+}
+
+function Get-CurrentGitBranch {
+  $branch = git symbolic-ref --quiet --short HEAD 2>$null
+  if ([string]::IsNullOrWhiteSpace(($branch | Out-String))) {
+    return 'main'
+  }
+  return ($branch | Select-Object -First 1)
+}
+
+function FastForward-UpdateExistingClone {
+  $branch = Get-CurrentGitBranch
+  git fetch origin $branch | Out-Null
+  $currentBranch = git symbolic-ref --quiet --short HEAD 2>$null
+  if ([string]::IsNullOrWhiteSpace(($currentBranch | Out-String))) {
+    git checkout -B $branch "origin/$branch" | Out-Null
+  }
+  git merge --ff-only "origin/$branch" | Out-Null
+}
+
+function Retry-PullAfterGeneratedCleanup {
+  Write-Host "Detected only generated runtime config changes. Resetting them and retrying update ..."
+  git checkout -- @SafeRepoGeneratedFiles | Out-Null
+  FastForward-UpdateExistingClone
+}
+
 $PythonCmd = $null
 if (Get-Command py -ErrorAction SilentlyContinue) {
   $PythonCmd = @("py", "-3")
@@ -54,7 +93,19 @@ if ($TargetDir -eq ".") {
   Write-Host "Using existing repository at $TargetDir"
   Set-Location $TargetDir
   Write-Host "Updating existing clone ..."
-  try { git pull --ff-only | Out-Null } catch { Write-Warning "Could not fast-forward update existing clone; continuing with local files." }
+  try {
+    FastForward-UpdateExistingClone
+  } catch {
+    if (Can-RetryPullAfterGeneratedCleanup) {
+      try {
+        Retry-PullAfterGeneratedCleanup
+      } catch {
+        Write-Warning "Could not fast-forward update existing clone after generated-file cleanup; continuing with local files."
+      }
+    } else {
+      Write-Warning "Could not fast-forward update existing clone; continuing with local files."
+    }
+  }
 }
 
 $InstallerArgs = @()

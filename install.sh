@@ -3,6 +3,7 @@ set -eu
 
 REPO_URL_DEFAULT="https://github.com/dendyadinirwana/gov-agentic-AI.git"
 TARGET_DIR_DEFAULT="gov-agentic-AI"
+SAFE_REPO_GENERATED_FILES="configs/runtime.generated.json configs/runtime-bootstrap.generated.json configs/active.deployment.yaml"
 
 usage() {
   cat <<'EOF'
@@ -34,6 +35,35 @@ trap 'rm -f "$INSTALLER_ARG_FILE"' EXIT HUP INT TERM
 
 add_installer_arg() {
   printf '%s\n' "$1" >> "$INSTALLER_ARG_FILE"
+}
+
+can_retry_pull_after_generated_cleanup() {
+  if ! git diff --quiet -- configs/runtime.generated.json configs/runtime-bootstrap.generated.json configs/active.deployment.yaml; then
+    changed=$(git diff --name-only -- . ':(exclude)configs/runtime.generated.json' ':(exclude)configs/runtime-bootstrap.generated.json' ':(exclude)configs/active.deployment.yaml')
+    [ -z "$changed" ] || return 1
+    return 0
+  fi
+  return 1
+}
+
+current_git_branch() {
+  git symbolic-ref --quiet --short HEAD 2>/dev/null || printf 'main
+'
+}
+
+fast_forward_update_existing_clone() {
+  branch=$(current_git_branch)
+  git fetch origin "$branch"
+  if ! git symbolic-ref --quiet --short HEAD >/dev/null 2>&1; then
+    git checkout -B "$branch" "origin/$branch"
+  fi
+  git merge --ff-only "origin/$branch"
+}
+
+retry_pull_after_generated_cleanup() {
+  echo "Detected only generated runtime config changes. Resetting them and retrying update ..."
+  git checkout -- configs/runtime.generated.json configs/runtime-bootstrap.generated.json configs/active.deployment.yaml
+  fast_forward_update_existing_clone
 }
 
 while [ "$#" -gt 0 ]; do
@@ -95,7 +125,13 @@ else
   cd "$TARGET_DIR"
   if command -v git >/dev/null 2>&1 && [ -d .git ]; then
     echo "Updating existing clone ..."
-    git pull --ff-only || echo "Warning: could not fast-forward update existing clone; continuing with local files." >&2
+    if ! fast_forward_update_existing_clone; then
+      if can_retry_pull_after_generated_cleanup; then
+        retry_pull_after_generated_cleanup || echo "Warning: could not fast-forward update existing clone after generated-file cleanup; continuing with local files." >&2
+      else
+        echo "Warning: could not fast-forward update existing clone; continuing with local files." >&2
+      fi
+    fi
   fi
 fi
 
