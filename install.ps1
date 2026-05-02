@@ -10,6 +10,13 @@ param(
   [string]$ActiveDeployment
 )
 
+if ($env:GOV_AGENTIC_INSTALL_ARGS) {
+  $Forwarded = [System.Management.Automation.PSParser]::Tokenize($env:GOV_AGENTIC_INSTALL_ARGS, [ref]$null) | Where-Object { $_.Type -eq 'CommandArgument' -or $_.Type -eq 'CommandParameter' } | ForEach-Object { $_.Content }
+  if ($Forwarded.Count -gt 0) {
+    & $PSCommandPath @Forwarded
+    exit $LASTEXITCODE
+  }
+}
 $ErrorActionPreference = "Stop"
 
 function Need-Command($Name) {

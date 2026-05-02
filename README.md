@@ -284,18 +284,24 @@ Handling expectations are documented in:
 
 ## Install from Terminal
 
-This repository is currently private, so raw GitHub URLs return `404` unless authenticated. Use GitHub CLI (`gh`) for the private-repo install path. See [`INSTALL.md`](./INSTALL.md).
+This repository is public, so the preferred bootstrap path is direct terminal install. See [`INSTALL.md`](./INSTALL.md).
 
 macOS / Linux:
 
 ```bash
-gh repo clone dendyadinirwana/gov-agentic-AI && cd gov-agentic-AI && ./install.sh --target-dir .
+curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh
+```
+
+macOS / Linux defaults:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh -s -- --defaults
 ```
 
 Windows PowerShell:
 
 ```powershell
-gh repo clone dendyadinirwana/gov-agentic-AI; cd gov-agentic-AI; ./install.ps1 -TargetDir .
+irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
 ```
 
 ## Quick Start for Adopters

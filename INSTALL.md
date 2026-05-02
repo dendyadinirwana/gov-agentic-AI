@@ -1,33 +1,21 @@
 # Install Gov-Agentic AI from Terminal
 
-This repository is currently **private**. For private repositories, `raw.githubusercontent.com` URLs return `404` unless the request is authenticated, so the recommended install path uses GitHub CLI (`gh`).
+This repository is public, so the preferred install path is a direct terminal bootstrap command.
 
-## Prerequisites
-
-- Git
-- Python 3
-- GitHub CLI authenticated to the account that can access this private repo
-
-Check auth:
-
-```bash
-gh auth status
-```
-
-## Private Repo Install Commands
+## True Bootstrap Commands
 
 ### macOS / Linux
 
 Interactive install:
 
 ```bash
-gh repo clone dendyadinirwana/gov-agentic-AI && cd gov-agentic-AI && ./install.sh --target-dir .
+curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh
 ```
 
 Default install:
 
 ```bash
-gh repo clone dendyadinirwana/gov-agentic-AI && cd gov-agentic-AI && ./install.sh --target-dir . --defaults
+curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh -s -- --defaults
 ```
 
 ### Windows PowerShell
@@ -35,33 +23,33 @@ gh repo clone dendyadinirwana/gov-agentic-AI && cd gov-agentic-AI && ./install.s
 Interactive install:
 
 ```powershell
-gh repo clone dendyadinirwana/gov-agentic-AI; cd gov-agentic-AI; ./install.ps1 -TargetDir .
+irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
 ```
 
 Default install:
 
 ```powershell
-gh repo clone dendyadinirwana/gov-agentic-AI; cd gov-agentic-AI; ./install.ps1 -TargetDir . -Defaults
+$env:GOV_AGENTIC_INSTALL_ARGS='-Defaults'; irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
 ```
 
-## If the Repo Becomes Public
+## Fallback Clone Path
 
-Only if this repository is public, macOS/Linux can use a raw script pipe:
+If you prefer cloning first:
+
+### macOS / Linux
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh
+git clone https://github.com/dendyadinirwana/gov-agentic-AI.git
+cd gov-agentic-AI
+./install.sh --target-dir .
 ```
 
-Default mode if public:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh -s -- --defaults
-```
-
-Windows public raw mode:
+### Windows PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
+git clone https://github.com/dendyadinirwana/gov-agentic-AI.git
+cd gov-agentic-AI
+./install.ps1 -TargetDir .
 ```
 
 ## Supported Installer Options
@@ -85,7 +73,7 @@ PowerShell equivalents:
 macOS/Linux:
 
 ```bash
-gh repo clone dendyadinirwana/gov-agentic-AI && cd gov-agentic-AI && ./install.sh --target-dir . \
+curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh -s -- \
   --defaults \
   --runtime hermes \
   --memory hybrid \
@@ -96,5 +84,5 @@ gh repo clone dendyadinirwana/gov-agentic-AI && cd gov-agentic-AI && ./install.s
 Windows PowerShell:
 
 ```powershell
-gh repo clone dendyadinirwana/gov-agentic-AI; cd gov-agentic-AI; ./install.ps1 -TargetDir . -Defaults -Runtime hermes -Memory hybrid -Governance production -Clusters tata-usaha,perencanaan-dan-anggaran,kebijakan-dan-hukum
+$env:GOV_AGENTIC_INSTALL_ARGS='-Defaults -Runtime hermes -Memory hybrid -Governance production -Clusters tata-usaha,perencanaan-dan-anggaran,kebijakan-dan-hukum'; irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
 ```
