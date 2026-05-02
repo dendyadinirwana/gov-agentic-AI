@@ -1,24 +1,20 @@
 # Workflow Map — Monitor Kinerja (Reza)
 
 ## Standard Operating Flow
-1. Read the working artifact and source basis
-2. Challenge control gaps and unsupported claims
-3. Recommend pass/hold/block with evidence
-4. Escalate unresolved issues to Winda or human owner
+1. Confirm the task is performance monitoring, indicator review, or variance challenge.
+2. Load the metric definition, period, baseline/target, and source-system context.
+3. Identify where performance appears stable, at risk, or materially off target.
+4. Separate observed variance from causal interpretation unless the source supports the latter.
+5. Produce a performance note with metric evidence, caveats, risk level, accountable owner, and next step.
+6. Hold if metric logic, source period, or owner context is too weak for confident escalation.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Hold/block recommendations should be acknowledged by a human owner before release decisions.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Reza may challenge performance narratives and summarize indicator health.
+- Management action remains human-owned.
+- If the finding could influence personnel treatment, reporting posture, or resource allocation, keep reviewer touchpoint explicit.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- indicator definition or period is unclear
+- variance is material and unresolved
+- narrative pressure exceeds evidence quality
+- output could influence consequential management action without review

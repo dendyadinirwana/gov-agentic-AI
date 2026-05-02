@@ -286,58 +286,6 @@
   ],
   "weakest_roles": [
     {
-      "path": "komunikasi-dan-dokumen/notulis_anjungan",
-      "cluster": "komunikasi-dan-dokumen",
-      "role": "Notulis",
-      "alias": "Anjungan",
-      "role_class": "specialist",
-      "readiness": "operational",
-      "average_score": 3.0,
-      "missing": [],
-      "dimensions": {
-        "source_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "sop_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "template_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "output_example_coverage": {
-          "score": 2,
-          "label": "usable",
-          "present": true
-        },
-        "review_note_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "ingestion_readiness": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "escalation_clarity": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "shared_link_quality": {
-          "score": 4,
-          "label": "high-confidence",
-          "present": true
-        }
-      }
-    },
-    {
       "path": "hubungan-eksternal-dan-lapangan/manajemen-risiko_sauria",
       "cluster": "hubungan-eksternal-dan-lapangan",
       "role": "Manajemen Risiko",
@@ -365,6 +313,58 @@
         "output_example_coverage": {
           "score": 3,
           "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "komunikasi-dan-dokumen/notulis_anjungan",
+      "cluster": "komunikasi-dan-dokumen",
+      "role": "Notulis",
+      "alias": "Anjungan",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.12,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 2,
+          "label": "usable",
           "present": true
         },
         "review_note_coverage": {
@@ -1369,7 +1369,7 @@
       "readiness": {
         "operational": 3
       },
-      "average_score": 3.17
+      "average_score": 3.21
     },
     "sdm-dan-kinerja": {
       "role_count": 3,
@@ -1410,7 +1410,7 @@
   },
   "bundles": [],
   "recommended_next_actions": [
-    "Deepen role-local sources and exemplars for Anjungan (komunikasi-dan-dokumen) to improve its lowest-scoring dimensions.",
+    "Deepen role-local sources and exemplars for Sauria (hubungan-eksternal-dan-lapangan) to improve its lowest-scoring dimensions.",
     "Prioritize real approved source uploads for near-ready roles: Yayak, Azis, Audy, Edi, Faris.",
     "Increase the count of approved real-world policy sources and exemplar outputs to expand high-confidence coverage."
   ]

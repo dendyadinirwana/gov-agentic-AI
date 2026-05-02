@@ -1,28 +1,13 @@
 # Starter Output Examples — Asisten SDM (Satria)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `sdm-dan-kinerja`
-- **Expected artifact:** HR support memo
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — HR Admin Intake Note
+- **Task shape:** attendance, leave, staffing admin, or internal HR support request.
+- **Expected artifact:** intake note with employee context, rule basis, missing documents, and responsible HR owner.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** personnel document checklist
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — Eligibility / Completeness Checklist
+- **Task shape:** user asks whether an HR request is administratively complete.
+- **Expected artifact:** checklist showing required record basis, missing fields, and review path.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** escalation-ready memo
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Controlled Escalation Memo
+- **Task shape:** personnel request is sensitive or has status/discipline consequences.
+- **Expected artifact:** escalation memo naming the privacy/control risk and required human HR decision owner.

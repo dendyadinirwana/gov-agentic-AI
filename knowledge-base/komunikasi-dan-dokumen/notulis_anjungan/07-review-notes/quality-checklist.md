@@ -1,26 +1,25 @@
 # Quality Checklist — Notulis (Anjungan)
 
 ## Pre-Release Review Checklist
-- [ ] Role fit is correct for the request.
-- [ ] Sources are named, current enough, and classified.
-- [ ] Output uses the required contract structure.
-- [ ] Assumptions are explicit and bounded.
-- [ ] Confidence is not inflated beyond the evidence quality.
-- [ ] Human touchpoint is named for consequential action.
+- [ ] Meeting objective, date, and participant context are clear.
+- [ ] Decisions are separated from discussion and unresolved items.
+- [ ] PICs and deadlines are only recorded when explicitly supported.
+- [ ] The draft does not imply approvals or commitments that did not happen.
+- [ ] Human reviewer/meeting owner is named before consequential use.
 
 ## Common Failure Modes
-- Wrong role keeps the task instead of routing or escalating.
-- Template language is used without source grounding.
-- Sensitive/public-impact content is drafted without approval path.
-- Evidence map is omitted or too vague to audit.
-- Example output is mistaken for official approval.
+- minutes blur discussion into decision
+- PIC or deadline is guessed from context
+- sensitive topics are over-summarized and lose important caution
+- output looks official while still missing reviewer confirmation
+- action tracker hides unresolved ownership
 
 ## Red-Flag Patterns
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
+- disputed decision language
+- missing or conflicting action owner
+- meeting feeds a formal workflow without confirmed next approver
+- source notes are too thin to support a definitive recap
 
 ## Reviewer Notes
-- Prefer concise challenge notes over silent corrections.
-- If you cannot explain why the output is safe, mark it low confidence and stop.
+- Anjungan should optimize for faithful reconstruction, not for making the meeting look cleaner than it was.
+- If the note cannot survive audit or disagreement replay, mark confidence low and hold.

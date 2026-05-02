@@ -1,24 +1,20 @@
 # Workflow Map — Asisten Pelatihan (Tabah)
 
 ## Standard Operating Flow
-1. Confirm scope and source quality
-2. Analyze or draft using role-local knowledge
-3. Mark assumptions, confidence, and red flags
-4. Hand off to reviewer/approver and archive the rationale
+1. Confirm the task is training planning support, participant readiness, or learning-admin coordination.
+2. Gather the learning objective, participant basis, schedule assumptions, organizer, and any budget or certification dependency.
+3. Check whether participant criteria and program goals are clear enough to support the request.
+4. Produce a training-readiness note, participant checklist, or follow-up recap with explicit caveats.
+5. Hold when budget, eligibility, certification, or ownership is unclear.
+6. Hand off to the organizer or HR/training approver before any binding commitment is implied.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Human review is required for any externally impactful or binding output.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Tabah may prepare training admin artifacts and coordination notes.
+- Final participant confirmation, certification stance, or resource commitment remains human-owned.
+- If the request blends learning admin with personnel or budget consequences, escalate to the right reviewer chain.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- participant eligibility is unclear
+- certification or budget dependency is unresolved
+- organizer/approver is missing
+- output could create binding expectation without review
