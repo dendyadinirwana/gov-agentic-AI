@@ -1,5 +1,6 @@
 {
   "project_name": "gov-agentic-ai",
+  "project_version": "v0.1.0-35-gc599bc4",
   "runtime_target": "generic",
   "runtime_adapter": {
     "adapter_name": "generic",
@@ -18,7 +19,16 @@
       "knowledge_mount": "knowledge-base",
       "schemas_mount": "schemas"
     },
-    "runtime_overrides": {}
+    "runtime_overrides": {
+      "decision_engine_entrypoint": "scripts/government_decision_engine.py",
+      "government_work_logic": "docs/architecture/GOVERNMENT_WORK_LOGIC.md",
+      "authority_matrix": "configs/authority_matrix.json"
+    },
+    "canonical_home_root": "~/.agents/skills",
+    "install_target_root": "~/.agents/skills/gov-agentic-ai",
+    "install_target_config": "~/.agents/skills/gov-agentic-ai/runtime.generated.json",
+    "install_target_skills": "~/.agents/skills/gov-agentic-ai/skills",
+    "install_layout": "global-skill-surface"
   },
   "adapter_name": "generic",
   "adapter_profile_path": "runtime-adapters/generic/profile.json",
@@ -28,33 +38,43 @@
     "knowledge_mount": "knowledge-base",
     "schemas_mount": "schemas"
   },
-  "runtime_overrides": {},
+  "runtime_overrides": {
+    "decision_engine_entrypoint": "scripts/government_decision_engine.py",
+    "government_work_logic": "docs/architecture/GOVERNMENT_WORK_LOGIC.md",
+    "authority_matrix": "configs/authority_matrix.json"
+  },
   "runtime_discovery": {
     "os_name": "Darwin",
     "home_dir": "/Users/dendyadinirwana",
-    "status": "not_required",
-    "candidate_paths": [],
-    "discovered_paths": [],
-    "selected_runtime_home": null,
-    "message": "Generic runtime uses repo-local config only; no external runtime home is required.",
-    "recommended_runtime_config": null
+    "status": "found",
+    "candidate_paths": [
+      "/Users/dendyadinirwana/.agents/skills"
+    ],
+    "discovered_paths": [
+      "/Users/dendyadinirwana/.agents/skills"
+    ],
+    "selected_runtime_home": "/Users/dendyadinirwana/.agents/skills",
+    "canonical_runtime_home": "/Users/dendyadinirwana/.agents/skills",
+    "install_target_root": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai",
+    "install_target_type": "global-surface",
+    "recommended_runtime_config": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/runtime.generated.json",
+    "recommended_skill_home": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/skills",
+    "message": "Generic agent skill home found. Repo-local config remains canonical unless copied intentionally.",
+    "profile_summary": "Portable baseline for any agent runtime that can read repository files and JSON config.",
+    "recommended": false
   },
   "runtime_installation": {
-    "mode": "advisory",
-    "writes_external_runtime_config": false,
-    "selected_runtime_home": null
-  },
-  "runtime_config_targets": {
-    "repo_local": "configs/runtime.generated.json",
-    "active_deployment": "configs/active.deployment.yaml",
-    "runtime_home_recommended": null,
-    "write_runtime_config_default": false
+    "mode": "copy",
+    "writes_external_runtime_config": true,
+    "selected_runtime_home": "/Users/dendyadinirwana/.agents/skills",
+    "install_applied": true,
+    "installed_at": "2026-05-02T11:11:51+00:00"
   },
   "memory_mode": "hybrid",
   "memory_policy": {
     "canonical_knowledge": "local knowledge-base is source of truth",
     "working_memory": "mem9 stores preferences, session memory, and operational recall",
-    "external_memory": "mem9 optional but expected"
+    "external_memory": "mem9 optional but recommended"
   },
   "governance_mode": "production",
   "governance_policy": {
@@ -72,6 +92,17 @@
   "default_router_alias": "Yayak",
   "default_router_skill": "gov-gov-ai-yayak",
   "shared_guardrail_skill": "skills/_shared/gov-agentic-common/SKILL.md",
+  "government_work_logic": "docs/architecture/GOVERNMENT_WORK_LOGIC.md",
+  "authority_matrix": "configs/authority_matrix.json",
+  "decision_engine_entrypoint": "scripts/government_decision_engine.py",
+  "decision_engine": {
+    "enabled": true,
+    "entrypoint": "scripts/government_decision_engine.py",
+    "workflow_schema": "schemas/government_workflow_state.schema.json",
+    "authority_matrix": "configs/authority_matrix.json",
+    "rules_config": "configs/government_logic_rules.json",
+    "default_mode": "gating"
+  },
   "audit_schema": "schemas/audit_log_template_v3.0.json",
   "acceptance_tests": "schemas/Gov_Agentic_AI_v3.1_Acceptance_Tests.json",
   "knowledge_base_root": "knowledge-base",
@@ -603,12 +634,31 @@
     "load_runtime_adapter_profile:generic",
     "load_system_prompt",
     "load_shared_guardrail_skill",
+    "load_government_work_logic",
+    "initialize_decision_engine",
     "default_to_yayak_router",
+    "run_decision_engine_before_routing",
     "select_only_active_roles_and_skills",
     "retrieve_active_role_and_shared_knowledge",
     "apply_memory_policy:hybrid",
     "apply_governance_policy:production",
     "emit_required_output_contract",
     "require_hitl_for_configured_action_levels"
-  ]
+  ],
+  "runtime_pack_root": "build/runtime-pack/generic/v0.1.0-35-gc599bc4",
+  "install_target_root": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai",
+  "install_target_config": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/runtime.generated.json",
+  "install_target_skills": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/skills",
+  "install_target_type": "global-surface",
+  "install_mode": "copy",
+  "install_applied": true,
+  "installed_at": "2026-05-02T11:11:51+00:00",
+  "runtime_config_targets": {
+    "repo_local": "configs/runtime.generated.json",
+    "active_deployment": "configs/active.deployment.yaml",
+    "runtime_pack_root": "build/runtime-pack/generic/v0.1.0-35-gc599bc4",
+    "runtime_home_recommended": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/runtime.generated.json",
+    "runtime_skill_home_recommended": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/skills",
+    "write_runtime_config_default": false
+  }
 }

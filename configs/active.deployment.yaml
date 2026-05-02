@@ -1,13 +1,10 @@
 project_name: gov-agentic-ai
+project_version: v0.1.0-35-gc599bc4
 runtime_target: generic
 memory_mode: hybrid
 governance_mode: production
-system_prompt: prompts/system/YayakAI_Master_System_Prompt_v3.0.md
-shared_guardrail_skill: skills/_shared/gov-agentic-common/SKILL.md
-audit_schema: schemas/audit_log_template_v3.0.json
-acceptance_tests: schemas/Gov_Agentic_AI_v3.1_Acceptance_Tests.json
-knowledge_base_root: knowledge-base
-shared_knowledge_root: knowledge-base/_shared
+runtime_pack_root: build/runtime-pack/generic/v0.1.0-35-gc599bc4
+install_target_root: /Users/dendyadinirwana/.agents/skills/gov-agentic-ai
 human_approval_required_for:
   - L3
   - L4
