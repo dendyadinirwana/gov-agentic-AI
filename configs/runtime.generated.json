@@ -1,6 +1,6 @@
 {
   "project_name": "gov-agentic-ai",
-  "project_version": "v0.1.0-36-ge4162d5",
+  "project_version": "v0.1.1",
   "runtime_target": "generic",
   "runtime_adapter": {
     "adapter_name": "generic",
@@ -68,7 +68,7 @@
     "writes_external_runtime_config": true,
     "selected_runtime_home": "/Users/dendyadinirwana/.agents/skills",
     "install_applied": true,
-    "installed_at": "2026-05-02T11:19:47+00:00"
+    "installed_at": "2026-05-02T11:43:22+00:00"
   },
   "memory_mode": "hybrid",
   "memory_policy": {
@@ -647,18 +647,18 @@
     "emit_required_output_contract",
     "require_hitl_for_configured_action_levels"
   ],
-  "runtime_pack_root": "build/runtime-pack/generic/v0.1.0-36-ge4162d5",
+  "runtime_pack_root": "build/runtime-pack/generic/v0.1.1",
   "install_target_root": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai",
   "install_target_config": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/runtime.generated.json",
   "install_target_skills": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/skills",
   "install_target_type": "global-surface",
   "install_mode": "copy",
   "install_applied": true,
-  "installed_at": "2026-05-02T11:19:47+00:00",
+  "installed_at": "2026-05-02T11:43:22+00:00",
   "runtime_config_targets": {
     "repo_local": "configs/runtime.generated.json",
     "active_deployment": "configs/active.deployment.yaml",
-    "runtime_pack_root": "build/runtime-pack/generic/v0.1.0-36-ge4162d5",
+    "runtime_pack_root": "build/runtime-pack/generic/v0.1.1",
     "runtime_home_recommended": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/runtime.generated.json",
     "runtime_skill_home_recommended": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/skills",
     "write_runtime_config_default": false

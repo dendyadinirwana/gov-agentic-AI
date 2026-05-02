@@ -6,6 +6,10 @@ root = Path(__file__).resolve().parents[1]
 kb = root / 'knowledge-base'
 required_root = [
     'README.md', 'AGENT_README.md', '.gitignore',
+    'docs/deliverables/README.md',
+    'docs/deliverables/Gov_Agentic_AI_v3.1_Implementation_Pack.docx',
+    'docs/deliverables/Gov_Agentic_AI_v3.0_Master_Full.docx',
+    'docs/deliverables/Gov_Agentic_AI_v3.0_Knowledge_UseCases.docx',
     'docs/governance/Gov_Agentic_AI_v3.1_Implementation_Pack.md',
     'docs/operations/REPLICATION_GUIDE.md',
     'docs/knowledge-model/SHARED_VS_ROLE_KNOWLEDGE.md',
@@ -50,12 +54,24 @@ for role in manifest['roles']:
         missing.append(str((role_dir / '_shared-links').relative_to(root)))
 
 broken = []
+outside_repo = []
+absolute_links = []
 for p in kb.rglob('*'):
     if p.is_symlink() and not p.exists():
         broken.append(str(p.relative_to(root)))
+    if p.is_symlink():
+        link_target = p.readlink()
+        if link_target.is_absolute():
+            absolute_links.append(str(p.relative_to(root)))
+        try:
+            p.resolve(strict=False).relative_to(root.resolve())
+        except ValueError:
+            outside_repo.append(str(p.relative_to(root)))
 
 print(f"roles={manifest['role_count']}")
 print(f"broken_symlinks={len(broken)}")
+print(f"absolute_symlinks={len(absolute_links)}")
+print(f"outside_repo_symlinks={len(outside_repo)}")
 print(f"missing_required={len(missing)}")
 if missing:
     print('MISSING:')
@@ -63,4 +79,10 @@ if missing:
 if broken:
     print('BROKEN SYMLINKS:')
     print('\n'.join(broken[:100]))
-sys.exit(1 if missing or broken else 0)
+if absolute_links:
+    print('ABSOLUTE SYMLINKS:')
+    print('\n'.join(absolute_links[:100]))
+if outside_repo:
+    print('OUTSIDE REPO SYMLINKS:')
+    print('\n'.join(outside_repo[:100]))
+sys.exit(1 if missing or broken or absolute_links or outside_repo else 0)

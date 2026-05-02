@@ -385,11 +385,12 @@ Expected outcomes:
 
 ## Document Deliverables
 
-Root DOCX artifacts remain available as downloadable deliverables:
+Versioned DOCX artifacts are grouped under `docs/deliverables/`:
 
-- [`Gov_Agentic_AI_v3.1_Implementation_Pack.docx`](./Gov_Agentic_AI_v3.1_Implementation_Pack.docx)
-- [`Gov_Agentic_AI_v3.0_Master_Full.docx`](./Gov_Agentic_AI_v3.0_Master_Full.docx)
-- [`Gov_Agentic_AI_v3.0_Knowledge_UseCases.docx`](./Gov_Agentic_AI_v3.0_Knowledge_UseCases.docx)
+- [`Gov_Agentic_AI_v3.1_Implementation_Pack.docx`](./docs/deliverables/Gov_Agentic_AI_v3.1_Implementation_Pack.docx)
+- [`Gov_Agentic_AI_v3.0_Master_Full.docx`](./docs/deliverables/Gov_Agentic_AI_v3.0_Master_Full.docx)
+- [`Gov_Agentic_AI_v3.0_Knowledge_UseCases.docx`](./docs/deliverables/Gov_Agentic_AI_v3.0_Knowledge_UseCases.docx)
+- [`docs/deliverables/README.md`](./docs/deliverables/README.md)
 
 Additional canonical Markdown references:
 
