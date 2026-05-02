@@ -282,6 +282,20 @@ Handling expectations are documented in:
 - validate operational readiness across workflow, risk, and audit dimensions
 - decide: continue, hold, redesign, or scale
 
+## Install from Terminal
+
+True bootstrap commands are available for macOS, Linux, and Windows. See [`INSTALL.md`](./INSTALL.md).
+
+Quick start:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh)
+```
+
+```powershell
+irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
+```
+
 ## Quick Start for Adopters
 
 ### 1. Review the implementation baseline
