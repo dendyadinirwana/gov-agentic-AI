@@ -9,6 +9,8 @@ The runtime should treat this repository as a Gov-Agentic AI deployment package.
 
 ## Required Inputs
 - `AGENT_README.md`
+- `runtime-adapters/universal/RUNTIME_HANDSHAKE.md`
+- `examples/BOOTSTRAP_EXAMPLE.json`
 - `configs/runtime.generated.json`
 - `prompts/system/YayakAI_Master_System_Prompt_v3.0.md`
 - `skills/_shared/gov-agentic-common/SKILL.md`

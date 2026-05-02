@@ -234,3 +234,6 @@ You are operating correctly when you can answer all of these without guessing:
 - What evidence do I need before proceeding?
 - Must I proceed, review, hold, or escalate?
 - What is the next accountable step for a human or another role?
+
+## Runtime Handshake Companion
+Use `runtime-adapters/universal/RUNTIME_HANDSHAKE.md` together with `examples/BOOTSTRAP_EXAMPLE.json` when a runtime needs a stricter bootstrap contract or machine-readable startup example.

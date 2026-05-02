@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import platform
@@ -408,6 +409,8 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
         'governance_mode': governance,
         'governance_policy': governance_details,
         'agent_entrypoint': 'AGENT_README.md',
+        'runtime_handshake': 'runtime-adapters/universal/RUNTIME_HANDSHAKE.md',
+        'bootstrap_example': 'examples/BOOTSTRAP_EXAMPLE.json',
         'system_prompt': 'prompts/system/YayakAI_Master_System_Prompt_v3.0.md',
         'default_router_role': 'GOV-AI',
         'default_router_alias': 'Yayak',
@@ -669,12 +672,51 @@ def parse_csv(value: str | None) -> list[str] | None:
     return [part.strip() for part in value.split(',') if part.strip()]
 
 
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open('rb') as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def collect_pack_checksums(pack_root: Path) -> dict[str, str]:
+    checksums: dict[str, str] = {}
+    for path in sorted(pack_root.rglob('*')):
+        if path.is_file():
+            checksums[str(path.relative_to(pack_root))] = file_sha256(path)
+    return checksums
+
+
+def install_receipt_payload(config: dict[str, Any], target_root: Path, installed_file_count: int) -> dict[str, Any]:
+    return {
+        'project_name': config['project_name'],
+        'project_version': config['project_version'],
+        'runtime_target': config['runtime_target'],
+        'install_target_root': str(target_root),
+        'install_target_type': config['install_target_type'],
+        'install_mode': config['install_mode'],
+        'installed_at': current_timestamp(),
+        'agent_entrypoint': config['agent_entrypoint'],
+        'runtime_config': 'runtime.generated.json',
+        'runtime_pack_manifest': 'runtime-pack.manifest.json',
+        'managed_subtree': target_root.name,
+        'active_cluster_count': len(config['active_clusters']),
+        'active_role_count': len(config['active_roles']),
+        'active_skill_count': len(config['active_skills']),
+        'installed_file_count': installed_file_count,
+    }
+
+
 def generate_pack_manifest(config: dict[str, Any]) -> dict[str, Any]:
     return {
         'project_name': config['project_name'],
         'project_version': config['project_version'],
         'runtime_target': config['runtime_target'],
         'generated_at': current_timestamp(),
+        'agent_entrypoint': config['agent_entrypoint'],
+        'handshake_doc': 'runtime-adapters/universal/RUNTIME_HANDSHAKE.md',
+        'bootstrap_example': 'examples/BOOTSTRAP_EXAMPLE.json',
         'active_clusters': config['active_clusters'],
         'active_skill_names': [skill['name'] for skill in config['active_skills']],
         'install_target_type': config['install_target_type'],
@@ -716,6 +758,8 @@ def build_runtime_pack(config: dict[str, Any], output: Path, active_deployment: 
 
     files_to_copy = [
         Path(config['agent_entrypoint']),
+        Path(config['runtime_handshake']),
+        Path(config['bootstrap_example']),
         Path(config['system_prompt']),
         Path(config['shared_guardrail_skill']),
         Path(config['government_work_logic']),
@@ -759,7 +803,11 @@ def build_runtime_pack(config: dict[str, Any], output: Path, active_deployment: 
     pack_deployment_path.write_text(active_deployment.read_text())
     pack_adapter_path.write_text(json.dumps(config['runtime_adapter'], ensure_ascii=False, indent=2) + '\n')
     pack_skills_manifest.write_text(json.dumps({'skills': config['active_skills']}, ensure_ascii=False, indent=2) + '\n')
-    pack_manifest_path.write_text(json.dumps(generate_pack_manifest(config), ensure_ascii=False, indent=2) + '\n')
+    pack_manifest = generate_pack_manifest(config)
+    pack_manifest_path.write_text(json.dumps(pack_manifest, ensure_ascii=False, indent=2) + '\n')
+    checksums = collect_pack_checksums(pack_root)
+    pack_manifest['checksums'] = checksums
+    pack_manifest_path.write_text(json.dumps(pack_manifest, ensure_ascii=False, indent=2) + '\n')
 
     return {
         'pack_root': str(pack_root),
@@ -959,12 +1007,15 @@ def collect_interactive_selection(defaults: dict[str, Any], clusters: list[str],
             raise SystemExit('Interactive installer cancelled by user before write.')
 
 
-def install_runtime_pack(pack_root: Path, target_root: Path) -> dict[str, Any]:
+def install_runtime_pack(pack_root: Path, target_root: Path, config: dict[str, Any]) -> dict[str, Any]:
     target_root.mkdir(parents=True, exist_ok=True)
     existing_files = sum(1 for path in target_root.rglob('*') if path.is_file()) if target_root.exists() else 0
     shutil.copytree(pack_root, target_root, dirs_exist_ok=True)
     installed_files = sum(1 for path in target_root.rglob('*') if path.is_file())
-    return {'target_root': str(target_root), 'existing_file_count': existing_files, 'installed_file_count': installed_files}
+    receipt = install_receipt_payload(config, target_root, installed_files)
+    (target_root / 'install.receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n')
+    installed_files = sum(1 for path in target_root.rglob('*') if path.is_file())
+    return {'target_root': str(target_root), 'existing_file_count': existing_files, 'installed_file_count': installed_files, 'receipt_path': str(target_root / 'install.receipt.json')}
 
 
 def main() -> int:
@@ -1011,7 +1062,7 @@ def main() -> int:
     install_target_root = args.install_target_root or initial_config['install_target_root']
     install_result = None
     if final_action == 'apply_install' and install_target_root:
-        install_result = install_runtime_pack(Path(pack_info['pack_root']), Path(install_target_root))
+        install_result = install_runtime_pack(Path(pack_info['pack_root']), Path(install_target_root), initial_config)
 
     final_config = build_config(
         runtime, memory, governance, active_clusters, output, active_deployment,
@@ -1043,6 +1094,7 @@ def main() -> int:
         print(f'install_target_root={install_result["target_root"]}')
         print(f'install_existing_file_count={install_result["existing_file_count"]}')
         print(f'install_installed_file_count={install_result["installed_file_count"]}')
+        print(f'install_receipt={install_result["receipt_path"]}')
     print(f'governance_summary={final_config.get("governance_policy", {}).get("mode_summary")}')
     return 0
 

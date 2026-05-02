@@ -44,7 +44,8 @@
     "government_work_logic",
     "authority_matrix",
     "decision_engine",
-    "decision_engine_entrypoint"
+    "decision_engine_entrypoint",
+    "runtime_handshake"
   ],
   "properties": {
     "project_name": {
@@ -136,7 +137,8 @@
       "properties": {
         "mode": {
           "enum": [
-            "advisory"
+            "advisory",
+          "copy"
           ]
         },
         "writes_external_runtime_config": {
@@ -312,6 +314,12 @@
       "type": "string"
     },
     "decision_engine_entrypoint": {
+      "type": "string"
+    },
+    "runtime_handshake": {
+      "type": "string"
+    },
+    "bootstrap_example": {
       "type": "string"
     },
     "decision_engine": {

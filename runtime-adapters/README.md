@@ -52,3 +52,6 @@ In `hybrid`, local repo knowledge remains the canonical source of truth. mem9 ca
 ## Install Contract
 
 Each adapter profile now acts as an install contract and should define canonical home roots, managed install subtree, config target, and skill target expectations. The installer uses those semantics to generate a runtime pack and install it by copy into the managed `gov-agentic-ai` subtree.
+
+## Bootstrap Contract
+Universal bootstrap guidance lives in `runtime-adapters/universal/RUNTIME_HANDSHAKE.md`, with a machine-readable example at `examples/BOOTSTRAP_EXAMPLE.json`. Runtime-specific adapters should refine filesystem and install behavior, not redefine the bootstrap contract.

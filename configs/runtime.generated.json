@@ -1,6 +1,6 @@
 {
   "project_name": "gov-agentic-ai",
-  "project_version": "v0.1.1",
+  "project_version": "v0.1.1-1-gc5e3a23",
   "runtime_target": "generic",
   "runtime_adapter": {
     "adapter_name": "generic",
@@ -68,7 +68,7 @@
     "writes_external_runtime_config": true,
     "selected_runtime_home": "/Users/dendyadinirwana/.agents/skills",
     "install_applied": true,
-    "installed_at": "2026-05-02T11:43:22+00:00"
+    "installed_at": "2026-05-02T11:52:23+00:00"
   },
   "memory_mode": "hybrid",
   "memory_policy": {
@@ -88,6 +88,8 @@
     "recommended_use": "limited production, controlled pilot, or formal workflow integration"
   },
   "agent_entrypoint": "AGENT_README.md",
+  "runtime_handshake": "runtime-adapters/universal/RUNTIME_HANDSHAKE.md",
+  "bootstrap_example": "examples/BOOTSTRAP_EXAMPLE.json",
   "system_prompt": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
   "default_router_role": "GOV-AI",
   "default_router_alias": "Yayak",
@@ -647,18 +649,18 @@
     "emit_required_output_contract",
     "require_hitl_for_configured_action_levels"
   ],
-  "runtime_pack_root": "build/runtime-pack/generic/v0.1.1",
+  "runtime_pack_root": "build/runtime-pack/generic/v0.1.1-1-gc5e3a23",
   "install_target_root": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai",
   "install_target_config": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/runtime.generated.json",
   "install_target_skills": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/skills",
   "install_target_type": "global-surface",
   "install_mode": "copy",
   "install_applied": true,
-  "installed_at": "2026-05-02T11:43:22+00:00",
+  "installed_at": "2026-05-02T11:52:23+00:00",
   "runtime_config_targets": {
     "repo_local": "configs/runtime.generated.json",
     "active_deployment": "configs/active.deployment.yaml",
-    "runtime_pack_root": "build/runtime-pack/generic/v0.1.1",
+    "runtime_pack_root": "build/runtime-pack/generic/v0.1.1-1-gc5e3a23",
     "runtime_home_recommended": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/runtime.generated.json",
     "runtime_skill_home_recommended": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/skills",
     "write_runtime_config_default": false

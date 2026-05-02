@@ -18,7 +18,7 @@ REQUIRED_KEYS = [
     'default_router_alias', 'default_router_skill', 'output_contract_required_fields', 'runtime_boot_sequence',
     'runtime_pack_root', 'install_target_root', 'install_target_config', 'install_target_skills',
     'install_target_type', 'install_mode', 'install_applied', 'installed_at', 'government_work_logic',
-    'authority_matrix', 'decision_engine', 'decision_engine_entrypoint'
+    'authority_matrix', 'decision_engine', 'decision_engine_entrypoint', 'runtime_handshake', 'bootstrap_example'
 ]
 VALID_RUNTIMES = {'openclaw', 'hermes', 'codex', 'claude', 'antigravity', 'generic'}
 VALID_MEMORY = {'local', 'mem9', 'hybrid'}
@@ -72,7 +72,7 @@ def validate_enums(config: dict[str, Any], errors: list[str]) -> None:
 
 
 def validate_repo_paths(config: dict[str, Any], errors: list[str]) -> None:
-    repo_relative_keys = ['agent_entrypoint', 'system_prompt', 'shared_guardrail_skill', 'audit_schema', 'acceptance_tests', 'knowledge_base_root', 'shared_knowledge_root', 'adapter_profile_path', 'government_work_logic', 'authority_matrix', 'decision_engine_entrypoint']
+    repo_relative_keys = ['agent_entrypoint', 'runtime_handshake', 'bootstrap_example', 'system_prompt', 'shared_guardrail_skill', 'audit_schema', 'acceptance_tests', 'knowledge_base_root', 'shared_knowledge_root', 'adapter_profile_path', 'government_work_logic', 'authority_matrix', 'decision_engine_entrypoint']
     for key in repo_relative_keys:
         value = config.get(key)
         if value and not (ROOT / value).exists():
@@ -168,8 +168,8 @@ def validate_runtime_fields(config: dict[str, Any], errors: list[str]) -> None:
     if not isinstance(installation, dict):
         errors.append('runtime_installation must be an object')
     else:
-        if installation.get('mode') != 'copy':
-            errors.append('runtime_installation.mode must be copy')
+        if installation.get('mode') not in {'copy', 'advisory'}:
+            errors.append('runtime_installation.mode must be copy or advisory')
         if installation.get('writes_external_runtime_config') not in {True, False}:
             errors.append('runtime_installation.writes_external_runtime_config must be boolean')
         if installation.get('install_applied') != config.get('install_applied'):
@@ -192,6 +192,10 @@ def validate_runtime_fields(config: dict[str, Any], errors: list[str]) -> None:
             errors.append('runtime pack must contain AGENT_README.md')
         if not (pack_root / 'runtime-adapters' / 'universal' / 'AGENT_RUNTIME.md').exists():
             errors.append('runtime pack must contain runtime-adapters/universal/AGENT_RUNTIME.md')
+        if not (pack_root / 'runtime-adapters' / 'universal' / 'RUNTIME_HANDSHAKE.md').exists():
+            errors.append('runtime pack must contain runtime-adapters/universal/RUNTIME_HANDSHAKE.md')
+        if not (pack_root / 'examples' / 'BOOTSTRAP_EXAMPLE.json').exists():
+            errors.append('runtime pack must contain examples/BOOTSTRAP_EXAMPLE.json')
     if config.get('install_mode') != 'copy':
         errors.append('install_mode must be copy')
     if not config.get('install_target_config'):

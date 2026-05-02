@@ -1,0 +1,37 @@
+{
+  "identity": "Gov-Agentic AI",
+  "agent_entrypoint": "AGENT_README.md",
+  "runtime_target": "generic",
+  "router_alias": "Yayak",
+  "governance_mode": "production",
+  "memory_mode": "hybrid",
+  "active_clusters": [
+    "top-layer",
+    "kebijakan-dan-hukum",
+    "tata-usaha"
+  ],
+  "active_roles": [
+    "top-layer__gov-ai_yayak",
+    "kebijakan-dan-hukum__konsultan-hukum_audy",
+    "tata-usaha__admin-persuratan_harrisal"
+  ],
+  "active_skills": [
+    "gov-gov-ai-yayak",
+    "gov-konsultan-hukum-audy",
+    "gov-admin-persuratan-harrisal"
+  ],
+  "decision_engine": {
+    "enabled": true,
+    "entrypoint": "scripts/government_decision_engine.py",
+    "default_mode": "gating"
+  },
+  "required_output_fields": [
+    "summary",
+    "evidence_map",
+    "assumptions",
+    "confidence_status",
+    "red_flags",
+    "human_touchpoint",
+    "next_step"
+  ]
+}
