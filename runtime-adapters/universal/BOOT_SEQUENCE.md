@@ -1,5 +1,7 @@
 # Boot Sequence
 
+If the runtime starts from the repository root, read `AGENT_README.md` first to understand identity, routing posture, and governance behavior.
+
 1. Read `configs/runtime.generated.json`.
 2. Load `prompts/system/YayakAI_Master_System_Prompt_v3.0.md`.
 3. Load `skills/_shared/gov-agentic-common/SKILL.md`.

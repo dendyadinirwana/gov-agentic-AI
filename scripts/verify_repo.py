@@ -5,7 +5,7 @@ import json, sys
 root = Path(__file__).resolve().parents[1]
 kb = root / 'knowledge-base'
 required_root = [
-    'README.md', '.gitignore',
+    'README.md', 'AGENT_README.md', '.gitignore',
     'docs/governance/Gov_Agentic_AI_v3.1_Implementation_Pack.md',
     'docs/operations/REPLICATION_GUIDE.md',
     'docs/knowledge-model/SHARED_VS_ROLE_KNOWLEDGE.md',

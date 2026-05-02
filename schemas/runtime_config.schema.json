@@ -7,6 +7,7 @@
     "active_clusters",
     "active_roles",
     "active_skills",
+    "agent_entrypoint",
     "adapter_name",
     "adapter_profile_path",
     "audit_schema",
@@ -193,6 +194,9 @@
     },
     "governance_policy": {
       "type": "object"
+    },
+    "agent_entrypoint": {
+      "type": "string"
     },
     "system_prompt": {
       "type": "string"

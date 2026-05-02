@@ -4,6 +4,8 @@
 
 This repository is designed as a **GitHub-first adoption package** for government digital transformation teams, AI engineers, solution architects, compliance reviewers, and agent-runtime implementers who need a reusable foundation for deploying **Gov-Agentic AI** safely and systematically.
 
+> AI agents and runtimes should start at `AGENT_README.md` before loading runtime-specific adapter docs.
+
 ## Executive Overview
 
 Gov-Agentic AI is a structured multi-role agent ecosystem for public-sector work. It is not a generic chatbot wrapper. It is a **governed operating model** for AI-assisted government workflows such as drafting official documents, routing dispositions, reviewing legal and budget compliance, handling procurement-related checks, supporting data analysis, and escalating sensitive or high-impact tasks through formal human authority.

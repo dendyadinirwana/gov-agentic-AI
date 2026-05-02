@@ -407,6 +407,7 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
         'memory_policy': memory_policy(memory),
         'governance_mode': governance,
         'governance_policy': governance_details,
+        'agent_entrypoint': 'AGENT_README.md',
         'system_prompt': 'prompts/system/YayakAI_Master_System_Prompt_v3.0.md',
         'default_router_role': 'GOV-AI',
         'default_router_alias': 'Yayak',
@@ -433,6 +434,7 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
         'human_approval_required_for': governance_details['human_approval_required_for'],
         'output_contract_required_fields': ['summary', 'evidence_map', 'assumptions', 'confidence_status', 'red_flags', 'human_touchpoint', 'next_step'],
         'runtime_boot_sequence': [
+            'read_agent_entrypoint_contract',
             'read_runtime_config',
             f'load_runtime_adapter_profile:{profile.get("adapter_name", runtime)}',
             'load_system_prompt',
@@ -713,6 +715,7 @@ def build_runtime_pack(config: dict[str, Any], output: Path, active_deployment: 
     pack_root.mkdir(parents=True, exist_ok=True)
 
     files_to_copy = [
+        Path(config['agent_entrypoint']),
         Path(config['system_prompt']),
         Path(config['shared_guardrail_skill']),
         Path(config['government_work_logic']),
@@ -724,6 +727,8 @@ def build_runtime_pack(config: dict[str, Any], output: Path, active_deployment: 
         Path(config['acceptance_tests']),
         Path(config['adapter_profile_path']),
     ]
+    for adapter_doc in config.get('runtime_adapter', {}).get('adapter_docs', []):
+        files_to_copy.append(Path(adapter_doc))
     for role in config['active_roles']:
         files_to_copy.extend([Path(role['prompt_path']), Path(role['knowledge_path'])])
     for skill in config['active_skills']:

@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED_KEYS = [
     'project_name', 'project_version', 'runtime_target', 'memory_mode', 'memory_policy', 'governance_mode',
+    'agent_entrypoint',
     'system_prompt', 'shared_guardrail_skill', 'audit_schema', 'acceptance_tests', 'active_clusters',
     'active_roles', 'active_skills', 'knowledge_base_root', 'shared_knowledge_root', 'human_approval_required_for',
     'adapter_name', 'adapter_profile_path', 'runtime_paths', 'runtime_overrides', 'governance_policy',
@@ -22,7 +23,7 @@ REQUIRED_KEYS = [
 VALID_RUNTIMES = {'openclaw', 'hermes', 'codex', 'claude', 'antigravity', 'generic'}
 VALID_MEMORY = {'local', 'mem9', 'hybrid'}
 VALID_GOVERNANCE = {'sandbox', 'production'}
-VALID_DISCOVERY_STATUS = {'found', 'not_found'}
+VALID_DISCOVERY_STATUS = {'found', 'not_found', 'not_required'}
 VALID_INSTALL_TYPES = {'runtime-home', 'global-surface'}
 EXPECTED_OUTPUT_FIELDS = {'summary', 'evidence_map', 'assumptions', 'confidence_status', 'red_flags', 'human_touchpoint', 'next_step'}
 EXPECTED_TARGETS = {
@@ -71,7 +72,7 @@ def validate_enums(config: dict[str, Any], errors: list[str]) -> None:
 
 
 def validate_repo_paths(config: dict[str, Any], errors: list[str]) -> None:
-    repo_relative_keys = ['system_prompt', 'shared_guardrail_skill', 'audit_schema', 'acceptance_tests', 'knowledge_base_root', 'shared_knowledge_root', 'adapter_profile_path', 'government_work_logic', 'authority_matrix', 'decision_engine_entrypoint']
+    repo_relative_keys = ['agent_entrypoint', 'system_prompt', 'shared_guardrail_skill', 'audit_schema', 'acceptance_tests', 'knowledge_base_root', 'shared_knowledge_root', 'adapter_profile_path', 'government_work_logic', 'authority_matrix', 'decision_engine_entrypoint']
     for key in repo_relative_keys:
         value = config.get(key)
         if value and not (ROOT / value).exists():
@@ -181,6 +182,16 @@ def validate_runtime_fields(config: dict[str, Any], errors: list[str]) -> None:
         for key in ['repo_local', 'active_deployment', 'runtime_pack_root', 'write_runtime_config_default']:
             if key not in targets:
                 errors.append(f'runtime_config_targets missing key: {key}')
+    agent_entrypoint = config.get('agent_entrypoint')
+    if agent_entrypoint != 'AGENT_README.md':
+        errors.append('agent_entrypoint must be AGENT_README.md')
+    pack_root_value = config.get('runtime_pack_root')
+    if pack_root_value:
+        pack_root = ROOT / pack_root_value
+        if not (pack_root / 'AGENT_README.md').exists():
+            errors.append('runtime pack must contain AGENT_README.md')
+        if not (pack_root / 'runtime-adapters' / 'universal' / 'AGENT_RUNTIME.md').exists():
+            errors.append('runtime pack must contain runtime-adapters/universal/AGENT_RUNTIME.md')
     if config.get('install_mode') != 'copy':
         errors.append('install_mode must be copy')
     if not config.get('install_target_config'):
