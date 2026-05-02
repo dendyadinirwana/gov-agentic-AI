@@ -27,6 +27,8 @@ SHIM_SKILL_NAMES = {'gov-gov-ai-yayak', 'gov-agentic-common'}
 RUNTIMES = ['openclaw', 'hermes', 'codex', 'claude', 'antigravity', 'generic']
 MEMORY_MODES = ['local', 'mem9', 'hybrid']
 GOVERNANCE_MODES = ['sandbox', 'production']
+MCP_MODES = ['local', 'remote']
+MCP_AUTH_TYPES = ['none', 'bearer', 'x-api-key']
 INSTALL_ACTIONS = ['local_only', 'apply_install', 'back', 'cancel']
 
 CENTRAL_HOME_CANDIDATES = {'Darwin': ['~/.gov-agentic-ai'], 'Linux': ['~/.gov-agentic-ai'], 'Windows': ['%USERPROFILE%/.gov-agentic-ai']}
@@ -84,6 +86,15 @@ OPTION_DESCRIPTIONS = {
     'governance': {
         'sandbox': 'Sandbox: demo/testing mode; L4 still requires approval, L3 can be explored as draft/recommendation.',
         'production': 'Production: strict HITL, audit, and data-classification enforcement; L3 and L4 require approval.',
+    },
+    'mcp_mode': {
+        'local': 'Local stdio MCP: command/args only, no Authorization headers or API key prompts.',
+        'remote': 'Remote MCP endpoint: asks for URL and only asks auth details when authenticated access is selected.',
+    },
+    'mcp_auth': {
+        'none': 'No auth header. Use for public or internal unauthenticated MCP endpoints.',
+        'bearer': 'Adds Authorization: Bearer ${ENV_VAR} to the generated MCP config.',
+        'x-api-key': 'Adds x-api-key: ${ENV_VAR} to the generated MCP config.',
     },
 }
 
@@ -391,7 +402,7 @@ def relative_to_root(path: Path) -> str:
     return str(path.relative_to(ROOT) if path.is_relative_to(ROOT) else path)
 
 
-def build_config(runtime: str, memory: str, governance: str, active_clusters: list[str], output: Path, active_deployment: Path, install_mode: str = 'copy', install_applied: bool = False, install_target_root: str | None = None, pack_root: Path | None = None, central_home_root: str | None = None, central_pack_root: Path | None = None) -> dict[str, Any]:
+def build_config(runtime: str, memory: str, governance: str, active_clusters: list[str], output: Path, active_deployment: Path, install_mode: str = 'copy', install_applied: bool = False, install_target_root: str | None = None, pack_root: Path | None = None, central_home_root: str | None = None, central_pack_root: Path | None = None, mcp_mode: str = 'local', mcp_remote_url: str | None = None, mcp_auth_type: str = 'none', mcp_auth_env_var: str | None = None) -> dict[str, Any]:
     kb = load_json(KB_MANIFEST)
     skills = load_json(SKILL_MANIFEST)
     profile = runtime_profile(runtime)
@@ -440,6 +451,7 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
         'authority_matrix': 'configs/authority_matrix.json',
         'decision_engine_entrypoint': 'scripts/government_decision_engine.py',
         'decision_engine': {'enabled': True, 'entrypoint': 'scripts/government_decision_engine.py', 'workflow_schema': 'schemas/government_workflow_state.schema.json', 'authority_matrix': 'configs/authority_matrix.json', 'rules_config': 'configs/government_logic_rules.json', 'default_mode': 'gating' if governance == 'production' else 'advisory'},
+        'mcp': build_mcp_config(mcp_mode, mcp_remote_url, mcp_auth_type, mcp_auth_env_var),
         'audit_schema': 'schemas/audit_log_template_v3.0.json',
         'acceptance_tests': 'schemas/Gov_Agentic_AI_v3.1_Acceptance_Tests.json',
         'knowledge_base_root': kb['base_path'],
@@ -680,6 +692,47 @@ def parse_csv(value: str | None) -> list[str] | None:
         return None
     return [part.strip() for part in value.split(',') if part.strip()]
 
+def prompt_text(label: str, default: str | None = None, allow_empty: bool = False) -> str:
+    prompt = f"{label}" + (f" [{default}]" if default else '') + ': '
+    while True:
+        raw = input(prompt).strip()
+        if not raw and default is not None:
+            return default
+        if raw or allow_empty:
+            return raw
+        print('Value cannot be empty.')
+
+def build_mcp_config(mode: str, remote_url: str | None = None, auth_type: str = 'none', auth_env_var: str | None = None) -> dict[str, Any]:
+    if mode == 'local':
+        return {
+            'mode': 'local',
+            'selection_reason': 'Local stdio MCP keeps bootstrap simple and avoids unnecessary auth prompts.',
+            'servers': {
+                'chrome-devtools': {
+                    'transport': 'stdio',
+                    'command': 'npx',
+                    'args': ['-y', 'chrome-devtools-mcp@latest'],
+                }
+            },
+        }
+    server: dict[str, Any] = {
+        'transport': 'http',
+        'url': remote_url or '',
+    }
+    if auth_type == 'bearer' and auth_env_var:
+        server['headers'] = {'Authorization': f'Bearer ${{{auth_env_var}}}'}
+    elif auth_type == 'x-api-key' and auth_env_var:
+        server['headers'] = {'x-api-key': f'${{{auth_env_var}}}'}
+    return {
+        'mode': 'remote',
+        'selection_reason': 'Remote MCP mode is enabled explicitly for authenticated or hosted MCP endpoints.',
+        'servers': {'primary': server},
+        'auth': {
+            'type': auth_type,
+            'env_var': auth_env_var if auth_type != 'none' else None,
+        },
+    }
+
 
 
 
@@ -695,6 +748,7 @@ def runtime_bootstrap_payload(config: dict[str, Any], bootstrap_scope: str = 're
         'bootstrap_example': config['bootstrap_example'],
         'governance_mode': config['governance_mode'],
         'memory_mode': config['memory_mode'],
+        'mcp_mode': config['mcp']['mode'],
         'runtime_attach_mode': config['runtime_attach_mode'],
         'central_home_root': config['central_home_root'],
         'runtime_shim_root': config['runtime_shim_root'],
@@ -1105,6 +1159,10 @@ def main() -> int:
     parser.add_argument('--install-target-root', help='Override runtime shim install target root for testing or explicit deployment.')
     parser.add_argument('--central-home-root', help='Override canonical central home root.')
     parser.add_argument('--local-only', action='store_true', help='Generate local config and packs only, without installing to runtime home.')
+    parser.add_argument('--mcp-mode', choices=MCP_MODES, help='MCP transport mode: local or remote.')
+    parser.add_argument('--mcp-url', help='Remote MCP URL when --mcp-mode remote is selected.')
+    parser.add_argument('--mcp-auth-type', choices=MCP_AUTH_TYPES, help='Remote MCP auth type.')
+    parser.add_argument('--mcp-auth-env-var', help='Environment variable name that stores the remote MCP API key/token.')
     args = parser.parse_args()
     defaults = load_json(DEFAULTS_PATH) if DEFAULTS_PATH.exists() else {}
     kb = load_json(KB_MANIFEST)
@@ -1116,9 +1174,13 @@ def main() -> int:
         memory = args.memory or defaults.get('memory_mode', 'hybrid')
         governance = args.governance or defaults.get('governance_mode', 'production')
         active_clusters = parse_csv(args.clusters) or defaults.get('active_clusters') or clusters
+        mcp_mode = args.mcp_mode or defaults.get('mcp_mode', 'local')
+        mcp_remote_url = args.mcp_url or defaults.get('mcp_url')
+        mcp_auth_type = args.mcp_auth_type or defaults.get('mcp_auth_type', 'none')
+        mcp_auth_env_var = args.mcp_auth_env_var or defaults.get('mcp_auth_env_var')
         final_action = 'local_only' if args.local_only else 'apply_install'
     else:
-        runtime, memory, governance, active_clusters, final_action = collect_interactive_selection(defaults, clusters, output, active_deployment)
+        runtime, memory, governance, active_clusters, final_action, mcp_mode, mcp_remote_url, mcp_auth_type, mcp_auth_env_var = collect_interactive_selection(defaults, clusters, output, active_deployment)
         if args.local_only:
             final_action = 'local_only'
     unknown = sorted(set(active_clusters) - set(clusters))
@@ -1129,7 +1191,7 @@ def main() -> int:
     shim_pack_root = shim_pack_root_for(runtime, output)
     central_pack_root = central_pack_root_for(output)
     install_target_root = args.install_target_root or discovery.get('install_target_root')
-    initial_config = build_config(runtime, memory, governance, active_clusters, output, active_deployment, install_target_root=install_target_root, pack_root=shim_pack_root, central_home_root=central_home_root, central_pack_root=central_pack_root)
+    initial_config = build_config(runtime, memory, governance, active_clusters, output, active_deployment, install_target_root=install_target_root, pack_root=shim_pack_root, central_home_root=central_home_root, central_pack_root=central_pack_root, mcp_mode=mcp_mode, mcp_remote_url=mcp_remote_url, mcp_auth_type=mcp_auth_type, mcp_auth_env_var=mcp_auth_env_var)
     output.parent.mkdir(parents=True, exist_ok=True)
     active_deployment.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(initial_config, ensure_ascii=False, indent=2) + '\n')
@@ -1144,7 +1206,7 @@ def main() -> int:
         central_install_result = install_central_home(Path(central_pack_info['pack_root']), Path(central_home_root), initial_config)
         if install_target_root:
             shim_install_result = install_runtime_pack(Path(shim_pack_info['pack_root']), Path(install_target_root), initial_config)
-    final_config = build_config(runtime, memory, governance, active_clusters, output, active_deployment, install_mode='copy', install_applied=bool(central_install_result or shim_install_result), install_target_root=install_target_root, pack_root=Path(shim_pack_info['pack_root']), central_home_root=central_home_root, central_pack_root=Path(central_pack_info['pack_root']))
+    final_config = build_config(runtime, memory, governance, active_clusters, output, active_deployment, install_mode='copy', install_applied=bool(central_install_result or shim_install_result), install_target_root=install_target_root, pack_root=Path(shim_pack_info['pack_root']), central_home_root=central_home_root, central_pack_root=Path(central_pack_info['pack_root']), mcp_mode=mcp_mode, mcp_remote_url=mcp_remote_url, mcp_auth_type=mcp_auth_type, mcp_auth_env_var=mcp_auth_env_var)
     output.write_text(json.dumps(final_config, ensure_ascii=False, indent=2) + '\n')
     bootstrap_output.write_text(json.dumps(runtime_bootstrap_payload(final_config, 'repo-local'), ensure_ascii=False, indent=2) + '\n')
     write_yaml_like(active_deployment, final_config)

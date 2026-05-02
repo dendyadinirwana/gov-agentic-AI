@@ -318,6 +318,8 @@ Windows PowerShell doctor:
 irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/doctor.ps1 | iex
 ```
 
+MCP defaults are local-first: generated local MCP config does not emit `Authorization` headers. API key prompts only appear when you explicitly choose a remote/authenticated MCP endpoint during install.
+
 ## Quick Start for Adopters
 
 ### 1. Review the implementation baseline

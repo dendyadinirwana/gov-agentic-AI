@@ -45,6 +45,7 @@
     "installed_at",
     "government_work_logic",
     "authority_matrix",
+    "mcp",
     "decision_engine",
     "decision_engine_entrypoint",
     "central_home_root",
@@ -139,6 +140,9 @@
       }
     },
     "adapter_capabilities": {
+      "type": "object"
+    },
+    "mcp": {
       "type": "object"
     }
   }

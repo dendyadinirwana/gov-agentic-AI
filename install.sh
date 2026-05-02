@@ -9,7 +9,7 @@ usage() {
 Gov-Agentic AI bootstrap installer
 
 Usage:
-  ./install.sh [--repo-url URL] [--target-dir DIR] [--defaults] [--runtime R] [--memory M] [--governance G] [--clusters CSV]
+  ./install.sh [--repo-url URL] [--target-dir DIR] [--defaults] [--runtime R] [--memory M] [--governance G] [--clusters CSV] [--mcp-mode MODE] [--mcp-url URL] [--mcp-auth-type TYPE] [--mcp-auth-env-var ENV]
 
 Examples:
   ./install.sh
@@ -51,7 +51,7 @@ while [ "$#" -gt 0 ]; do
       add_installer_arg "$1"
       shift 1
       ;;
-    --runtime|--memory|--governance|--clusters|--output|--active-deployment)
+    --runtime|--memory|--governance|--clusters|--output|--active-deployment|--mcp-mode|--mcp-url|--mcp-auth-type|--mcp-auth-env-var)
       if [ "$#" -lt 2 ]; then echo "Missing value for $1" >&2; exit 1; fi
       add_installer_arg "$1"
       add_installer_arg "$2"

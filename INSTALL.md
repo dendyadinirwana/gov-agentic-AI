@@ -88,6 +88,18 @@ When you choose a runtime such as `hermes`, `openclaw`, `codex`, `claude`, or `a
 
 The installer detects canonical runtime homes first, then generates repo-local artifacts and can apply the managed central-home plus thin-shim install. For `generic`, the canonical global skill target is `~/.agents/skills/gov-agentic-ai`.
 
+## MCP Auth Behavior
+
+Default MCP mode is `local`. In that mode the generated config uses local stdio MCP only, with command-based servers such as `chrome-devtools-mcp`, and it does **not** emit `headers.Authorization` or prompt for an API key.
+
+If you explicitly choose `remote` MCP mode, the installer asks for:
+
+- remote MCP URL
+- auth type: `none`, `bearer`, or `x-api-key`
+- API key env var name only when authenticated access is selected
+
+This keeps local MCP minimal, and keeps remote MCP explicit and reviewable.
+
 ## Supported Installer Options
 
 - `--defaults`
@@ -97,6 +109,10 @@ The installer detects canonical runtime homes first, then generates repo-local a
 - `--memory <local|mem9|hybrid>`
 - `--governance <sandbox|production>`
 - `--clusters <comma,separated,clusters>`
+- `--mcp-mode <local|remote>`
+- `--mcp-url <https://...>`
+- `--mcp-auth-type <none|bearer|x-api-key>`
+- `--mcp-auth-env-var <ENV_VAR_NAME>`
 
 PowerShell equivalents:
 
@@ -105,6 +121,10 @@ PowerShell equivalents:
 - `-Memory <local|mem9|hybrid>`
 - `-Governance <sandbox|production>`
 - `-Clusters <comma,separated,clusters>`
+- `-McpMode <local|remote>`
+- `-McpUrl <https://...>`
+- `-McpAuthType <none|bearer|x-api-key>`
+- `-McpAuthEnvVar <ENV_VAR_NAME>`
 
 ## Example
 

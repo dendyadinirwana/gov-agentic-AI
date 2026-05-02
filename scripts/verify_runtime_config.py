@@ -58,6 +58,7 @@ def main() -> int:
     validate_inventory(config, errors)
     validate_governance(config, errors)
     validate_runtime_fields(config, errors)
+    validate_mcp_fields(config, errors)
     validate_output_contract(config, errors)
     report(path, config, errors)
     return 1 if errors else 0
@@ -126,6 +127,54 @@ def validate_governance(config: dict[str, Any], errors: list[str]) -> None:
         errors.append('production governance must require L3 and L4 approval')
     if config.get('governance_mode') == 'sandbox' and set(config.get('human_approval_required_for', [])) != {'L4'}:
         errors.append('sandbox governance must require only L4 approval by default')
+
+def validate_mcp_fields(config: dict[str, Any], errors: list[str]) -> None:
+    mcp = config.get('mcp')
+    if not isinstance(mcp, dict):
+        errors.append('mcp must be an object')
+        return
+    mode = mcp.get('mode')
+    servers = mcp.get('servers')
+    if mode not in {'local', 'remote'}:
+        errors.append(f'invalid mcp.mode: {mode}')
+        return
+    if not isinstance(servers, dict) or not servers:
+        errors.append('mcp.servers must contain at least one server')
+        return
+    if mode == 'local':
+        server = servers.get('chrome-devtools')
+        if not isinstance(server, dict):
+            errors.append('local mcp must include chrome-devtools server')
+            return
+        if server.get('transport') != 'stdio':
+            errors.append('local chrome-devtools transport must be stdio')
+        if 'headers' in server:
+            errors.append('local mcp must not emit headers')
+        if server.get('command') != 'npx':
+            errors.append('local chrome-devtools command must be npx')
+    if mode == 'remote':
+        server = servers.get('primary')
+        if not isinstance(server, dict):
+            errors.append('remote mcp must include primary server')
+            return
+        if server.get('transport') != 'http':
+            errors.append('remote mcp primary transport must be http')
+        if not server.get('url'):
+            errors.append('remote mcp primary server must include url')
+        headers = server.get('headers')
+        auth = (mcp.get('auth') or {}).get('type', 'none')
+        if auth == 'none' and headers:
+            errors.append('remote mcp with auth=none must not emit headers')
+        if auth == 'bearer':
+            if not isinstance(headers, dict) or not headers.get('Authorization'):
+                errors.append('remote mcp bearer auth must emit Authorization header')
+        if auth == 'x-api-key':
+            if not isinstance(headers, dict) or not headers.get('x-api-key'):
+                errors.append('remote mcp x-api-key auth must emit x-api-key header')
+        if isinstance(headers, dict):
+            for key, value in headers.items():
+                if value in {'', None}:
+                    errors.append(f'mcp header {key} must not be empty')
 
 def validate_runtime_fields(config: dict[str, Any], errors: list[str]) -> None:
     decision = config.get('decision_engine')

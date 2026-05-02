@@ -7,7 +7,11 @@ param(
   [string]$Clusters,
   [switch]$Defaults,
   [string]$Output,
-  [string]$ActiveDeployment
+  [string]$ActiveDeployment,
+  [string]$McpMode,
+  [string]$McpUrl,
+  [string]$McpAuthType,
+  [string]$McpAuthEnvVar
 )
 
 if ($env:GOV_AGENTIC_INSTALL_ARGS) {
@@ -58,6 +62,10 @@ if ($Governance) { $InstallerArgs += @("--governance", $Governance) }
 if ($Clusters) { $InstallerArgs += @("--clusters", $Clusters) }
 if ($Output) { $InstallerArgs += @("--output", $Output) }
 if ($ActiveDeployment) { $InstallerArgs += @("--active-deployment", $ActiveDeployment) }
+if ($McpMode) { $InstallerArgs += @("--mcp-mode", $McpMode) }
+if ($McpUrl) { $InstallerArgs += @("--mcp-url", $McpUrl) }
+if ($McpAuthType) { $InstallerArgs += @("--mcp-auth-type", $McpAuthType) }
+if ($McpAuthEnvVar) { $InstallerArgs += @("--mcp-auth-env-var", $McpAuthEnvVar) }
 
 Write-Host "Running Gov-Agentic AI installer ..."
 $InvokeArgs = @($PythonCmd + @("scripts/install_gov_agentic_ai.py") + $InstallerArgs)

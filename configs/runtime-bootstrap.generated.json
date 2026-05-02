@@ -9,6 +9,7 @@
   "bootstrap_example": "examples/BOOTSTRAP_EXAMPLE.json",
   "governance_mode": "production",
   "memory_mode": "hybrid",
+  "mcp_mode": "local",
   "runtime_attach_mode": "thin-shim",
   "central_home_root": "/Users/dendyadinirwana/.gov-agentic-ai",
   "runtime_shim_root": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai",
