@@ -52,6 +52,7 @@ RUNTIME_DISCOVERY_CANDIDATES = {
 ANSI_CLEAR = '\033[2J\033[H'
 ANSI_RESET = '\033[0m'
 ANSI_ACTIVE = '\033[7m'
+ANSI_DIM = '\033[2m'
 
 
 CLUSTER_GROUPS = [
@@ -116,11 +117,18 @@ def read_key(stream: TextIO) -> str:
         termios.tcsetattr(fd, termios.TCSADRAIN, original)
 
 
+
+
+def render_footer(lines: list[str]) -> None:
+    print()
+    for line in lines:
+        print(f'{ANSI_DIM}{line}{ANSI_RESET}')
+
 def render_single_select(label: str, options: list[str], selected_idx: int, default: str, description_group: str | None = None) -> None:
     descriptions = OPTION_DESCRIPTIONS.get(description_group or '', {})
     print(ANSI_CLEAR, end='')
     print(label)
-    print('Use ↑/↓ to move, Enter to confirm, q to quit interactive mode.\n')
+    print('Use ↑/↓ to move through options.\n')
     for idx, option in enumerate(options):
         prefix = '›' if idx == selected_idx else ' '
         active = ANSI_ACTIVE if idx == selected_idx else ''
@@ -128,6 +136,11 @@ def render_single_select(label: str, options: list[str], selected_idx: int, defa
         marker = ' (default)' if option == default else ''
         detail = f' - {descriptions[option]}' if option in descriptions else ''
         print(f'{active}{prefix} {option}{marker}{detail}{reset}')
+    render_footer([
+        'Enter = confirm current option',
+        'q = cancel installer gracefully',
+        'Ctrl+C = force stop immediately',
+    ])
 
 
 def prompt_choice_arrow(label: str, options: list[str], default: str, description_group: str | None = None) -> str:
@@ -149,7 +162,7 @@ def prompt_choice_arrow(label: str, options: list[str], default: str, descriptio
 def render_multi_select(label: str, options: list[str], selected: set[str], cursor: int) -> None:
     print(ANSI_CLEAR, end='')
     print(label)
-    print('Use ↑/↓ to move, Space to toggle, a=all, n=none, Enter=confirm.\n')
+    print('Grouped by deployment domain so you can scan the ecosystem before toggling.\n')
     grouped = ordered_clusters_with_groups(options)
     current_group = None
     for idx, (group_name, option) in enumerate(grouped):
@@ -163,6 +176,11 @@ def render_multi_select(label: str, options: list[str], selected: set[str], curs
         reset = ANSI_RESET if idx == cursor else ''
         marker = 'x' if option in selected else ' '
         print(f'{active}{prefix} [{marker}] {option}{reset}')
+    render_footer([
+        'Space = toggle highlighted cluster | Enter = confirm selection',
+        'a = select all | n = clear all',
+        'q = cancel installer gracefully | Ctrl+C = force stop immediately',
+    ])
 
 
 def prompt_clusters_arrow(clusters: list[str], default_all: bool = True) -> list[str]:

@@ -64,6 +64,8 @@ Useful cluster commands:
 - `a` activates every cluster.
 - `n` clears the checklist.
 - Enter accepts the current checklist.
+- `q` exits the installer gracefully.
+- `Ctrl+C` force-stops immediately.
 
 ## Runtime Discovery
 

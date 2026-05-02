@@ -27,7 +27,7 @@ curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main
 
 ### Runtime Target
 
-The prompt is keyboard-first in interactive terminals: use ↑/↓ and Enter to select. If the terminal does not support arrow-key input, it falls back to typed values such as `hermes`, `openclaw`, or Enter for `generic`.
+The prompt is keyboard-first in interactive terminals: use ↑/↓ and Enter to select. A footer also reminds users that `q` exits gracefully and `Ctrl+C` force-stops immediately. If the terminal does not support arrow-key input, it falls back to typed values such as `hermes`, `openclaw`, or Enter for `generic`.
 
 - `generic`: global portable mode for any runtime that can read repo files and `configs/runtime.generated.json`.
 - `openclaw`: repo-mounted profile using `skills/skill_manifest.json`, active role skills, and role knowledge paths.
