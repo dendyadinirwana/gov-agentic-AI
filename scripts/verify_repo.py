@@ -9,11 +9,15 @@ required_root = [
     'docs/governance/Gov_Agentic_AI_v3.1_Implementation_Pack.md',
     'docs/operations/REPLICATION_GUIDE.md',
     'docs/knowledge-model/SHARED_VS_ROLE_KNOWLEDGE.md',
+    'docs/knowledge-model/KNOWLEDGE_AUTHORING_GUIDE.md',
     'prompts/system/YayakAI_Master_System_Prompt_v3.0.md',
     'schemas/audit_log_template_v3.0.json',
     'schemas/Gov_Agentic_AI_v3.1_Acceptance_Tests.json',
     'knowledge-base/kb_manifest.json',
+    'knowledge-base/knowledge_quality_manifest.json',
     'knowledge-base/_shared/README.md',
+    'scripts/generate_role_knowledge.py',
+    'scripts/verify_knowledge_base.py',
 ]
 missing = []
 for rel in required_root:
