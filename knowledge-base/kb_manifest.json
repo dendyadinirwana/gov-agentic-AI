@@ -1,0 +1,193 @@
+{
+  "version": "v1.0",
+  "base_path": "knowledge-base",
+  "role_count": 29,
+  "roles": [
+    {
+      "path": "top-layer/gov-ai_yayak",
+      "cluster": "top-layer",
+      "role": "GOV-AI",
+      "alias": "Yayak"
+    },
+    {
+      "path": "kebijakan-dan-hukum/analis-kebijakan_azis",
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Analis Kebijakan",
+      "alias": "Azis"
+    },
+    {
+      "path": "kebijakan-dan-hukum/konsultan-hukum_audy",
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Konsultan Hukum",
+      "alias": "Audy"
+    },
+    {
+      "path": "kebijakan-dan-hukum/monitor-kepatuhan-hukum_edi",
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Monitor Kepatuhan Hukum",
+      "alias": "Edi"
+    },
+    {
+      "path": "perencanaan-dan-anggaran/perencana-program_faris",
+      "cluster": "perencanaan-dan-anggaran",
+      "role": "Perencana Program",
+      "alias": "Faris"
+    },
+    {
+      "path": "perencanaan-dan-anggaran/analis-anggaran_anastasia",
+      "cluster": "perencanaan-dan-anggaran",
+      "role": "Analis Anggaran",
+      "alias": "Anastasia"
+    },
+    {
+      "path": "perencanaan-dan-anggaran/monitor-kepatuhan-anggaran_nanang",
+      "cluster": "perencanaan-dan-anggaran",
+      "role": "Monitor Kepatuhan Anggaran",
+      "alias": "Nanang"
+    },
+    {
+      "path": "pengadaan-barang-dan-jasa/admin-pengadaan_ihsan",
+      "cluster": "pengadaan-barang-dan-jasa",
+      "role": "Admin Pengadaan",
+      "alias": "Ihsan"
+    },
+    {
+      "path": "pengadaan-barang-dan-jasa/evaluator-vendor_dendy",
+      "cluster": "pengadaan-barang-dan-jasa",
+      "role": "Evaluator Vendor",
+      "alias": "Dendy"
+    },
+    {
+      "path": "pengadaan-barang-dan-jasa/penjaga-spesifikasi_hafidus",
+      "cluster": "pengadaan-barang-dan-jasa",
+      "role": "Penjaga Spesifikasi",
+      "alias": "Hafidus"
+    },
+    {
+      "path": "data-dan-analitik/koordinator-data_ardy",
+      "cluster": "data-dan-analitik",
+      "role": "Koordinator Data",
+      "alias": "Ardy"
+    },
+    {
+      "path": "data-dan-analitik/analisis-statistik_hanan",
+      "cluster": "data-dan-analitik",
+      "role": "Analisis Statistik",
+      "alias": "Hanan"
+    },
+    {
+      "path": "data-dan-analitik/gis-analyst_varin",
+      "cluster": "data-dan-analitik",
+      "role": "GIS Analyst",
+      "alias": "Varin"
+    },
+    {
+      "path": "komunikasi-dan-dokumen/penulis-naskah_alfian",
+      "cluster": "komunikasi-dan-dokumen",
+      "role": "Penulis Naskah",
+      "alias": "Alfian"
+    },
+    {
+      "path": "komunikasi-dan-dokumen/notulis_anjungan",
+      "cluster": "komunikasi-dan-dokumen",
+      "role": "Notulis",
+      "alias": "Anjungan"
+    },
+    {
+      "path": "komunikasi-dan-dokumen/penerjemah-kebijakan_iqbal",
+      "cluster": "komunikasi-dan-dokumen",
+      "role": "Penerjemah Kebijakan",
+      "alias": "Iqbal"
+    },
+    {
+      "path": "sdm-dan-kinerja/asisten-sdm_satria",
+      "cluster": "sdm-dan-kinerja",
+      "role": "Asisten SDM",
+      "alias": "Satria"
+    },
+    {
+      "path": "sdm-dan-kinerja/asisten-pelatihan_tabah",
+      "cluster": "sdm-dan-kinerja",
+      "role": "Asisten Pelatihan",
+      "alias": "Tabah"
+    },
+    {
+      "path": "sdm-dan-kinerja/monitor-kinerja_reza",
+      "cluster": "sdm-dan-kinerja",
+      "role": "Monitor Kinerja",
+      "alias": "Reza"
+    },
+    {
+      "path": "hubungan-eksternal-dan-lapangan/liaison-publik_marlin",
+      "cluster": "hubungan-eksternal-dan-lapangan",
+      "role": "Liaison Publik",
+      "alias": "Marlin"
+    },
+    {
+      "path": "hubungan-eksternal-dan-lapangan/koordinator-lapangan_syarah",
+      "cluster": "hubungan-eksternal-dan-lapangan",
+      "role": "Koordinator Lapangan",
+      "alias": "Syarah"
+    },
+    {
+      "path": "hubungan-eksternal-dan-lapangan/manajemen-risiko_sauria",
+      "cluster": "hubungan-eksternal-dan-lapangan",
+      "role": "Manajemen Risiko",
+      "alias": "Sauria"
+    },
+    {
+      "path": "tata-usaha/admin-persuratan_harrisal",
+      "cluster": "tata-usaha",
+      "role": "Admin Persuratan",
+      "alias": "Harrisal"
+    },
+    {
+      "path": "tata-usaha/asisten-disposisi_woro",
+      "cluster": "tata-usaha",
+      "role": "Asisten Disposisi",
+      "alias": "Woro"
+    },
+    {
+      "path": "tata-usaha/arsiparis-digital_sovia",
+      "cluster": "tata-usaha",
+      "role": "Arsiparis Digital",
+      "alias": "Sovia"
+    },
+    {
+      "path": "tata-usaha/agenda-dan-protokol_ikhsan",
+      "cluster": "tata-usaha",
+      "role": "Agenda & Protokol",
+      "alias": "Ikhsan"
+    },
+    {
+      "path": "tata-usaha/admin-layanan-internal_ika",
+      "cluster": "tata-usaha",
+      "role": "Admin Layanan Internal",
+      "alias": "Ika"
+    },
+    {
+      "path": "tata-usaha/monitor-sla-tata-usaha_izza",
+      "cluster": "tata-usaha",
+      "role": "Monitor SLA Tata Usaha",
+      "alias": "Izza"
+    },
+    {
+      "path": "bottom-gate/bot-eskalasi_winda",
+      "cluster": "bottom-gate",
+      "role": "Bot Eskalasi",
+      "alias": "Winda"
+    }
+  ],
+  "standard_subdirectories": [
+    "00-readme",
+    "01-source-documents",
+    "02-regulations-and-policies",
+    "03-templates-and-examples",
+    "04-sop-and-workflows",
+    "05-reference-data",
+    "06-output-samples",
+    "07-review-notes",
+    "08-ingestion-ready",
+    "09-archive"
+  ]
+}

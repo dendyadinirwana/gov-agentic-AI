@@ -1,0 +1,2 @@
+schema_version,trace_id,request_timestamp,requester_id,requester_unit,intent,action_level,data_classification,role_name,role_alias,trigger_keywords_matched,agent_chain,evidence_map,assumptions,red_flags,conflict_detected,conflict_resolution_path,human_touchpoint_role,human_touchpoint_status,decision_gate_result,artifact_id,artifact_version,final_status
+v3.0,GOV-YYYYMMDD-000001,,,,,L2,,Penulis Naskah,Alfian,,,,,,,,,pending,REVIEW_NEEDED,,v3.0,pending_review

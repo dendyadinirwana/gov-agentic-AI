@@ -1,0 +1,9 @@
+project_name: gov-agentic-ai
+knowledge_base_root: knowledge-base
+shared_knowledge_root: knowledge-base/_shared
+audit_schema: schemas/audit_log_template_v3.0.json
+system_prompt: prompts/system/YayakAI_Master_System_Prompt_v3.0.md
+acceptance_tests: schemas/Gov_Agentic_AI_v3.1_Acceptance_Tests.json
+human_approval_required_for:
+  - L3
+  - L4

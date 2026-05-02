@@ -1,0 +1,6 @@
+.DS_Store
+.omx/
+knowledge-base/**/.DS_Store
+knowledge-base/**/09-archive/**
+*.tmp
+~$*.docx
