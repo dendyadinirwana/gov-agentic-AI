@@ -15,9 +15,14 @@ required_root = [
     'schemas/Gov_Agentic_AI_v3.1_Acceptance_Tests.json',
     'knowledge-base/kb_manifest.json',
     'knowledge-base/knowledge_quality_manifest.json',
+    'knowledge-base/INGESTION_GUIDE.md',
     'knowledge-base/_shared/README.md',
+    'knowledge-base/_shared/07-ingestion-staging/bundle.manifest.template.json',
+    'docs/operations/INSTITUTION_INGESTION_PACK.md',
     'scripts/generate_role_knowledge.py',
     'scripts/verify_knowledge_base.py',
+    'scripts/scaffold_ingestion_bundle.py',
+    'scripts/verify_ingestion_bundle.py',
 ]
 missing = []
 for rel in required_root:

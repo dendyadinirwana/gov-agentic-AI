@@ -1,0 +1,23 @@
+{
+  "bundle_id": "kebijakan-dan-hukum__konsultan-hukum_audy-bundle-001",
+  "target_cluster": "kebijakan-dan-hukum",
+  "target_role_path": "kebijakan-dan-hukum/konsultan-hukum_audy",
+  "bundle_status": "draft",
+  "prepared_by": "",
+  "human_reviewer": "",
+  "source_ticket_or_reference": "",
+  "documents": [
+    {
+      "title": "",
+      "source_file": "raw/",
+      "clean_file": "clean/",
+      "metadata_file": "clean/",
+      "document_type": "",
+      "publish_targets": [
+        "01-source-documents"
+      ],
+      "publish_status": "pending",
+      "notes": ""
+    }
+  ]
+}

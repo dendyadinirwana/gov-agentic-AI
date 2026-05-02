@@ -1,0 +1,24 @@
+{
+  "bundle_id": "pengadaan-barang-dan-jasa__evaluator-vendor_dendy-example",
+  "target_cluster": "pengadaan-barang-dan-jasa",
+  "target_role_path": "pengadaan-barang-dan-jasa/evaluator-vendor_dendy",
+  "bundle_status": "review-ready",
+  "prepared_by": "knowledge-steward",
+  "human_reviewer": "Dendy",
+  "source_ticket_or_reference": "example-reference",
+  "documents": [
+    {
+      "title": "Evaluator Vendor Example Source",
+      "source_file": "raw/example-source.pdf",
+      "clean_file": "clean/example-source.md",
+      "metadata_file": "clean/example-source.metadata.json",
+      "document_type": "policy-note",
+      "publish_targets": [
+        "01-source-documents",
+        "08-ingestion-ready"
+      ],
+      "publish_status": "pending",
+      "notes": "Replace with institution-specific approved material."
+    }
+  ]
+}

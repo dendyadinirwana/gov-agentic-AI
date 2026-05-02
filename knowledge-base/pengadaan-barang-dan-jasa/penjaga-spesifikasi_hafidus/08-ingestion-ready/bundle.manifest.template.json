@@ -1,0 +1,23 @@
+{
+  "bundle_id": "pengadaan-barang-dan-jasa__penjaga-spesifikasi_hafidus-bundle-001",
+  "target_cluster": "pengadaan-barang-dan-jasa",
+  "target_role_path": "pengadaan-barang-dan-jasa/penjaga-spesifikasi_hafidus",
+  "bundle_status": "draft",
+  "prepared_by": "",
+  "human_reviewer": "",
+  "source_ticket_or_reference": "",
+  "documents": [
+    {
+      "title": "",
+      "source_file": "raw/",
+      "clean_file": "clean/",
+      "metadata_file": "clean/",
+      "document_type": "",
+      "publish_targets": [
+        "01-source-documents"
+      ],
+      "publish_status": "pending",
+      "notes": ""
+    }
+  ]
+}

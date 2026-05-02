@@ -1,0 +1,24 @@
+{
+  "bundle_id": "pengadaan-barang-dan-jasa__admin-pengadaan_ihsan-example",
+  "target_cluster": "pengadaan-barang-dan-jasa",
+  "target_role_path": "pengadaan-barang-dan-jasa/admin-pengadaan_ihsan",
+  "bundle_status": "review-ready",
+  "prepared_by": "knowledge-steward",
+  "human_reviewer": "Ihsan",
+  "source_ticket_or_reference": "example-reference",
+  "documents": [
+    {
+      "title": "Admin Pengadaan Example Source",
+      "source_file": "raw/example-source.pdf",
+      "clean_file": "clean/example-source.md",
+      "metadata_file": "clean/example-source.metadata.json",
+      "document_type": "policy-note",
+      "publish_targets": [
+        "01-source-documents",
+        "08-ingestion-ready"
+      ],
+      "publish_status": "pending",
+      "notes": "Replace with institution-specific approved material."
+    }
+  ]
+}

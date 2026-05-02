@@ -1,0 +1,24 @@
+{
+  "bundle_id": "hubungan-eksternal-dan-lapangan__liaison-publik_marlin-example",
+  "target_cluster": "hubungan-eksternal-dan-lapangan",
+  "target_role_path": "hubungan-eksternal-dan-lapangan/liaison-publik_marlin",
+  "bundle_status": "review-ready",
+  "prepared_by": "knowledge-steward",
+  "human_reviewer": "Marlin",
+  "source_ticket_or_reference": "example-reference",
+  "documents": [
+    {
+      "title": "Liaison Publik Example Source",
+      "source_file": "raw/example-source.pdf",
+      "clean_file": "clean/example-source.md",
+      "metadata_file": "clean/example-source.metadata.json",
+      "document_type": "policy-note",
+      "publish_targets": [
+        "01-source-documents",
+        "08-ingestion-ready"
+      ],
+      "publish_status": "pending",
+      "notes": "Replace with institution-specific approved material."
+    }
+  ]
+}

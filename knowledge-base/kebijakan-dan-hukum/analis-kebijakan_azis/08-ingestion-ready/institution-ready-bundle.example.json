@@ -1,0 +1,24 @@
+{
+  "bundle_id": "kebijakan-dan-hukum__analis-kebijakan_azis-example",
+  "target_cluster": "kebijakan-dan-hukum",
+  "target_role_path": "kebijakan-dan-hukum/analis-kebijakan_azis",
+  "bundle_status": "review-ready",
+  "prepared_by": "knowledge-steward",
+  "human_reviewer": "Azis",
+  "source_ticket_or_reference": "example-reference",
+  "documents": [
+    {
+      "title": "Analis Kebijakan Example Source",
+      "source_file": "raw/example-source.pdf",
+      "clean_file": "clean/example-source.md",
+      "metadata_file": "clean/example-source.metadata.json",
+      "document_type": "policy-note",
+      "publish_targets": [
+        "01-source-documents",
+        "08-ingestion-ready"
+      ],
+      "publish_status": "pending",
+      "notes": "Replace with institution-specific approved material."
+    }
+  ]
+}

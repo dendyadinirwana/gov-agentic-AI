@@ -1,0 +1,21 @@
+{
+  "bundle_id": "kb-2026-05-02-example",
+  "target_cluster": "tata-usaha",
+  "target_role_path": "tata-usaha/admin-persuratan_harrisal",
+  "bundle_status": "draft",
+  "prepared_by": "",
+  "human_reviewer": "",
+  "source_ticket_or_reference": "",
+  "documents": [
+    {
+      "source_file": "raw/example.docx",
+      "clean_file": "clean/example.md",
+      "metadata_file": "clean/example.metadata.json",
+      "publish_targets": [
+        "01-source-documents",
+        "08-ingestion-ready"
+      ],
+      "publish_status": "pending"
+    }
+  ]
+}
