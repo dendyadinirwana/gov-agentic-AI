@@ -102,6 +102,11 @@ OPTION_DESCRIPTIONS = {
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text())
 
+def load_json_if_exists(path: Path) -> dict[str, Any] | None:
+    if not path.exists():
+        return None
+    return json.loads(path.read_text())
+
 
 def detect_repo_version() -> str:
     env_version = os.environ.get('GOV_AGENTIC_AI_VERSION')
@@ -278,6 +283,46 @@ def shim_pack_root_for(runtime: str, output: Path | None = None) -> Path:
         return output.parent / 'runtime-shim' / runtime
     return DEFAULT_PACK_ROOT / runtime / version
 
+
+def load_existing_install_state(runtime: str, install_target_root: str | None, central_home_root: str | None) -> dict[str, Any] | None:
+    candidates: list[Path] = []
+    if install_target_root:
+        candidates.append(Path(install_target_root).expanduser() / 'runtime.generated.json')
+    if central_home_root:
+        candidates.append(Path(central_home_root).expanduser() / 'configs' / 'runtime.generated.json')
+    for candidate in candidates:
+        data = load_json_if_exists(candidate)
+        if isinstance(data, dict) and data.get('project_name') == 'gov-agentic-ai':
+            return data
+    return None
+
+def merge_update_defaults(defaults: dict[str, Any], existing: dict[str, Any] | None) -> dict[str, Any]:
+    merged = dict(defaults)
+    if not existing:
+        return merged
+    for key_map in [
+        ('runtime_target', 'runtime_target'),
+        ('memory_mode', 'memory_mode'),
+        ('governance_mode', 'governance_mode'),
+    ]:
+        target_key, source_key = key_map
+        if existing.get(source_key):
+            merged[target_key] = existing[source_key]
+    if existing.get('active_clusters'):
+        merged['active_clusters'] = existing['active_clusters']
+    mcp = existing.get('mcp') or {}
+    if mcp.get('mode'):
+        merged['mcp_mode'] = mcp['mode']
+    servers = mcp.get('servers') or {}
+    primary = servers.get('primary') or {}
+    if primary.get('url'):
+        merged['mcp_url'] = primary['url']
+    auth = mcp.get('auth') or {}
+    if auth.get('type'):
+        merged['mcp_auth_type'] = auth['type']
+    if auth.get('env_var'):
+        merged['mcp_auth_env_var'] = auth['env_var']
+    return merged
 
 def discover_runtime(runtime: str) -> dict[str, Any]:
     os_name = platform.system() or 'Unknown'
@@ -1232,6 +1277,7 @@ def install_runtime_pack(pack_root: Path, target_root: Path, config: dict[str, A
 def main() -> int:
     parser = argparse.ArgumentParser(description='Interactive installer for Gov-Agentic AI runtime config.')
     parser.add_argument('--defaults', action='store_true', help='Use installer defaults without prompts.')
+    parser.add_argument('--update', action='store_true', help='Reuse previous install settings when available and refresh the managed install.')
     parser.add_argument('--runtime', choices=RUNTIMES, help='Runtime target.')
     parser.add_argument('--memory', choices=MEMORY_MODES, help='Memory mode.')
     parser.add_argument('--governance', choices=GOVERNANCE_MODES, help='Governance mode.')
@@ -1251,7 +1297,13 @@ def main() -> int:
     clusters = sorted({role['cluster'] for role in kb['roles']})
     output = (ROOT / args.output).resolve() if not Path(args.output).is_absolute() else Path(args.output)
     active_deployment = (ROOT / args.active_deployment).resolve() if not Path(args.active_deployment).is_absolute() else Path(args.active_deployment)
-    if args.defaults:
+    bootstrap_runtime = args.runtime or defaults.get('runtime_target', 'generic')
+    bootstrap_discovery = discover_runtime(bootstrap_runtime)
+    bootstrap_central_home = args.central_home_root or bootstrap_discovery.get('central_home_root') or str(DEFAULT_CENTRAL_HOME)
+    bootstrap_target_root = args.install_target_root or bootstrap_discovery.get('install_target_root')
+    if args.update:
+        defaults = merge_update_defaults(defaults, load_existing_install_state(bootstrap_runtime, bootstrap_target_root, bootstrap_central_home))
+    if args.defaults or args.update:
         runtime = args.runtime or defaults.get('runtime_target', 'generic')
         memory = args.memory or defaults.get('memory_mode', 'hybrid')
         governance = args.governance or defaults.get('governance_mode', 'production')

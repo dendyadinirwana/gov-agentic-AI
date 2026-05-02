@@ -306,6 +306,12 @@ macOS / Linux doctor:
 curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/doctor.sh | sh
 ```
 
+macOS / Linux update:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh -s -- --update
+```
+
 Windows PowerShell:
 
 ```powershell
@@ -316,6 +322,12 @@ Windows PowerShell doctor:
 
 ```powershell
 irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/doctor.ps1 | iex
+```
+
+Windows PowerShell update:
+
+```powershell
+$env:GOV_AGENTIC_INSTALL_ARGS='-Update'; irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
 ```
 
 MCP defaults are local-first: generated local MCP config does not emit `Authorization` headers. API key prompts only appear when you explicitly choose a remote/authenticated MCP endpoint during install.

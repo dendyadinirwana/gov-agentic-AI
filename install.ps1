@@ -6,6 +6,7 @@ param(
   [string]$Governance,
   [string]$Clusters,
   [switch]$Defaults,
+  [switch]$Update,
   [string]$Output,
   [string]$ActiveDeployment,
   [string]$McpMode,
@@ -52,10 +53,13 @@ if ($TargetDir -eq ".") {
 } else {
   Write-Host "Using existing repository at $TargetDir"
   Set-Location $TargetDir
+  Write-Host "Updating existing clone ..."
+  try { git pull --ff-only | Out-Null } catch { Write-Warning "Could not fast-forward update existing clone; continuing with local files." }
 }
 
 $InstallerArgs = @()
 if ($Defaults) { $InstallerArgs += "--defaults" }
+if ($Update) { $InstallerArgs += "--update" }
 if ($Runtime) { $InstallerArgs += @("--runtime", $Runtime) }
 if ($Memory) { $InstallerArgs += @("--memory", $Memory) }
 if ($Governance) { $InstallerArgs += @("--governance", $Governance) }

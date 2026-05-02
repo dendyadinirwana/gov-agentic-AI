@@ -9,11 +9,12 @@ usage() {
 Gov-Agentic AI bootstrap installer
 
 Usage:
-  ./install.sh [--repo-url URL] [--target-dir DIR] [--defaults] [--runtime R] [--memory M] [--governance G] [--clusters CSV] [--mcp-mode MODE] [--mcp-url URL] [--mcp-auth-type TYPE] [--mcp-auth-env-var ENV]
+  ./install.sh [--repo-url URL] [--target-dir DIR] [--defaults] [--update] [--runtime R] [--memory M] [--governance G] [--clusters CSV] [--mcp-mode MODE] [--mcp-url URL] [--mcp-auth-type TYPE] [--mcp-auth-env-var ENV]
 
 Examples:
   ./install.sh
   ./install.sh --defaults
+  ./install.sh --update
   ./install.sh --defaults --runtime hermes --memory hybrid --clusters tata-usaha,perencanaan-dan-anggaran
 EOF
 }
@@ -47,7 +48,7 @@ while [ "$#" -gt 0 ]; do
       TARGET_DIR="$2"
       shift 2
       ;;
-    --defaults)
+    --defaults|--update)
       add_installer_arg "$1"
       shift 1
       ;;
@@ -102,7 +103,7 @@ echo "Running Gov-Agentic AI installer ..."
 set --
 NEEDS_TTY=1
 while IFS= read -r arg; do
-  if [ "$arg" = "--defaults" ]; then
+  if [ "$arg" = "--defaults" ] || [ "$arg" = "--update" ]; then
     NEEDS_TTY=0
   fi
   set -- "$@" "$arg"

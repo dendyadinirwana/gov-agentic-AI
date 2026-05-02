@@ -18,6 +18,12 @@ Default install:
 curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh -s -- --defaults
 ```
 
+Update existing install:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh -s -- --update
+```
+
 Doctor / health check:
 
 ```bash
@@ -36,6 +42,12 @@ Default install:
 
 ```powershell
 $env:GOV_AGENTIC_INSTALL_ARGS='-Defaults'; irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
+```
+
+Update existing install:
+
+```powershell
+$env:GOV_AGENTIC_INSTALL_ARGS='-Update'; irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
 ```
 
 Doctor / health check:
@@ -103,6 +115,7 @@ This keeps local MCP minimal, and keeps remote MCP explicit and reviewable.
 ## Supported Installer Options
 
 - `--defaults`
+- `--update`
 - `--local-only`
 - `--install-target-root <path>`
 - `--runtime <openclaw|hermes|codex|claude|antigravity|generic>`
@@ -117,6 +130,7 @@ This keeps local MCP minimal, and keeps remote MCP explicit and reviewable.
 PowerShell equivalents:
 
 - `-Defaults`
+- `-Update`
 - `-Runtime <openclaw|hermes|codex|claude|antigravity|generic>`
 - `-Memory <local|mem9|hybrid>`
 - `-Governance <sandbox|production>`
@@ -235,3 +249,7 @@ PowerShell uninstall:
 ```powershell
 irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/uninstall.ps1 | iex
 ```
+
+## Update Mode
+
+`--update` reuses the last installed runtime settings when possible, pulls the latest repo changes, rebuilds the central home and runtime shim, and preserves the current runtime target unless you explicitly override it.
