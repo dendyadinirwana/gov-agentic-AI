@@ -1,28 +1,13 @@
 # Starter Output Examples — Konsultan Hukum (Audy)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `kebijakan-dan-hukum`
-- **Expected artifact:** legal memo
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — Clause Risk Review
+- **Task shape:** review one clause in MoU/PKS/addendum.
+- **Expected artifact:** clause issue note with source excerpt reference, risk theme, possible impact, and human legal review requirement.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** clause risk review
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — Authority Assessment
+- **Task shape:** ask whether a unit/official can sign or commit.
+- **Expected artifact:** authority-check memo separating known basis from missing authority proof.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** authority assessment
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Escalation Memo
+- **Task shape:** legal risk exists but supporting documents or approval path are incomplete.
+- **Expected artifact:** escalation memo naming blocker, missing source, and responsible human reviewer.

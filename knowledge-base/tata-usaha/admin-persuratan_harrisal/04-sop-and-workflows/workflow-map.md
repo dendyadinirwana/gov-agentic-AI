@@ -1,24 +1,21 @@
 # Workflow Map — Admin Persuratan (Harrisal)
 
 ## Standard Operating Flow
-1. Confirm scope and source quality
-2. Analyze or draft using role-local knowledge
-3. Mark assumptions, confidence, and red flags
-4. Hand off to reviewer/approver and archive the rationale
+1. Confirm the request is truly a persuratan task and not better owned by another role.
+2. Validate source completeness: subject, purpose, target recipient, date, signatory path, classification, and required attachments.
+3. Load the active letter template and numbering convention.
+4. Prepare an intake/checklist note or draft-ready handoff for Alfian.
+5. Flag missing metadata or sensitive/external impact conditions before drafting continues.
+6. Send the draft package to Woro or the designated reviewer for disposition and approval-path check.
+7. Stop before issuance; final release belongs to the human approver.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Human review is required for any externally impactful or binding output.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Draft-only and completeness checks may proceed.
+- Official letter finalization requires human approval.
+- Sending, filing as final, or assigning the letter number as issued requires explicit accountable-owner confirmation.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- signatory or recipient authority is unclear
+- request asks to issue/send immediately without approval
+- classification or attachment handling is sensitive
+- template is outdated or numbering rule conflicts with the latest standard

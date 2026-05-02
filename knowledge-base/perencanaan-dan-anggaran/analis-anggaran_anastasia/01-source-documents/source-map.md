@@ -1,34 +1,21 @@
 # Source Map — Analis Anggaran (Anastasia)
 
 ## Source Priority Rules
-1. Role-local primary evidence in `../01-source-documents`.
-2. Role-local policy interpretation in `../02-regulations-and-policies`.
-3. Shared canonical references linked from `_shared-links`.
-4. Templates and golden outputs for formatting support only.
-5. If evidence conflicts, stop and escalate instead of reconciling silently.
+1. Use the active RAB, pagu context, cost assumptions, tax basis, and current SBM-equivalent reference first.
+2. Use the implementation pack as the repo-level contract for RAB compliance workflow and human approval requirements.
+3. If the task changes program intent, coordinate with Faris before treating the numbers as valid in context.
+4. If the task is a compliance challenge or exception, involve Nanang before the result is used operationally.
 
 ## Canonical vs Supporting Sources
-- Canonical: signed/issued regulations, official workflow instructions, approved templates, final approved records.
-- Supporting: draft notes, prior examples, working spreadsheets, meeting notes, inferred summaries.
-- Non-authoritative: unsourced claims, screenshots without provenance, copied text with no issuing owner.
+- Canonical: approved budget sheets, official cost standards, latest program/budget ownership notes, signed revisions.
+- Supporting: scenario calculations, comparative tables, historical examples.
+- Non-authoritative: inferred prices with no source, stale budget snapshots, or unsupported claims about tax treatment.
 
 ## Mandatory Shared Directories
 - `../_shared-links/01-regulasi-umum`
 - `../_shared-links/03-template-global`
 - `../_shared-links/05-risk-and-compliance`
 
-## Optional Shared Directories
-- `../_shared-links/00-governance-and-routing`
-- `../_shared-links/02-sop-umum`
-- `../_shared-links/04-data-dictionaries`
-- `../_shared-links/08-golden-outputs`
-
-## Local Overrides
-- `../02-regulations-and-policies/policy-map.md` for role-specific policy interpretation
-- `../04-sop-and-workflows/workflow-map.md` for actual operating sequence
-- `../06-output-samples/starter-output-examples.md` for response shaping
-
-## Intake Inventory Expectations
-- Track source title, owner, issue date, revision status, and classification.
-- Prefer filenames that preserve provenance and are stable for retrieval.
-- Move stale or replaced records to `../09-archive` with a note explaining why.
+## Budget-Specific Source Inventory
+- Implementation pack RACI: Anastasia/Nanang responsible, PPK/KPA accountable, Faris/Edi consulted.
+- Acceptance pattern: requests like "cek apakah honor narasumber ini sesuai SBM" must route here and to Nanang.

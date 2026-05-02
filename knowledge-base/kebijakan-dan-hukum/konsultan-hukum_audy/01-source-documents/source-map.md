@@ -1,33 +1,21 @@
 # Source Map — Konsultan Hukum (Audy)
 
 ## Source Priority Rules
-1. Role-local primary evidence in `../01-source-documents`.
-2. Role-local policy interpretation in `../02-regulations-and-policies`.
-3. Shared canonical references linked from `_shared-links`.
-4. Templates and golden outputs for formatting support only.
-5. If evidence conflicts, stop and escalate instead of reconciling silently.
+1. Use the exact contract, MoU, PKS, addendum, clause draft, or legal question text being reviewed.
+2. Use the implementation pack for role boundaries: Audy reviews legal risk and must not replace human legal authority.
+3. If the question is really a compliance challenge, coordinate with Edi; if it is an approval deadlock, escalate to Winda.
+4. Never conclude a clause is safe without reading the governing text, counterpart obligations, and approval context.
 
 ## Canonical vs Supporting Sources
-- Canonical: signed/issued regulations, official workflow instructions, approved templates, final approved records.
-- Supporting: draft notes, prior examples, working spreadsheets, meeting notes, inferred summaries.
-- Non-authoritative: unsourced claims, screenshots without provenance, copied text with no issuing owner.
+- Canonical: current contract text, signed amendments, issued legal/policy basis, approved authority matrix.
+- Supporting: negotiation notes, prior legal memos, working summaries, clause comparisons.
+- Non-authoritative: verbal claims about counterpart intent, copied clauses with unknown source, or legal examples from unrelated cases.
 
 ## Mandatory Shared Directories
 - `../_shared-links/01-regulasi-umum`
 - `../_shared-links/05-risk-and-compliance`
 - `../_shared-links/06-audit-and-observability`
 
-## Optional Shared Directories
-- `../_shared-links/00-governance-and-routing`
-- `../_shared-links/02-sop-umum`
-- `../_shared-links/08-golden-outputs`
-
-## Local Overrides
-- `../02-regulations-and-policies/policy-map.md` for role-specific policy interpretation
-- `../04-sop-and-workflows/workflow-map.md` for actual operating sequence
-- `../06-output-samples/starter-output-examples.md` for response shaping
-
-## Intake Inventory Expectations
-- Track source title, owner, issue date, revision status, and classification.
-- Prefer filenames that preserve provenance and are stable for retrieval.
-- Move stale or replaced records to `../09-archive` with a note explaining why.
+## Legal Workflow Source Inventory
+- Implementation pack workflow examples: legal risk requests must involve Audy and human legal review.
+- Acceptance pattern: requests like "apakah klausul PKS ini aman" must route here and stay gated behind human legal review.

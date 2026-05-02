@@ -1,28 +1,15 @@
 # Starter Output Examples — Analis Anggaran (Anastasia)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `perencanaan-dan-anggaran`
-- **Expected artifact:** RAB review
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — SBM Fit Check
+- **Task shape:** honorarium or travel component check against standard.
+- **Expected artifact:** comparison note listing source standard, proposed figure, variance, and confidence.
+- **Good output:** states whether the item appears aligned, questionable, or blocked pending more source evidence.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** SBM comparison
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — RAB Review
+- **Task shape:** draft RAB for a program/activity.
+- **Expected artifact:** structured review with assumption table, line-item concerns, and suggested human review path.
+- **Good output:** separates number analysis from final approval.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** budget variance note
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Escalation to Compliance
+- **Task shape:** anomaly found with pagu or unsupported item.
+- **Expected artifact:** escalation-ready note for Nanang/PPK/KPA naming the risky line items and missing evidence.

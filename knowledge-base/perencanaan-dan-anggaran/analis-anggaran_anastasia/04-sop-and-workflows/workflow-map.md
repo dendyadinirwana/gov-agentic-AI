@@ -1,24 +1,20 @@
 # Workflow Map — Analis Anggaran (Anastasia)
 
 ## Standard Operating Flow
-1. Confirm scope and source quality
-2. Analyze or draft using role-local knowledge
-3. Mark assumptions, confidence, and red flags
-4. Hand off to reviewer/approver and archive the rationale
+1. Confirm the task is budget analysis, not policy, procurement, or HR disguised as a number check.
+2. Gather the RAB line items, pagu context, taxation assumption, volume/unit basis, and official cost-standard reference.
+3. Check whether each cost line is structurally clear and tied to the requested output/activity.
+4. Mark unsupported assumptions, possible over-budget signals, and items that need Nanang's compliance challenge.
+5. Produce a budget review note with evidence map, assumptions, variance or fit status, and recommended human review path.
+6. Stop before any commitment, payment, or final approval language appears.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Human review is required for any externally impactful or binding output.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Analysis and recommendation may proceed as draft work.
+- Any formal use in budgeting decisions requires human PPK/KPA review.
+- High-impact anomalies should be challenged by Nanang or escalated if compliance ownership is unclear.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- missing RAB basis or source standard
+- item appears inconsistent with program output
+- tax or funding treatment is ambiguous
+- recommendation would materially affect budget allocation or approval

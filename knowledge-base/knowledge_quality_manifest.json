@@ -10,7 +10,7 @@
       "alias": "Yayak",
       "role_class": "router",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.38,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -19,8 +19,8 @@
           "present": true
         },
         "sop_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 4,
+          "label": "high-confidence",
           "present": true
         },
         "template_coverage": {

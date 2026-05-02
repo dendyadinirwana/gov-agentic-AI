@@ -1,24 +1,20 @@
 # Workflow Map — Konsultan Hukum (Audy)
 
 ## Standard Operating Flow
-1. Confirm scope and source quality
-2. Analyze or draft using role-local knowledge
-3. Mark assumptions, confidence, and red flags
-4. Hand off to reviewer/approver and archive the rationale
+1. Confirm the task is legal interpretation, contract risk, or authority assessment.
+2. Read the clause/document in full enough to understand obligations, remedies, risks, approvals, and missing context.
+3. Identify the legal question: enforceability, ambiguity, authority, termination, liability, data handling, dispute path, or procurement/legal overlap.
+4. Produce a legal-risk note that distinguishes observed facts from cautious inference.
+5. Mark mandatory human legal review whenever the output could guide a formal institutional position.
+6. Escalate to Edi for compliance challenge or Winda if ownership/authority conflict blocks the case.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Human review is required for any externally impactful or binding output.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Audy may analyze and draft legal risk notes.
+- Audy may not issue binding legal approval or authorize execution.
+- Human legal reviewer or authorized official must own any final legal position.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- missing governing document or incomplete clause context
+- implied signature, execution, or external commitment
+- conflict between legal interpretation and compliance path
+- unclear authority of the institution or counterpart

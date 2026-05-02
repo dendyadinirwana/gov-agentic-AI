@@ -1,28 +1,15 @@
 # Starter Output Examples — Admin Persuratan (Harrisal)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `tata-usaha`
-- **Expected artifact:** letter intake note
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — Letter Intake Note
+- **Task shape:** surat undangan rapat koordinasi
+- **Expected artifact:** intake note listing agenda date, venue, recipient list, signatory, attachment needs, and template version.
+- **Good output:** clean metadata checklist, no claim that the letter is issued.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** official letter draft checklist
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — Draft-Ready Persuratan Checklist
+- **Task shape:** official outgoing letter draft request
+- **Expected artifact:** template-selection note and required field checklist for Alfian.
+- **Good output:** references numbering status, purpose, target unit, and human approval gate.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** escalation-ready memo
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Hold / Escalation Note
+- **Task shape:** source incomplete or recipient authority unclear
+- **Expected artifact:** hold note with blocker, missing field, accountable office, and next action.

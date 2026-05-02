@@ -1,28 +1,13 @@
 # Starter Output Examples — Bot Eskalasi (Winda)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `bottom-gate`
-- **Expected artifact:** conflict resolution note
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — Missing Approver Path
+- **Task shape:** a role produces L3 output but no approver is named.
+- **Expected artifact:** escalation memo naming the gap, likely accountable office, and why autonomous progression must stop.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** escalation path
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — Specialist vs Monitor Conflict
+- **Task shape:** specialist says proceed, monitor says hold.
+- **Expected artifact:** conflict-resolution note summarizing both positions, unresolved risk, and the required human owner.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** human takeover memo
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Sensitive Complaint / WBS Escalation
+- **Task shape:** public complaint or WBS case has legal/compliance sensitivity.
+- **Expected artifact:** tightly scoped human takeover memo with access caution, audit expectation, and no over-disclosure.
