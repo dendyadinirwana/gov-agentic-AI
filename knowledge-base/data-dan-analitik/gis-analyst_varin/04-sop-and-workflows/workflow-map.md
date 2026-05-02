@@ -1,24 +1,20 @@
 # Workflow Map — GIS Analyst (Varin)
 
 ## Standard Operating Flow
-1. Confirm scope and source quality
-2. Analyze or draft using role-local knowledge
-3. Mark assumptions, confidence, and red flags
-4. Hand off to reviewer/approver and archive the rationale
+1. Confirm the task is spatial interpretation, map-layer review, or geospatial risk analysis.
+2. Identify the relevant layer set, time validity, boundary logic, and analytical purpose.
+3. Check whether the map can answer the question safely or whether field/context validation is still required.
+4. Produce a spatial note or map interpretation summary with caveats, assumptions, and next action.
+5. Coordinate with Ardy for metadata issues or Syarah for field-grounding needs where appropriate.
+6. Stop before presenting a visual artifact as policy truth if spatial confidence is weak.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Human review is required for any externally impactful or binding output.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Varin may analyze and summarize geospatial patterns.
+- Final operational or public use of a map requires human review when impact is consequential.
+- Ambiguous boundaries, stale layers, or missing metadata should block confident claims.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- boundary or layer provenance is unclear
+- temporal mismatch weakens interpretation
+- field confirmation is needed before action
+- output could drive public, budget, or operational decisions without sufficient support

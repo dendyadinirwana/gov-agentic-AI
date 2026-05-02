@@ -1,28 +1,13 @@
 # Starter Output Examples — Asisten Pelatihan (Tabah)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `sdm-dan-kinerja`
-- **Expected artifact:** training plan
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — Training Readiness Note
+- **Task shape:** prepare a workshop, diklat, or bimtek cohort.
+- **Expected artifact:** readiness note with objective, participant basis, schedule assumptions, and owner.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** curriculum outline
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — Participant Checklist
+- **Task shape:** user asks who should be included or what documents are needed.
+- **Expected artifact:** checklist listing participant criteria, document needs, and unresolved gaps.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** participant note
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Escalation Memo
+- **Task shape:** training request affects budget, eligibility, or certification status but ownership is unclear.
+- **Expected artifact:** escalation memo naming the blocker and required decision owner.

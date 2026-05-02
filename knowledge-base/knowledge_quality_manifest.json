@@ -738,12 +738,12 @@
       "alias": "Anjungan",
       "role_class": "specialist",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.0,
       "missing": [],
       "dimensions": {
         "source_coverage": {
-          "score": 4,
-          "label": "high-confidence",
+          "score": 3,
+          "label": "operational",
           "present": true
         },
         "sop_coverage": {
@@ -757,8 +757,8 @@
           "present": true
         },
         "output_example_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 2,
+          "label": "usable",
           "present": true
         },
         "review_note_coverage": {
@@ -790,12 +790,12 @@
       "alias": "Iqbal",
       "role_class": "specialist",
       "readiness": "operational",
-      "average_score": 3.38,
+      "average_score": 3.25,
       "missing": [],
       "dimensions": {
         "source_coverage": {
-          "score": 4,
-          "label": "high-confidence",
+          "score": 3,
+          "label": "operational",
           "present": true
         },
         "sop_coverage": {
@@ -842,12 +842,12 @@
       "alias": "Satria",
       "role_class": "specialist",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.12,
       "missing": [],
       "dimensions": {
         "source_coverage": {
-          "score": 4,
-          "label": "high-confidence",
+          "score": 3,
+          "label": "operational",
           "present": true
         },
         "sop_coverage": {
@@ -894,12 +894,12 @@
       "alias": "Tabah",
       "role_class": "specialist",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.12,
       "missing": [],
       "dimensions": {
         "source_coverage": {
-          "score": 4,
-          "label": "high-confidence",
+          "score": 3,
+          "label": "operational",
           "present": true
         },
         "sop_coverage": {
@@ -946,12 +946,12 @@
       "alias": "Reza",
       "role_class": "monitor",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.12,
       "missing": [],
       "dimensions": {
         "source_coverage": {
-          "score": 4,
-          "label": "high-confidence",
+          "score": 3,
+          "label": "operational",
           "present": true
         },
         "sop_coverage": {
@@ -1050,12 +1050,12 @@
       "alias": "Syarah",
       "role_class": "specialist",
       "readiness": "operational",
-      "average_score": 3.38,
+      "average_score": 3.25,
       "missing": [],
       "dimensions": {
         "source_coverage": {
-          "score": 4,
-          "label": "high-confidence",
+          "score": 3,
+          "label": "operational",
           "present": true
         },
         "sop_coverage": {
@@ -1102,12 +1102,12 @@
       "alias": "Sauria",
       "role_class": "monitor",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.12,
       "missing": [],
       "dimensions": {
         "source_coverage": {
-          "score": 4,
-          "label": "high-confidence",
+          "score": 3,
+          "label": "operational",
           "present": true
         },
         "sop_coverage": {

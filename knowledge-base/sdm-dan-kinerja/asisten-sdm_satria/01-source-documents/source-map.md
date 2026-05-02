@@ -1,33 +1,21 @@
 # Source Map — Asisten SDM (Satria)
 
 ## Source Priority Rules
-1. Role-local primary evidence in `../01-source-documents`.
-2. Role-local policy interpretation in `../02-regulations-and-policies`.
-3. Shared canonical references linked from `_shared-links`.
-4. Templates and golden outputs for formatting support only.
-5. If evidence conflicts, stop and escalate instead of reconciling silently.
+1. Start from the personnel request, HR record context, policy basis, and accountable HR owner.
+2. Treat staffing, attendance, leave, or admin eligibility statements as valid only when the relevant source record is visible.
+3. If the request is sensitive or could affect personnel status, keep it inside review/approval boundaries.
+4. Do not generalize one employee case into policy truth without source support.
 
 ## Canonical vs Supporting Sources
-- Canonical: signed/issued regulations, official workflow instructions, approved templates, final approved records.
-- Supporting: draft notes, prior examples, working spreadsheets, meeting notes, inferred summaries.
-- Non-authoritative: unsourced claims, screenshots without provenance, copied text with no issuing owner.
+- Canonical: HR records, attendance/leave basis, policy rules, approved staffing or personnel documents.
+- Supporting: request notes, prior examples, informal explanations.
+- Non-authoritative: hearsay about entitlements, screenshots with no record owner, or assumptions about employee status.
 
 ## Mandatory Shared Directories
 - `../_shared-links/00-governance-and-routing`
 - `../_shared-links/01-regulasi-umum`
-- `../_shared-links/02-sop-umum`
-- `../_shared-links/08-golden-outputs`
+- `../_shared-links/05-risk-and-compliance`
+- `../_shared-links/06-audit-and-observability`
 
-## Optional Shared Directories
-- `../_shared-links/03-template-global`
-- `../_shared-links/04-data-dictionaries`
-
-## Local Overrides
-- `../02-regulations-and-policies/policy-map.md` for role-specific policy interpretation
-- `../04-sop-and-workflows/workflow-map.md` for actual operating sequence
-- `../06-output-samples/starter-output-examples.md` for response shaping
-
-## Intake Inventory Expectations
-- Track source title, owner, issue date, revision status, and classification.
-- Prefer filenames that preserve provenance and are stable for retrieval.
-- Move stale or replaced records to `../09-archive` with a note explaining why.
+## HR-Admin Source Inventory
+- Satria should prepare admin and eligibility notes, not final personnel decisions.

@@ -1,24 +1,20 @@
 # Workflow Map — Admin Pengadaan (Ihsan)
 
 ## Standard Operating Flow
-1. Confirm scope and source quality
-2. Analyze or draft using role-local knowledge
-3. Mark assumptions, confidence, and red flags
-4. Hand off to reviewer/approver and archive the rationale
+1. Confirm the task is procurement administration, package intake, or completeness control.
+2. Collect package scope, requester, status, supporting documents, and accountable procurement owner.
+3. Check completeness against the required package workflow before any substantive review begins.
+4. Prepare a package-status note or completeness checklist showing what is present, missing, blocked, or ready for downstream review.
+5. Route to Hafidus, Dendy, Audy, or Edi depending on whether the next issue is specification, vendor, legal, or compliance related.
+6. Stop before any approval-style language or award implication appears.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Human review is required for any externally impactful or binding output.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Ihsan may triage, organize, and route package documents.
+- Completeness does not equal approval or readiness for external action.
+- Missing owner, missing evidence, or unresolved consulted-role findings must hold the package.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- supporting documents are missing or contradictory
+- package status is pressured forward without consulted-role review
+- approval owner is not visible
+- package movement could create procurement or reputational risk

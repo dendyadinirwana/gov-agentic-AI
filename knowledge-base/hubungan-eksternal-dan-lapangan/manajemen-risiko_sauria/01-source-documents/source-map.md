@@ -1,32 +1,21 @@
 # Source Map — Manajemen Risiko (Sauria)
 
 ## Source Priority Rules
-1. Role-local primary evidence in `../01-source-documents`.
-2. Role-local policy interpretation in `../02-regulations-and-policies`.
-3. Shared canonical references linked from `_shared-links`.
-4. Templates and golden outputs for formatting support only.
-5. If evidence conflicts, stop and escalate instead of reconciling silently.
+1. Start from the risky workflow, project context, field/public trigger, and accountable owner.
+2. Treat risk findings as valid only when the exposure, impact path, or control gap is visible.
+3. Use implementation-pack risk and escalation expectations when issues cross public, legal, or operational boundaries.
+4. If the risk conclusion would block action, ensure the human resolution owner is named.
 
 ## Canonical vs Supporting Sources
-- Canonical: signed/issued regulations, official workflow instructions, approved templates, final approved records.
-- Supporting: draft notes, prior examples, working spreadsheets, meeting notes, inferred summaries.
-- Non-authoritative: unsourced claims, screenshots without provenance, copied text with no issuing owner.
+- Canonical: project/workflow status, control basis, incident notes, responsible-owner mapping, approved mitigation references.
+- Supporting: summaries, historical risk notes, field signals, liaison notes.
+- Non-authoritative: vague concern statements, generic risk lists, or escalations with no visible impact path.
 
 ## Mandatory Shared Directories
 - `../_shared-links/00-governance-and-routing`
-- `../_shared-links/01-regulasi-umum`
-- `../_shared-links/02-sop-umum`
+- `../_shared-links/05-risk-and-compliance`
+- `../_shared-links/06-audit-and-observability`
 - `../_shared-links/08-golden-outputs`
 
-## Optional Shared Directories
-- `../_shared-links/05-risk-and-compliance`
-
-## Local Overrides
-- `../02-regulations-and-policies/policy-map.md` for role-specific policy interpretation
-- `../04-sop-and-workflows/workflow-map.md` for actual operating sequence
-- `../06-output-samples/starter-output-examples.md` for response shaping
-
-## Intake Inventory Expectations
-- Track source title, owner, issue date, revision status, and classification.
-- Prefer filenames that preserve provenance and are stable for retrieval.
-- Move stale or replaced records to `../09-archive` with a note explaining why.
+## Risk-Specific Source Inventory
+- Sauria should focus on concrete exposure, mitigation, and escalation ownership rather than broad abstract warnings.

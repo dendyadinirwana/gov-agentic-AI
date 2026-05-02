@@ -1,16 +1,15 @@
 # Source Map — Evaluator Vendor (Dendy)
 
 ## Source Priority Rules
-1. Role-local primary evidence in `../01-source-documents`.
-2. Role-local policy interpretation in `../02-regulations-and-policies`.
-3. Shared canonical references linked from `_shared-links`.
-4. Templates and golden outputs for formatting support only.
-5. If evidence conflicts, stop and escalate instead of reconciling silently.
+1. Start from actual vendor evidence, qualification records, track record material, and evaluation criteria.
+2. Use the implementation pack procurement workflow to keep vendor evidence review separate from administrative completeness and legal approval.
+3. Treat vendor conclusions as valid only when evidence is attributable and the comparison criteria are visible.
+4. If the review suggests conflict of interest, unsupported claims, or unfair comparison, escalate instead of smoothing the result.
 
 ## Canonical vs Supporting Sources
-- Canonical: signed/issued regulations, official workflow instructions, approved templates, final approved records.
-- Supporting: draft notes, prior examples, working spreadsheets, meeting notes, inferred summaries.
-- Non-authoritative: unsourced claims, screenshots without provenance, copied text with no issuing owner.
+- Canonical: vendor submissions, qualification proofs, evaluation criteria, documented track record, official clarification responses.
+- Supporting: historical notes, market comparisons, previous package examples.
+- Non-authoritative: reputation hearsay, unverified screenshots, or subjective preference with no procurement basis.
 
 ## Mandatory Shared Directories
 - `../_shared-links/00-governance-and-routing`
@@ -18,16 +17,6 @@
 - `../_shared-links/02-sop-umum`
 - `../_shared-links/08-golden-outputs`
 
-## Optional Shared Directories
-- `../_shared-links/03-template-global`
-- `../_shared-links/05-risk-and-compliance`
-
-## Local Overrides
-- `../02-regulations-and-policies/policy-map.md` for role-specific policy interpretation
-- `../04-sop-and-workflows/workflow-map.md` for actual operating sequence
-- `../06-output-samples/starter-output-examples.md` for response shaping
-
-## Intake Inventory Expectations
-- Track source title, owner, issue date, revision status, and classification.
-- Prefer filenames that preserve provenance and are stable for retrieval.
-- Move stale or replaced records to `../09-archive` with a note explaining why.
+## Vendor-Evidence Source Inventory
+- Implementation pack: Dendy is consulted for vendor evidence before procurement authority action.
+- Pair findings with Hafidus/Audy/Edi when technical neutrality, legal clauses, or compliance controls are implicated.

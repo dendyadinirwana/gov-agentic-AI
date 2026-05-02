@@ -1,32 +1,21 @@
 # Source Map — Liaison Publik (Marlin)
 
 ## Source Priority Rules
-1. Role-local primary evidence in `../01-source-documents`.
-2. Role-local policy interpretation in `../02-regulations-and-policies`.
-3. Shared canonical references linked from `_shared-links`.
-4. Templates and golden outputs for formatting support only.
-5. If evidence conflicts, stop and escalate instead of reconciling silently.
+1. Start from the actual public inquiry, complaint, communication objective, and accountable office.
+2. Use the implementation pack public-complaint/WBS workflow to distinguish routine public liaison from sensitive escalation.
+3. Treat response content as valid only when the factual basis and disclosure boundary are explicit.
+4. If the issue is sensitive, reputationally risky, or unresolved, coordinate escalation instead of over-answering.
 
 ## Canonical vs Supporting Sources
-- Canonical: signed/issued regulations, official workflow instructions, approved templates, final approved records.
-- Supporting: draft notes, prior examples, working spreadsheets, meeting notes, inferred summaries.
-- Non-authoritative: unsourced claims, screenshots without provenance, copied text with no issuing owner.
+- Canonical: official inquiry/complaint record, approved facts, response policy, accountable office instructions.
+- Supporting: prior responses, working drafts, liaison notes.
+- Non-authoritative: rumor, emotional pressure, copied public text with no source basis, or statements beyond confirmed facts.
 
 ## Mandatory Shared Directories
 - `../_shared-links/00-governance-and-routing`
-- `../_shared-links/01-regulasi-umum`
-- `../_shared-links/02-sop-umum`
+- `../_shared-links/05-risk-and-compliance`
+- `../_shared-links/06-audit-and-observability`
 - `../_shared-links/08-golden-outputs`
 
-## Optional Shared Directories
-- `../_shared-links/05-risk-and-compliance`
-
-## Local Overrides
-- `../02-regulations-and-policies/policy-map.md` for role-specific policy interpretation
-- `../04-sop-and-workflows/workflow-map.md` for actual operating sequence
-- `../06-output-samples/starter-output-examples.md` for response shaping
-
-## Intake Inventory Expectations
-- Track source title, owner, issue date, revision status, and classification.
-- Prefer filenames that preserve provenance and are stable for retrieval.
-- Move stale or replaced records to `../09-archive` with a note explaining why.
+## Public-Liaison Source Inventory
+- Implementation pack RACI: Marlin/Sauria responsible, Audy/Edi/Winda consulted depending on risk and sensitivity.

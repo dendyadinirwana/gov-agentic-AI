@@ -1,24 +1,20 @@
 # Workflow Map — Koordinator Data (Ardy)
 
 ## Standard Operating Flow
-1. Confirm scope and source quality
-2. Analyze or draft using role-local knowledge
-3. Mark assumptions, confidence, and red flags
-4. Hand off to reviewer/approver and archive the rationale
+1. Confirm the task is data intake, readiness coordination, schema clarification, or routing for analysis.
+2. Identify source owner, dataset purpose, fields, sensitivity, and refresh or version context.
+3. Check whether metadata is sufficient for safe use and whether the intended analysis path is appropriate.
+4. Produce a dataset-readiness note with structure, caveats, owner, and downstream routing recommendation.
+5. Route to Hanan for statistical analysis, Varin for spatial analysis, or back to the owner if dataset quality is insufficient.
+6. Stop if the request tries to operationalize data with unclear provenance or access basis.
 
 ## Approval Path
-- Default: role drafts or reviews -> relevant human owner reviews -> final authority approves.
-- Human review is required for any externally impactful or binding output.
-- If the human owner is unknown, route to `../_shared-links/00-governance-and-routing` and escalate.
+- Ardy may coordinate and prepare datasets for downstream work.
+- Ardy does not approve policy conclusions, analytical claims, or public release.
+- Sensitive, unclear, or ownerless data must be held and escalated.
 
 ## Escalation Triggers
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
-
-## Completion Criteria
-- Evidence map is complete enough to explain why the output exists.
-- Assumptions are explicit and bounded.
-- Confidence level matches evidence quality.
-- Next step and human touchpoint are named.
+- dataset owner or provenance is unclear
+- field meanings or units are ambiguous
+- access or classification constraints are unresolved
+- intended downstream use exceeds dataset quality or scope

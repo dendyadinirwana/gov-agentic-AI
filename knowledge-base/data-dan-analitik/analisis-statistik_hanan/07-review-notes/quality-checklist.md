@@ -1,26 +1,25 @@
 # Quality Checklist — Analisis Statistik (Hanan)
 
 ## Pre-Release Review Checklist
-- [ ] Role fit is correct for the request.
-- [ ] Sources are named, current enough, and classified.
-- [ ] Output uses the required contract structure.
-- [ ] Assumptions are explicit and bounded.
-- [ ] Confidence is not inflated beyond the evidence quality.
-- [ ] Human touchpoint is named for consequential action.
+- [ ] Dataset origin, structure, and assumptions are visible enough to justify the analysis.
+- [ ] Method choice matches the question being asked.
+- [ ] Result interpretation is separated from unsupported policy or causal claims.
+- [ ] Caveats, confidence limits, and data-quality issues are explicit.
+- [ ] Human touchpoint is named before consequential use.
 
 ## Common Failure Modes
-- Wrong role keeps the task instead of routing or escalating.
-- Template language is used without source grounding.
-- Sensitive/public-impact content is drafted without approval path.
-- Evidence map is omitted or too vague to audit.
-- Example output is mistaken for official approval.
+- statistical language hides weak or biased data
+- result is over-interpreted as policy fact or causal proof
+- normalization/weighting assumptions are not disclosed
+- draft looks precise but source provenance is missing
+- uncertainty is suppressed to satisfy urgency
 
 ## Red-Flag Patterns
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
+- small or partial data treated as complete truth
+- outliers or missing values materially change interpretation
+- requester pressures for certainty beyond the evidence
+- output is likely to affect budget, policy, or public messaging without review
 
 ## Reviewer Notes
-- Prefer concise challenge notes over silent corrections.
-- If you cannot explain why the output is safe, mark it low confidence and stop.
+- Hanan should prefer careful caveats over false precision.
+- If the data or method cannot be defended briefly, confidence should drop and escalation should be considered.

@@ -1,33 +1,22 @@
 # Source Map — Admin Pengadaan (Ihsan)
 
 ## Source Priority Rules
-1. Role-local primary evidence in `../01-source-documents`.
-2. Role-local policy interpretation in `../02-regulations-and-policies`.
-3. Shared canonical references linked from `_shared-links`.
-4. Templates and golden outputs for formatting support only.
-5. If evidence conflicts, stop and escalate instead of reconciling silently.
+1. Start from the procurement package, scope request, document completeness status, and accountable procurement owner.
+2. Use the implementation pack procurement workflow to distinguish intake/admin work from specification, vendor, legal, and compliance review.
+3. Treat package status as authoritative only when the supporting document set and responsible owner are explicit.
+4. Never move a package forward as if it were approved when legal, specification, or compliance review is still unresolved.
 
 ## Canonical vs Supporting Sources
-- Canonical: signed/issued regulations, official workflow instructions, approved templates, final approved records.
-- Supporting: draft notes, prior examples, working spreadsheets, meeting notes, inferred summaries.
-- Non-authoritative: unsourced claims, screenshots without provenance, copied text with no issuing owner.
+- Canonical: package documents, procurement plan context, official checklists, signed revisions, accountable-owner notes.
+- Supporting: working admin notes, prior package examples, scheduling discussions.
+- Non-authoritative: verbal go-ahead with no document basis, copied package metadata with unclear owner, or assumptions that a missing document will arrive later.
 
 ## Mandatory Shared Directories
 - `../_shared-links/00-governance-and-routing`
 - `../_shared-links/01-regulasi-umum`
 - `../_shared-links/02-sop-umum`
-- `../_shared-links/08-golden-outputs`
-
-## Optional Shared Directories
-- `../_shared-links/03-template-global`
 - `../_shared-links/05-risk-and-compliance`
 
-## Local Overrides
-- `../02-regulations-and-policies/policy-map.md` for role-specific policy interpretation
-- `../04-sop-and-workflows/workflow-map.md` for actual operating sequence
-- `../06-output-samples/starter-output-examples.md` for response shaping
-
-## Intake Inventory Expectations
-- Track source title, owner, issue date, revision status, and classification.
-- Prefer filenames that preserve provenance and are stable for retrieval.
-- Move stale or replaced records to `../09-archive` with a note explaining why.
+## Procurement-Admin Source Inventory
+- Implementation pack RACI: Ihsan/Hafidus responsible, Dendy/Audy/Edi consulted, procurement authority accountable.
+- Ihsan owns completeness and intake flow; downstream roles own neutrality, vendor evidence, legal, and compliance challenge.

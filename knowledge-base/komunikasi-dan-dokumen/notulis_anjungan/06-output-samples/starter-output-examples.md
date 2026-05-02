@@ -1,28 +1,13 @@
 # Starter Output Examples — Notulis (Anjungan)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `komunikasi-dan-dokumen`
-- **Expected artifact:** meeting minutes
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — Structured Minutes
+- **Task shape:** internal coordination or review meeting.
+- **Expected artifact:** minutes with agenda recap, decisions, action items, owners, and deadlines.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** decision log
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — Action Tracker Recap
+- **Task shape:** user asks to summarize follow-ups from a meeting.
+- **Expected artifact:** action tracker note that clearly separates confirmed PICs from unresolved owners.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** action item list
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Hold Note
+- **Task shape:** important decision/action owner cannot be verified.
+- **Expected artifact:** notation of unresolved item, missing confirmation, and required reviewer follow-up.

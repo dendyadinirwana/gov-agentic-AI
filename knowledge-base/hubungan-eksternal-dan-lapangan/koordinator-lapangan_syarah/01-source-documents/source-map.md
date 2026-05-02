@@ -1,16 +1,15 @@
 # Source Map — Koordinator Lapangan (Syarah)
 
 ## Source Priority Rules
-1. Role-local primary evidence in `../01-source-documents`.
-2. Role-local policy interpretation in `../02-regulations-and-policies`.
-3. Shared canonical references linked from `_shared-links`.
-4. Templates and golden outputs for formatting support only.
-5. If evidence conflicts, stop and escalate instead of reconciling silently.
+1. Start from the field objective, location/context, deployment owner, and operational constraints.
+2. Treat field status as valid only when the source notes, assignment basis, or verification context are explicit.
+3. Separate observed field facts from assumptions made remotely.
+4. If field conditions create safety, sensitivity, or escalation risk, preserve that explicitly before operations continue.
 
 ## Canonical vs Supporting Sources
-- Canonical: signed/issued regulations, official workflow instructions, approved templates, final approved records.
-- Supporting: draft notes, prior examples, working spreadsheets, meeting notes, inferred summaries.
-- Non-authoritative: unsourced claims, screenshots without provenance, copied text with no issuing owner.
+- Canonical: field assignments, verified field notes, coordination instructions, accountable-owner direction.
+- Supporting: rough observations, informal updates, historical field examples.
+- Non-authoritative: vague travel assumptions, copied status updates with no owner, or unverified local claims.
 
 ## Mandatory Shared Directories
 - `../_shared-links/00-governance-and-routing`
@@ -18,15 +17,5 @@
 - `../_shared-links/02-sop-umum`
 - `../_shared-links/08-golden-outputs`
 
-## Optional Shared Directories
-- `../_shared-links/05-risk-and-compliance`
-
-## Local Overrides
-- `../02-regulations-and-policies/policy-map.md` for role-specific policy interpretation
-- `../04-sop-and-workflows/workflow-map.md` for actual operating sequence
-- `../06-output-samples/starter-output-examples.md` for response shaping
-
-## Intake Inventory Expectations
-- Track source title, owner, issue date, revision status, and classification.
-- Prefer filenames that preserve provenance and are stable for retrieval.
-- Move stale or replaced records to `../09-archive` with a note explaining why.
+## Field-Coordination Source Inventory
+- Syarah may need to ground analytics, public liaison, or risk signals in actual field coordination context.

@@ -1,26 +1,25 @@
 # Quality Checklist — Monitor Kinerja (Reza)
 
 ## Pre-Release Review Checklist
-- [ ] Role fit is correct for the request.
-- [ ] Sources are named, current enough, and classified.
-- [ ] Output uses the required contract structure.
-- [ ] Assumptions are explicit and bounded.
-- [ ] Confidence is not inflated beyond the evidence quality.
-- [ ] Human touchpoint is named for consequential action.
+- [ ] Indicator name, period, and target/baseline are visible.
+- [ ] Variance statement is grounded in actual metric evidence.
+- [ ] Commentary does not overclaim causes beyond the available data.
+- [ ] Accountability and next-step ownership are named.
+- [ ] Human reviewer is visible where the finding could affect management action.
 
 ## Common Failure Modes
-- Wrong role keeps the task instead of routing or escalating.
-- Template language is used without source grounding.
-- Sensitive/public-impact content is drafted without approval path.
-- Evidence map is omitted or too vague to audit.
-- Example output is mistaken for official approval.
+- metric is quoted without period or baseline
+- performance concern is exaggerated without material evidence
+- commentary blurs observation and causal diagnosis
+- alert is issued but no accountable owner is named
+- dashboard-like polish hides weak source grounding
 
 ## Red-Flag Patterns
-- missing or outdated source evidence
-- request requires L3/L4 human approval
-- restricted or sensitive data appears without handling decision
-- output could create legal, fiscal, procurement, reputational, or public impact
+- conflicting metric sources
+- sudden variance with no documented context
+- request pressures for positive narrative over evidence
+- output may influence evaluation, resource allocation, or leadership response without proper review
 
 ## Reviewer Notes
-- Prefer concise challenge notes over silent corrections.
-- If you cannot explain why the output is safe, mark it low confidence and stop.
+- Reza should challenge measurement quality before challenging people.
+- If indicator logic is unclear, confidence must drop and the issue should be escalated.

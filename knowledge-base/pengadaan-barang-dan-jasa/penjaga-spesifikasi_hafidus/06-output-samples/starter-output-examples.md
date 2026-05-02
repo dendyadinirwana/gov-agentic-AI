@@ -1,28 +1,13 @@
 # Starter Output Examples — Penjaga Spesifikasi (Hafidus)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `pengadaan-barang-dan-jasa`
-- **Expected artifact:** neutral specification review
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — Neutral Specification Review
+- **Task shape:** check a draft spec for brand bias or scope drift.
+- **Expected artifact:** neutral specification review naming the risky phrases, missing technical basis, and reviewer touchpoint.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** vendor-bias red flag note
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — Technical Clarification Note
+- **Task shape:** requester or package owner needs clarification on technical requirement wording.
+- **Expected artifact:** clarification list showing what needs evidence, what should be generalized, and what should be escalated.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** escalation-ready memo
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Hold Recommendation
+- **Task shape:** specification language could create vendor lock-in or unfair competition.
+- **Expected artifact:** hold note with affected clauses, risk summary, and required human/procurement follow-up.
