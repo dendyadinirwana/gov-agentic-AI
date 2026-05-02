@@ -3,11 +3,31 @@
 ## Primary Artifacts
 - vendor evaluation memo
 - due diligence note
+- comparison matrix
+- qualification gap note
+- vendor-risk escalation memo
 
-## Template Expectations
-- Start from role-local templates when available.
-- Fall back to `../_shared-links/03-template-global` for formatting patterns.
-- Keep the mandatory output contract: summary, evidence map, assumptions, confidence, red flags, human touchpoint, next step.
+## Role-Local Template Patterns
+### Vendor Comparison Matrix
+- vendor name
+- evaluation criterion
+- evidence found
+- strength/weakness
+- unresolved issue
+- reviewer needed
+
+### Due Diligence Note
+- vendor reviewed
+- evidence sources
+- risk findings
+- confidence
+- next action
+
+### Qualification Gap Note
+- missing proof
+- impact on evaluation
+- resolver/clarification owner
+- escalation trigger
 
 ## Minimum Artifact Metadata
 - source reference(s)
@@ -15,7 +35,8 @@
 - drafter role and reviewer role
 - action level / impact level
 - status: draft, review, hold, approved, archived
+- package reference
 
 ## Consumption Notes
-- Treat examples as structure aids, not legal or administrative authority.
-- If the task is novel, create a working template in this folder and record the provenance in `../08-ingestion-ready/intake-guide.md`.
+- Vendor artifacts should make evidence quality and fairness visible enough for procurement reviewers to challenge them.
+- Avoid narrative-only summaries when a matrix would reveal comparison logic more clearly.

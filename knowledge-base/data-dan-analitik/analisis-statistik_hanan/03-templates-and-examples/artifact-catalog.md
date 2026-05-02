@@ -4,11 +4,31 @@
 - statistical summary
 - table interpretation
 - data caveat note
+- method-selection memo
+- variance interpretation brief
+- analytical escalation note
 
-## Template Expectations
-- Start from role-local templates when available.
-- Fall back to `../_shared-links/03-template-global` for formatting patterns.
-- Keep the mandatory output contract: summary, evidence map, assumptions, confidence, red flags, human touchpoint, next step.
+## Role-Local Template Patterns
+### Statistical Summary
+- question asked
+- dataset used
+- method or lens
+- key findings
+- caveats
+- reviewer needed
+
+### Method-Selection Memo
+- analytical need
+- method chosen
+- why it fits
+- limitations
+- confidence impact
+
+### Variance Interpretation Brief
+- pattern observed
+- likely meaning
+- what cannot be concluded
+- next analytical or human step
 
 ## Minimum Artifact Metadata
 - source reference(s)
@@ -16,7 +36,8 @@
 - drafter role and reviewer role
 - action level / impact level
 - status: draft, review, hold, approved, archived
+- analytical owner
 
 ## Consumption Notes
-- Treat examples as structure aids, not legal or administrative authority.
-- If the task is novel, create a working template in this folder and record the provenance in `../08-ingestion-ready/intake-guide.md`.
+- Statistical artifacts should expose the method and limitation, not just the result.
+- If a conclusion is sensitive to weak data quality, make the caveat structurally visible.

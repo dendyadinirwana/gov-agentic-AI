@@ -44,18 +44,6 @@
       ]
     },
     {
-      "alias": "Dendy",
-      "role": "Evaluator Vendor",
-      "cluster": "pengadaan-barang-dan-jasa",
-      "average_score": 3.25,
-      "current_readiness": "operational",
-      "upgrade_levers": [
-        "sop_coverage",
-        "template_coverage",
-        "output_example_coverage"
-      ]
-    },
-    {
       "alias": "Hafidus",
       "role": "Penjaga Spesifikasi",
       "cluster": "pengadaan-barang-dan-jasa",
@@ -83,7 +71,7 @@
       "alias": "Hanan",
       "role": "Analisis Statistik",
       "cluster": "data-dan-analitik",
-      "average_score": 3.38,
+      "average_score": 3.25,
       "current_readiness": "operational",
       "upgrade_levers": [
         "sop_coverage",
@@ -282,6 +270,58 @@
       "cluster": "komunikasi-dan-dokumen",
       "role": "Notulis",
       "alias": "Anjungan",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.12,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 2,
+          "label": "usable",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "pengadaan-barang-dan-jasa/evaluator-vendor_dendy",
+      "cluster": "pengadaan-barang-dan-jasa",
+      "role": "Evaluator Vendor",
+      "alias": "Dendy",
       "role_class": "specialist",
       "readiness": "operational",
       "average_score": 3.12,
@@ -590,6 +630,58 @@
       }
     },
     {
+      "path": "data-dan-analitik/analisis-statistik_hanan",
+      "cluster": "data-dan-analitik",
+      "role": "Analisis Statistik",
+      "alias": "Hanan",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.25,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 2,
+          "label": "usable",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
       "path": "data-dan-analitik/gis-analyst_varin",
       "cluster": "data-dan-analitik",
       "role": "GIS Analyst",
@@ -632,110 +724,6 @@
         "escalation_clarity": {
           "score": 3,
           "label": "operational",
-          "present": true
-        },
-        "shared_link_quality": {
-          "score": 4,
-          "label": "high-confidence",
-          "present": true
-        }
-      }
-    },
-    {
-      "path": "hubungan-eksternal-dan-lapangan/liaison-publik_marlin",
-      "cluster": "hubungan-eksternal-dan-lapangan",
-      "role": "Liaison Publik",
-      "alias": "Marlin",
-      "role_class": "specialist",
-      "readiness": "operational",
-      "average_score": 3.25,
-      "missing": [],
-      "dimensions": {
-        "source_coverage": {
-          "score": 4,
-          "label": "high-confidence",
-          "present": true
-        },
-        "sop_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "template_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "output_example_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "review_note_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "ingestion_readiness": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "escalation_clarity": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "shared_link_quality": {
-          "score": 4,
-          "label": "high-confidence",
-          "present": true
-        }
-      }
-    },
-    {
-      "path": "hubungan-eksternal-dan-lapangan/koordinator-lapangan_syarah",
-      "cluster": "hubungan-eksternal-dan-lapangan",
-      "role": "Koordinator Lapangan",
-      "alias": "Syarah",
-      "role_class": "specialist",
-      "readiness": "operational",
-      "average_score": 3.25,
-      "missing": [],
-      "dimensions": {
-        "source_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "sop_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "template_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "output_example_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "review_note_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "ingestion_readiness": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "escalation_clarity": {
-          "score": 4,
-          "label": "high-confidence",
           "present": true
         },
         "shared_link_quality": {
@@ -1060,58 +1048,6 @@
       }
     },
     {
-      "path": "data-dan-analitik/analisis-statistik_hanan",
-      "cluster": "data-dan-analitik",
-      "role": "Analisis Statistik",
-      "alias": "Hanan",
-      "role_class": "specialist",
-      "readiness": "operational",
-      "average_score": 3.38,
-      "missing": [],
-      "dimensions": {
-        "source_coverage": {
-          "score": 4,
-          "label": "high-confidence",
-          "present": true
-        },
-        "sop_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "template_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "output_example_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "review_note_coverage": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "ingestion_readiness": {
-          "score": 3,
-          "label": "operational",
-          "present": true
-        },
-        "escalation_clarity": {
-          "score": 4,
-          "label": "high-confidence",
-          "present": true
-        },
-        "shared_link_quality": {
-          "score": 4,
-          "label": "high-confidence",
-          "present": true
-        }
-      }
-    },
-    {
       "path": "kebijakan-dan-hukum/analis-kebijakan_azis",
       "cluster": "kebijakan-dan-hukum",
       "role": "Analis Kebijakan",
@@ -1266,6 +1202,58 @@
           "present": true
         }
       }
+    },
+    {
+      "path": "tata-usaha/admin-persuratan_harrisal",
+      "cluster": "tata-usaha",
+      "role": "Admin Persuratan",
+      "alias": "Harrisal",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.38,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
     }
   ],
   "cluster_summary": {
@@ -1297,14 +1285,14 @@
       "readiness": {
         "operational": 3
       },
-      "average_score": 3.29
+      "average_score": 3.25
     },
     "data-dan-analitik": {
       "role_count": 3,
       "readiness": {
         "operational": 3
       },
-      "average_score": 3.29
+      "average_score": 3.25
     },
     "komunikasi-dan-dokumen": {
       "role_count": 3,
@@ -1353,6 +1341,6 @@
   "bundles": [],
   "recommended_next_actions": [
     "Deepen role-local sources and exemplars for Sauria (hubungan-eksternal-dan-lapangan) to improve its lowest-scoring dimensions.",
-    "Prioritize real approved source uploads for near-ready roles: Azis, Nanang, Ihsan, Dendy, Hafidus."
+    "Prioritize real approved source uploads for near-ready roles: Azis, Nanang, Ihsan, Hafidus, Ardy."
   ]
 }

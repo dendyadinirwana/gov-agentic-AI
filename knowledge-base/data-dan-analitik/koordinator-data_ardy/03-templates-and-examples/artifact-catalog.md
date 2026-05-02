@@ -3,11 +3,32 @@
 ## Primary Artifacts
 - data source map
 - data quality note
+- dataset readiness report
+- schema clarification memo
+- access/control escalation note
 
-## Template Expectations
-- Start from role-local templates when available.
-- Fall back to `../_shared-links/03-template-global` for formatting patterns.
-- Keep the mandatory output contract: summary, evidence map, assumptions, confidence, red flags, human touchpoint, next step.
+## Role-Local Template Patterns
+### Dataset Readiness Report
+- dataset name
+- owner
+- structure summary
+- provenance status
+- data quality risks
+- downstream route
+
+### Schema Clarification Memo
+- field or entity
+- current meaning
+- ambiguity found
+- source owner needed
+- impact on use
+
+### Access/Control Escalation Note
+- dataset or field affected
+- control gap
+- classification concern
+- resolver
+- next step
 
 ## Minimum Artifact Metadata
 - source reference(s)
@@ -15,7 +36,8 @@
 - drafter role and reviewer role
 - action level / impact level
 - status: draft, review, hold, approved, archived
+- data owner
 
 ## Consumption Notes
-- Treat examples as structure aids, not legal or administrative authority.
-- If the task is novel, create a working template in this folder and record the provenance in `../08-ingestion-ready/intake-guide.md`.
+- Data coordination artifacts should reduce ambiguity before downstream analysis begins.
+- When provenance or schema meaning is uncertain, make that the primary finding.

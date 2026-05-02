@@ -1,28 +1,13 @@
 # Starter Output Examples — Admin Pengadaan (Ihsan)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `pengadaan-barang-dan-jasa`
-- **Expected artifact:** procurement document checklist
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — Package Completeness Report
+- **Task shape:** procurement package is entering review.
+- **Expected artifact:** report listing present and missing package documents, next consulted role, and approval owner.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** tender preparation note
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — Procurement Routing Brief
+- **Task shape:** user asks what should happen next in a package flow.
+- **Expected artifact:** routing brief showing whether the next step is specification, vendor, legal, or compliance review.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** escalation-ready memo
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Hold Note
+- **Task shape:** package is pushed forward despite missing documents or unclear owner.
+- **Expected artifact:** hold note naming blocker, stage affected, resolver, and resume condition.

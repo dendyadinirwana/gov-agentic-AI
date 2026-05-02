@@ -1,28 +1,13 @@
 # Starter Output Examples — GIS Analyst (Varin)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `data-dan-analitik`
-- **Expected artifact:** spatial analysis note
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — Map Evidence Summary
+- **Task shape:** interpret a map or geospatial layer for a specific question.
+- **Expected artifact:** summary with pattern, caveat, metadata status, and operational relevance.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** map evidence summary
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — Layer Validity Memo
+- **Task shape:** a map layer may be stale, incomplete, or poorly documented.
+- **Expected artifact:** memo showing why the layer is weak and what validation is needed.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** escalation-ready memo
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Field-Grounding Request
+- **Task shape:** map interpretation needs field confirmation before action.
+- **Expected artifact:** request note naming the field validation need, likely partner, and decision risk if skipped.

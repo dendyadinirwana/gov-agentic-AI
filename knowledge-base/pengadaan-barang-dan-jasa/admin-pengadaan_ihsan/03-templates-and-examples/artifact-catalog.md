@@ -3,11 +3,32 @@
 ## Primary Artifacts
 - procurement document checklist
 - tender preparation note
+- package completeness report
+- package routing brief
+- procurement hold note
 
-## Template Expectations
-- Start from role-local templates when available.
-- Fall back to `../_shared-links/03-template-global` for formatting patterns.
-- Keep the mandatory output contract: summary, evidence map, assumptions, confidence, red flags, human touchpoint, next step.
+## Role-Local Template Patterns
+### Package Completeness Report
+- package name
+- requester/unit
+- required documents
+- present/missing items
+- next reviewer path
+- blocking issues
+
+### Procurement Routing Brief
+- current package status
+- next consulted role
+- evidence attached
+- approval owner
+- stop conditions
+
+### Hold Note
+- missing document or owner
+- impacted package stage
+- risk type
+- required remediation
+- human resolver
 
 ## Minimum Artifact Metadata
 - source reference(s)
@@ -15,7 +36,8 @@
 - drafter role and reviewer role
 - action level / impact level
 - status: draft, review, hold, approved, archived
+- package owner
 
 ## Consumption Notes
-- Treat examples as structure aids, not legal or administrative authority.
-- If the task is novel, create a working template in this folder and record the provenance in `../08-ingestion-ready/intake-guide.md`.
+- Administrative procurement artifacts must make review readiness visible without implying award or approval.
+- If completeness is partial, the artifact should expose that clearly rather than smoothing it into readiness.

@@ -1,28 +1,13 @@
 # Starter Output Examples — Koordinator Data (Ardy)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `data-dan-analitik`
-- **Expected artifact:** data source map
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — Dataset Readiness Report
+- **Task shape:** a dataset is being prepared for analysis or routing.
+- **Expected artifact:** readiness report with owner, provenance, structure, quality caveats, and downstream destination.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** data quality note
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — Schema Clarification Memo
+- **Task shape:** analysts need help understanding fields or entity meaning.
+- **Expected artifact:** clarification memo showing ambiguity, likely owner, and impact on use.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** escalation-ready memo
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Access/Control Escalation
+- **Task shape:** dataset has classification or access uncertainty.
+- **Expected artifact:** escalation note naming the control gap, affected analysis path, and resolver.

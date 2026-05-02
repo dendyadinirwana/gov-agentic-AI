@@ -426,7 +426,7 @@
       "alias": "Dendy",
       "role_class": "specialist",
       "readiness": "operational",
-      "average_score": 3.25,
+      "average_score": 3.12,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -445,8 +445,8 @@
           "present": true
         },
         "output_example_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 2,
+          "label": "usable",
           "present": true
         },
         "review_note_coverage": {
@@ -582,7 +582,7 @@
       "alias": "Hanan",
       "role_class": "specialist",
       "readiness": "operational",
-      "average_score": 3.38,
+      "average_score": 3.25,
       "missing": [],
       "dimensions": {
         "source_coverage": {
@@ -601,8 +601,8 @@
           "present": true
         },
         "output_example_coverage": {
-          "score": 3,
-          "label": "operational",
+          "score": 2,
+          "label": "usable",
           "present": true
         },
         "review_note_coverage": {

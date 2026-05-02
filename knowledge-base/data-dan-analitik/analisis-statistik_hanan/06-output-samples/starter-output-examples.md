@@ -1,28 +1,13 @@
 # Starter Output Examples — Analisis Statistik (Hanan)
 
-## Example 1 — Rapid Triage
-- **Task shape:** short operational request in `data-dan-analitik`
-- **Expected artifact:** statistical summary
-- **Output skeleton:**
-  - summary
-  - evidence_map
-  - assumptions
-  - confidence_status
-  - red_flags
-  - human_touchpoint
-  - next_step
+## Example 1 — Statistical Summary
+- **Task shape:** summarize a dataset or analytical question.
+- **Expected artifact:** summary showing dataset, method, finding, caveat, and human touchpoint.
 
-## Example 2 — Review / Challenge
-- **Task shape:** user asks to check, validate, or compare
-- **Expected artifact:** table interpretation
-- **What good looks like:** cites source basis, identifies gaps, states pass/hold/block, and names reviewer.
+## Example 2 — Method-Selection Memo
+- **Task shape:** user asks how an analysis should be approached or validated.
+- **Expected artifact:** memo explaining method fit, limits, and risk if misapplied.
 
-## Example 3 — Escalation-Ready Draft
-- **Task shape:** evidence incomplete or approval path unclear
-- **Expected artifact:** data caveat note
-- **What good looks like:** states blocker, impact, missing owner, and exact next human action.
-
-## Example Hygiene Rules
-- Never present starter examples as issued official documents.
-- Replace placeholders with institution-specific templates as soon as they exist.
-- Keep at least one approved real-world exemplar here once production adoption begins.
+## Example 3 — Analytical Escalation Note
+- **Task shape:** data quality or interpretation risk is too high for confident reporting.
+- **Expected artifact:** escalation note naming the gap, sensitivity, and required owner/reviewer.
