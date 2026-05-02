@@ -39,7 +39,11 @@
     "runtime_target",
     "shared_guardrail_skill",
     "shared_knowledge_root",
-    "system_prompt"
+    "system_prompt",
+    "government_work_logic",
+    "authority_matrix",
+    "decision_engine",
+    "decision_engine_entrypoint"
   ],
   "properties": {
     "project_name": {
@@ -296,6 +300,50 @@
         "string",
         "null"
       ]
+    },
+    "government_work_logic": {
+      "type": "string"
+    },
+    "authority_matrix": {
+      "type": "string"
+    },
+    "decision_engine_entrypoint": {
+      "type": "string"
+    },
+    "decision_engine": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "entrypoint",
+        "workflow_schema",
+        "authority_matrix",
+        "rules_config",
+        "default_mode"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "entrypoint": {
+          "type": "string"
+        },
+        "workflow_schema": {
+          "type": "string"
+        },
+        "authority_matrix": {
+          "type": "string"
+        },
+        "rules_config": {
+          "type": "string"
+        },
+        "default_mode": {
+          "type": "string",
+          "enum": [
+            "advisory",
+            "gating"
+          ]
+        }
+      }
     }
   }
 }

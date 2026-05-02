@@ -14,3 +14,8 @@ Mount this repository into OpenClaw and point the runtime to `configs/runtime.ge
 - `local`: use repository knowledge only
 - `mem9`: use mem9 as primary memory surface
 - `hybrid`: local repo remains canonical; mem9 stores preferences/session memory
+
+## Decision Engine Hook
+- Load the configured decision engine before role routing.
+- Run it on each incoming request to determine state, authority, and gate decision.
+- Respect `HOLD` and `ESCALATE_TO` as hard control outputs in production deployments.

@@ -20,7 +20,10 @@
   "runtime_overrides": {
     "memory_precedence": "local_knowledge_wins_over_mem9_when_conflicting",
     "session_memory_backend": "mem9_when_memory_mode_is_mem9_or_hybrid",
-    "canonical_knowledge_mutability": "read_only_by_default"
+    "canonical_knowledge_mutability": "read_only_by_default",
+    "decision_engine_entrypoint": "scripts/government_decision_engine.py",
+    "government_work_logic": "docs/architecture/GOVERNMENT_WORK_LOGIC.md",
+    "authority_matrix": "configs/authority_matrix.json"
   },
   "canonical_home_root": "~/.hermes",
   "install_target_root": "~/.hermes/gov-agentic-ai",

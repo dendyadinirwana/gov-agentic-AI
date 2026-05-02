@@ -16,7 +16,8 @@ REQUIRED_KEYS = [
     'runtime_discovery', 'runtime_installation', 'runtime_config_targets', 'default_router_role',
     'default_router_alias', 'default_router_skill', 'output_contract_required_fields', 'runtime_boot_sequence',
     'runtime_pack_root', 'install_target_root', 'install_target_config', 'install_target_skills',
-    'install_target_type', 'install_mode', 'install_applied', 'installed_at'
+    'install_target_type', 'install_mode', 'install_applied', 'installed_at', 'government_work_logic',
+    'authority_matrix', 'decision_engine', 'decision_engine_entrypoint'
 ]
 VALID_RUNTIMES = {'openclaw', 'hermes', 'codex', 'claude', 'antigravity', 'generic'}
 VALID_MEMORY = {'local', 'mem9', 'hybrid'}
@@ -70,7 +71,7 @@ def validate_enums(config: dict[str, Any], errors: list[str]) -> None:
 
 
 def validate_repo_paths(config: dict[str, Any], errors: list[str]) -> None:
-    repo_relative_keys = ['system_prompt', 'shared_guardrail_skill', 'audit_schema', 'acceptance_tests', 'knowledge_base_root', 'shared_knowledge_root', 'adapter_profile_path']
+    repo_relative_keys = ['system_prompt', 'shared_guardrail_skill', 'audit_schema', 'acceptance_tests', 'knowledge_base_root', 'shared_knowledge_root', 'adapter_profile_path', 'government_work_logic', 'authority_matrix', 'decision_engine_entrypoint']
     for key in repo_relative_keys:
         value = config.get(key)
         if value and not (ROOT / value).exists():
@@ -133,6 +134,20 @@ def validate_governance(config: dict[str, Any], errors: list[str]) -> None:
 
 
 def validate_runtime_fields(config: dict[str, Any], errors: list[str]) -> None:
+
+    decision = config.get('decision_engine')
+    if not isinstance(decision, dict):
+        errors.append('decision_engine must be an object')
+    else:
+        for key in ['enabled', 'entrypoint', 'workflow_schema', 'authority_matrix', 'rules_config', 'default_mode']:
+            if key not in decision:
+                errors.append(f'decision_engine missing key: {key}')
+        for key in ['entrypoint', 'workflow_schema', 'authority_matrix', 'rules_config']:
+            value = decision.get(key)
+            if value and not (ROOT / value).exists():
+                errors.append(f'decision_engine path does not exist for {key}: {value}')
+        if decision.get('entrypoint') != config.get('decision_engine_entrypoint'):
+            errors.append('decision_engine.entrypoint must match decision_engine_entrypoint')
     discovery = config.get('runtime_discovery')
     if not isinstance(discovery, dict):
         errors.append('runtime_discovery must be an object')

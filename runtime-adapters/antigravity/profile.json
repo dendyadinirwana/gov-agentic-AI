@@ -17,7 +17,10 @@
     "schemas_mount": "schemas"
   },
   "runtime_overrides": {
-    "router_mode": "manifest-driven"
+    "router_mode": "manifest-driven",
+    "decision_engine_entrypoint": "scripts/government_decision_engine.py",
+    "government_work_logic": "docs/architecture/GOVERNMENT_WORK_LOGIC.md",
+    "authority_matrix": "configs/authority_matrix.json"
   },
   "canonical_home_root": "~/.antigravity",
   "install_target_root": "~/.antigravity/gov-agentic-ai",

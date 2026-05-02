@@ -15,7 +15,11 @@
     "knowledge_mount": "knowledge-base",
     "schemas_mount": "schemas"
   },
-  "runtime_overrides": {},
+  "runtime_overrides": {
+    "decision_engine_entrypoint": "scripts/government_decision_engine.py",
+    "government_work_logic": "docs/architecture/GOVERNMENT_WORK_LOGIC.md",
+    "authority_matrix": "configs/authority_matrix.json"
+  },
   "canonical_home_root": "~/.agents/skills",
   "install_target_root": "~/.agents/skills/gov-agentic-ai",
   "install_target_config": "~/.agents/skills/gov-agentic-ai/runtime.generated.json",

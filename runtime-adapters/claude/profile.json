@@ -16,7 +16,10 @@
     "schemas_mount": "schemas"
   },
   "runtime_overrides": {
-    "skill_format": "SKILL.md"
+    "skill_format": "SKILL.md",
+    "decision_engine_entrypoint": "scripts/government_decision_engine.py",
+    "government_work_logic": "docs/architecture/GOVERNMENT_WORK_LOGIC.md",
+    "authority_matrix": "configs/authority_matrix.json"
   },
   "canonical_home_root": "~/.claude",
   "install_target_root": "~/.claude/gov-agentic-ai",
