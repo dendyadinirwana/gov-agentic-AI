@@ -286,7 +286,7 @@ Handling expectations are documented in:
 
 ## Install from Terminal
 
-This repository is public, so the preferred bootstrap path is direct terminal install. See [`INSTALL.md`](./INSTALL.md).
+This repository is public, so the preferred bootstrap path is direct terminal install. See [`INSTALL.md`](./INSTALL.md) and [`docs/operations/UNINSTALL_GUIDE.md`](./docs/operations/UNINSTALL_GUIDE.md).
 
 macOS / Linux:
 

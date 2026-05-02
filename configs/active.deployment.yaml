@@ -1,10 +1,12 @@
 project_name: gov-agentic-ai
-project_version: v0.1.1-1-gc5e3a23
+project_version: v0.1.2
 runtime_target: generic
 memory_mode: hybrid
 governance_mode: production
-runtime_pack_root: build/runtime-pack/generic/v0.1.1-1-gc5e3a23
-install_target_root: /Users/dendyadinirwana/.agents/skills/gov-agentic-ai
+central_home_root: /Users/dendyadinirwana/.gov-agentic-ai
+runtime_shim_root: /Users/dendyadinirwana/.agents/skills/gov-agentic-ai
+runtime_pack_root: build/runtime-pack/generic/v0.1.2
+central_pack_root: build/central-home/v0.1.2
 human_approval_required_for:
   - L3
   - L4

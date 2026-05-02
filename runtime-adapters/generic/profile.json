@@ -24,5 +24,12 @@
   "install_target_root": "~/.agents/skills/gov-agentic-ai",
   "install_target_config": "~/.agents/skills/gov-agentic-ai/runtime.generated.json",
   "install_target_skills": "~/.agents/skills/gov-agentic-ai/skills",
-  "install_layout": "global-skill-surface"
+  "install_layout": "global-skill-surface",
+  "central_home_root": "~/.gov-agentic-ai",
+  "attach_strategy": "thin-shim-pointer",
+  "shim_local_skill_required": [
+    "gov-gov-ai-yayak",
+    "gov-agentic-common"
+  ],
+  "canonical_role_resolution": "central-home"
 }

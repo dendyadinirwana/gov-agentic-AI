@@ -1,6 +1,6 @@
 {
   "project_name": "gov-agentic-ai",
-  "project_version": "v0.1.1-1-gc5e3a23",
+  "project_version": "v0.1.2",
   "runtime_target": "generic",
   "runtime_adapter": {
     "adapter_name": "generic",
@@ -28,7 +28,14 @@
     "install_target_root": "~/.agents/skills/gov-agentic-ai",
     "install_target_config": "~/.agents/skills/gov-agentic-ai/runtime.generated.json",
     "install_target_skills": "~/.agents/skills/gov-agentic-ai/skills",
-    "install_layout": "global-skill-surface"
+    "install_layout": "global-skill-surface",
+    "central_home_root": "~/.gov-agentic-ai",
+    "attach_strategy": "thin-shim-pointer",
+    "shim_local_skill_required": [
+      "gov-gov-ai-yayak",
+      "gov-agentic-common"
+    ],
+    "canonical_role_resolution": "central-home"
   },
   "adapter_name": "generic",
   "adapter_profile_path": "runtime-adapters/generic/profile.json",
@@ -61,14 +68,17 @@
     "recommended_skill_home": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/skills",
     "message": "Generic agent skill home found. Repo-local config remains canonical unless copied intentionally.",
     "profile_summary": "Portable baseline for any agent runtime that can read repository files and JSON config.",
-    "recommended": false
+    "recommended": false,
+    "central_home_root": "/Users/dendyadinirwana/.gov-agentic-ai",
+    "central_home_status": "found",
+    "central_home_message": "Central canonical home found."
   },
   "runtime_installation": {
     "mode": "copy",
     "writes_external_runtime_config": true,
     "selected_runtime_home": "/Users/dendyadinirwana/.agents/skills",
     "install_applied": true,
-    "installed_at": "2026-05-02T11:52:23+00:00"
+    "installed_at": "2026-05-02T12:53:41+00:00"
   },
   "memory_mode": "hybrid",
   "memory_policy": {
@@ -633,34 +643,47 @@
     "next_step"
   ],
   "runtime_boot_sequence": [
+    "read_local_runtime_shim_config",
+    "resolve_central_home_root",
     "read_agent_entrypoint_contract",
-    "read_runtime_config",
+    "read_canonical_runtime_config",
     "load_runtime_adapter_profile:generic",
-    "load_system_prompt",
+    "load_local_yayak_bootstrap",
     "load_shared_guardrail_skill",
     "load_government_work_logic",
     "initialize_decision_engine",
     "default_to_yayak_router",
-    "run_decision_engine_before_routing",
-    "select_only_active_roles_and_skills",
-    "retrieve_active_role_and_shared_knowledge",
+    "route_deeper_role_loading_to_central_home",
     "apply_memory_policy:hybrid",
-    "apply_governance_policy:production",
-    "emit_required_output_contract",
-    "require_hitl_for_configured_action_levels"
+    "governance_mode:production"
   ],
-  "runtime_pack_root": "build/runtime-pack/generic/v0.1.1-1-gc5e3a23",
+  "runtime_pack_root": "build/runtime-pack/generic/v0.1.2",
+  "central_pack_root": "build/central-home/v0.1.2",
   "install_target_root": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai",
   "install_target_config": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/runtime.generated.json",
   "install_target_skills": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/skills",
   "install_target_type": "global-surface",
   "install_mode": "copy",
   "install_applied": true,
-  "installed_at": "2026-05-02T11:52:23+00:00",
+  "installed_at": "2026-05-02T12:53:41+00:00",
+  "central_home_root": "/Users/dendyadinirwana/.gov-agentic-ai",
+  "runtime_shim_root": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai",
+  "runtime_attach_mode": "thin-shim",
+  "canonical_repo_root": "/Users/dendyadinirwana/.gov-agentic-ai",
+  "shim_installed_skills": [
+    "gov-gov-ai-yayak",
+    "gov-agentic-common"
+  ],
+  "canonical_skill_manifest": "/Users/dendyadinirwana/.gov-agentic-ai/skills/skill_manifest.json",
+  "canonical_knowledge_root": "/Users/dendyadinirwana/.gov-agentic-ai/knowledge-base",
+  "canonical_system_prompt": "/Users/dendyadinirwana/.gov-agentic-ai/prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
+  "canonical_agent_entrypoint": "/Users/dendyadinirwana/.gov-agentic-ai/AGENT_README.md",
+  "canonical_runtime_config": "/Users/dendyadinirwana/.gov-agentic-ai/configs/runtime.generated.json",
   "runtime_config_targets": {
     "repo_local": "configs/runtime.generated.json",
     "active_deployment": "configs/active.deployment.yaml",
-    "runtime_pack_root": "build/runtime-pack/generic/v0.1.1-1-gc5e3a23",
+    "runtime_pack_root": "build/runtime-pack/generic/v0.1.2",
+    "central_pack_root": "build/central-home/v0.1.2",
     "runtime_home_recommended": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/runtime.generated.json",
     "runtime_skill_home_recommended": "/Users/dendyadinirwana/.agents/skills/gov-agentic-ai/skills",
     "write_runtime_config_default": false

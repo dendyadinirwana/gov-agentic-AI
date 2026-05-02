@@ -116,7 +116,7 @@ $env:GOV_AGENTIC_INSTALL_ARGS='-Defaults -Runtime hermes -Memory hybrid -Governa
 
 ## Generated Runtime Pack
 
-The installer now generates a runtime pack under `build/runtime-pack/<runtime>/...` or a sibling `runtime-pack/` directory when custom output paths are used.
+The installer now generates two artifacts: a central home pack under `build/central-home/<version>/` and a runtime shim pack under `build/runtime-pack/<runtime>/<version>/`.
 
 Default behavior:
 
@@ -124,7 +124,12 @@ Default behavior:
 - generates runtime pack
 - installs by copy into the canonical runtime home unless `--local-only` is used
 
-Canonical install homes:
+Canonical install topology:
+
+- central canonical home: `~/.gov-agentic-ai/`
+- runtime-specific thin shims attach to that central home
+
+Runtime shim homes:
 
 - `~/.hermes/gov-agentic-ai`
 - `~/.openclaw/gov-agentic-ai`
@@ -132,3 +137,19 @@ Canonical install homes:
 - `~/.codex/gov-agentic-ai`
 - `~/.antigravity/gov-agentic-ai`
 - `~/.agents/skills/gov-agentic-ai` for generic global skills
+
+## Uninstall
+
+Preview a managed uninstall:
+
+```bash
+python3 scripts/uninstall_gov_agentic_ai.py --runtime generic --dry-run
+```
+
+Remove a managed runtime install:
+
+```bash
+python3 scripts/uninstall_gov_agentic_ai.py --runtime generic --yes
+```
+
+See [`docs/operations/UNINSTALL_GUIDE.md`](./docs/operations/UNINSTALL_GUIDE.md) for runtime-specific uninstall notes and safety rules.

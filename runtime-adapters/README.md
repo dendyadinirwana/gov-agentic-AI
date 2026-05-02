@@ -55,3 +55,6 @@ Each adapter profile now acts as an install contract and should define canonical
 
 ## Bootstrap Contract
 Universal bootstrap guidance lives in `runtime-adapters/universal/RUNTIME_HANDSHAKE.md`, with a machine-readable example at `examples/BOOTSTRAP_EXAMPLE.json`. Runtime-specific adapters should refine filesystem and install behavior, not redefine the bootstrap contract.
+
+## Central Home + Thin Runtime Shim
+The canonical installation root is `~/.gov-agentic-ai/`. Runtime-specific homes now act as thin shims that install local `Yayak`, a minimal shared guardrail surface, and pointer metadata back to the canonical home. Role skills and knowledge stay canonical in the central home unless a runtime explicitly requires local bootstrap copies.

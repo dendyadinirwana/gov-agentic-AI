@@ -20,12 +20,16 @@ DEFAULTS_PATH = ROOT / 'configs' / 'installer.defaults.json'
 DEFAULT_OUTPUT = ROOT / 'configs' / 'runtime.generated.json'
 DEFAULT_ACTIVE_DEPLOYMENT = ROOT / 'configs' / 'active.deployment.yaml'
 DEFAULT_PACK_ROOT = ROOT / 'build' / 'runtime-pack'
+DEFAULT_CENTRAL_HOME = Path.home() / '.gov-agentic-ai'
 MANAGED_SUBTREE = 'gov-agentic-ai'
+SHIM_SKILL_NAMES = {'gov-gov-ai-yayak', 'gov-agentic-common'}
 
 RUNTIMES = ['openclaw', 'hermes', 'codex', 'claude', 'antigravity', 'generic']
 MEMORY_MODES = ['local', 'mem9', 'hybrid']
 GOVERNANCE_MODES = ['sandbox', 'production']
 INSTALL_ACTIONS = ['local_only', 'apply_install', 'back', 'cancel']
+
+CENTRAL_HOME_CANDIDATES = {'Darwin': ['~/.gov-agentic-ai'], 'Linux': ['~/.gov-agentic-ai'], 'Windows': ['%USERPROFILE%/.gov-agentic-ai']}
 
 RUNTIME_DISCOVERY_CANDIDATES = {
     'generic': {'Darwin': ['~/.agents/skills'], 'Linux': ['~/.agents/skills'], 'Windows': ['%USERPROFILE%/.agents/skills']},
@@ -234,6 +238,36 @@ def expand_candidate_path(value: str) -> str:
     return str(Path(os.path.expanduser(expanded)))
 
 
+def discover_central_home() -> dict[str, Any]:
+    os_name = platform.system() or 'Unknown'
+    candidates = CENTRAL_HOME_CANDIDATES.get(os_name, CENTRAL_HOME_CANDIDATES.get('Linux', []))
+    expanded = [expand_candidate_path(candidate) for candidate in candidates]
+    existing = [path for path in expanded if Path(path).exists()]
+    selected = existing[0] if existing else (expanded[0] if expanded else str(DEFAULT_CENTRAL_HOME))
+    return {
+        'os_name': os_name,
+        'candidate_paths': expanded,
+        'discovered_paths': existing,
+        'status': 'found' if existing else 'not_found',
+        'central_home_root': selected,
+        'message': 'Central canonical home found.' if existing else 'Central canonical home will be created on install.',
+    }
+
+
+def central_pack_root_for(output: Path | None = None) -> Path:
+    version = detect_repo_version().replace('/', '-').replace(' ', '-')
+    if output and output.is_absolute() and not output.is_relative_to(ROOT):
+        return output.parent / 'central-home-pack' / version
+    return ROOT / 'build' / 'central-home' / version
+
+
+def shim_pack_root_for(runtime: str, output: Path | None = None) -> Path:
+    version = detect_repo_version().replace('/', '-').replace(' ', '-')
+    if output and output.is_absolute() and not output.is_relative_to(ROOT):
+        return output.parent / 'runtime-shim' / runtime
+    return DEFAULT_PACK_ROOT / runtime / version
+
+
 def discover_runtime(runtime: str) -> dict[str, Any]:
     os_name = platform.system() or 'Unknown'
     home_dir = str(Path.home())
@@ -248,6 +282,7 @@ def discover_runtime(runtime: str) -> dict[str, Any]:
     install_type = 'global-surface' if runtime == 'generic' else 'runtime-home'
     runtime_config_target = str(Path(install_root) / 'runtime.generated.json') if install_root else None
     skill_target = str(Path(install_root) / 'skills') if install_root else None
+    central = discover_central_home()
     return {
         'os_name': os_name,
         'home_dir': home_dir,
@@ -263,6 +298,9 @@ def discover_runtime(runtime: str) -> dict[str, Any]:
         'message': runtime_discovery_message(runtime, selected),
         'profile_summary': profile.get('description', ''),
         'recommended': runtime != 'generic' and selected is not None,
+        'central_home_root': central.get('central_home_root'),
+        'central_home_status': central.get('status'),
+        'central_home_message': central.get('message'),
     }
 
 
@@ -295,11 +333,12 @@ def runtime_option_label(runtime: str, scan_map: dict[str, dict[str, Any]] | Non
     return f'{runtime} [{badge}]'
 
 
-def runtime_config_targets(discovery: dict[str, Any], output: Path, active_deployment: Path, pack_root: Path) -> dict[str, Any]:
+def runtime_config_targets(discovery: dict[str, Any], output: Path, active_deployment: Path, shim_pack_root: Path, central_pack_root: Path) -> dict[str, Any]:
     return {
         'repo_local': str(output.relative_to(ROOT) if output.is_relative_to(ROOT) else output),
         'active_deployment': str(active_deployment.relative_to(ROOT) if active_deployment.is_relative_to(ROOT) else active_deployment),
-        'runtime_pack_root': str(pack_root.relative_to(ROOT) if pack_root.is_relative_to(ROOT) else pack_root),
+        'runtime_pack_root': str(shim_pack_root.relative_to(ROOT) if shim_pack_root.is_relative_to(ROOT) else shim_pack_root),
+        'central_pack_root': str(central_pack_root.relative_to(ROOT) if central_pack_root.is_relative_to(ROOT) else central_pack_root),
         'runtime_home_recommended': discovery.get('recommended_runtime_config'),
         'runtime_skill_home_recommended': discovery.get('recommended_skill_home'),
         'write_runtime_config_default': False,
@@ -352,12 +391,15 @@ def relative_to_root(path: Path) -> str:
     return str(path.relative_to(ROOT) if path.is_relative_to(ROOT) else path)
 
 
-def build_config(runtime: str, memory: str, governance: str, active_clusters: list[str], output: Path, active_deployment: Path, install_mode: str = 'copy', install_applied: bool = False, install_target_root: str | None = None, pack_root: Path | None = None) -> dict[str, Any]:
+def build_config(runtime: str, memory: str, governance: str, active_clusters: list[str], output: Path, active_deployment: Path, install_mode: str = 'copy', install_applied: bool = False, install_target_root: str | None = None, pack_root: Path | None = None, central_home_root: str | None = None, central_pack_root: Path | None = None) -> dict[str, Any]:
     kb = load_json(KB_MANIFEST)
     skills = load_json(SKILL_MANIFEST)
     profile = runtime_profile(runtime)
     discovery = discover_runtime(runtime)
     governance_details = governance_policy(governance)
+    central_home = central_home_root or discovery.get('central_home_root') or str(DEFAULT_CENTRAL_HOME)
+    shim_pack = pack_root or shim_pack_root_for(runtime, output)
+    central_pack = central_pack_root or central_pack_root_for(output)
     role_rows = kb['roles']
     skill_by_role = {(s['cluster'], s['role'], s['alias']): s for s in skills['skills']}
     active_roles = []
@@ -366,24 +408,8 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
         if role['cluster'] not in active_clusters:
             continue
         skill = skill_by_role[(role['cluster'], role['role'], role['alias'])]
-        active_roles.append({
-            'cluster': role['cluster'],
-            'role': role['role'],
-            'alias': role['alias'],
-            'knowledge_path': str(Path(kb['base_path']) / role['path']),
-            'skill_name': skill['name'],
-            'skill_path': skill['skill_path'],
-            'prompt_path': skill['prompt_path'],
-        })
-        active_skills.append({
-            'name': skill['name'],
-            'skill_path': skill['skill_path'],
-            'skill_md': skill['skill_md'],
-            'role': skill['role'],
-            'alias': skill['alias'],
-            'cluster': skill['cluster'],
-        })
-    pack_root = pack_root or runtime_pack_root_for(runtime, output)
+        active_roles.append({'cluster': role['cluster'], 'role': role['role'], 'alias': role['alias'], 'knowledge_path': str(Path(kb['base_path']) / role['path']), 'skill_name': skill['name'], 'skill_path': skill['skill_path'], 'prompt_path': skill['prompt_path']})
+        active_skills.append({'name': skill['name'], 'skill_path': skill['skill_path'], 'skill_md': skill['skill_md'], 'role': skill['role'], 'alias': skill['alias'], 'cluster': skill['cluster']})
     install_target_root = install_target_root or discovery.get('install_target_root')
     install_target_config = str(Path(install_target_root) / 'runtime.generated.json') if install_target_root else None
     install_target_skills = str(Path(install_target_root) / 'skills') if install_target_root else None
@@ -397,13 +423,7 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
         'runtime_paths': profile.get('runtime_paths', {}),
         'runtime_overrides': profile.get('runtime_overrides', {}),
         'runtime_discovery': discovery,
-        'runtime_installation': {
-            'mode': install_mode,
-            'writes_external_runtime_config': install_mode == 'copy',
-            'selected_runtime_home': discovery.get('selected_runtime_home'),
-            'install_applied': install_applied,
-            'installed_at': current_timestamp() if install_applied else None,
-        },
+        'runtime_installation': {'mode': install_mode, 'writes_external_runtime_config': install_mode == 'copy', 'selected_runtime_home': discovery.get('selected_runtime_home'), 'install_applied': install_applied, 'installed_at': current_timestamp() if install_applied else None},
         'memory_mode': memory,
         'memory_policy': memory_policy(memory),
         'governance_mode': governance,
@@ -419,14 +439,7 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
         'government_work_logic': 'docs/architecture/GOVERNMENT_WORK_LOGIC.md',
         'authority_matrix': 'configs/authority_matrix.json',
         'decision_engine_entrypoint': 'scripts/government_decision_engine.py',
-        'decision_engine': {
-            'enabled': True,
-            'entrypoint': 'scripts/government_decision_engine.py',
-            'workflow_schema': 'schemas/government_workflow_state.schema.json',
-            'authority_matrix': 'configs/authority_matrix.json',
-            'rules_config': 'configs/government_logic_rules.json',
-            'default_mode': 'gating' if governance == 'production' else 'advisory',
-        },
+        'decision_engine': {'enabled': True, 'entrypoint': 'scripts/government_decision_engine.py', 'workflow_schema': 'schemas/government_workflow_state.schema.json', 'authority_matrix': 'configs/authority_matrix.json', 'rules_config': 'configs/government_logic_rules.json', 'default_mode': 'gating' if governance == 'production' else 'advisory'},
         'audit_schema': 'schemas/audit_log_template_v3.0.json',
         'acceptance_tests': 'schemas/Gov_Agentic_AI_v3.1_Acceptance_Tests.json',
         'knowledge_base_root': kb['base_path'],
@@ -436,24 +449,9 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
         'active_skills': active_skills,
         'human_approval_required_for': governance_details['human_approval_required_for'],
         'output_contract_required_fields': ['summary', 'evidence_map', 'assumptions', 'confidence_status', 'red_flags', 'human_touchpoint', 'next_step'],
-        'runtime_boot_sequence': [
-            'read_agent_entrypoint_contract',
-            'read_runtime_config',
-            f'load_runtime_adapter_profile:{profile.get("adapter_name", runtime)}',
-            'load_system_prompt',
-            'load_shared_guardrail_skill',
-            'load_government_work_logic',
-            'initialize_decision_engine',
-            'default_to_yayak_router',
-            'run_decision_engine_before_routing',
-            'select_only_active_roles_and_skills',
-            'retrieve_active_role_and_shared_knowledge',
-            f'apply_memory_policy:{memory}',
-            f'apply_governance_policy:{governance}',
-            'emit_required_output_contract',
-            'require_hitl_for_configured_action_levels',
-        ],
-        'runtime_pack_root': relative_to_root(pack_root),
+        'runtime_boot_sequence': ['read_local_runtime_shim_config', 'resolve_central_home_root', 'read_agent_entrypoint_contract', 'read_canonical_runtime_config', f'load_runtime_adapter_profile:{profile.get("adapter_name", runtime)}', 'load_local_yayak_bootstrap', 'load_shared_guardrail_skill', 'load_government_work_logic', 'initialize_decision_engine', 'default_to_yayak_router', 'route_deeper_role_loading_to_central_home', f'apply_memory_policy:{memory}', f'governance_mode:{governance}'],
+        'runtime_pack_root': relative_to_root(shim_pack),
+        'central_pack_root': relative_to_root(central_pack),
         'install_target_root': install_target_root,
         'install_target_config': install_target_config,
         'install_target_skills': install_target_skills,
@@ -461,8 +459,18 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
         'install_mode': install_mode,
         'install_applied': install_applied,
         'installed_at': current_timestamp() if install_applied else None,
+        'central_home_root': central_home,
+        'runtime_shim_root': install_target_root,
+        'runtime_attach_mode': 'thin-shim',
+        'canonical_repo_root': central_home,
+        'shim_installed_skills': ['gov-gov-ai-yayak', 'gov-agentic-common'],
+        'canonical_skill_manifest': str(Path(central_home) / 'skills' / 'skill_manifest.json'),
+        'canonical_knowledge_root': str(Path(central_home) / 'knowledge-base'),
+        'canonical_system_prompt': str(Path(central_home) / 'prompts' / 'system' / 'YayakAI_Master_System_Prompt_v3.0.md'),
+        'canonical_agent_entrypoint': str(Path(central_home) / 'AGENT_README.md'),
+        'canonical_runtime_config': str(Path(central_home) / 'configs' / 'runtime.generated.json'),
     }
-    config['runtime_config_targets'] = runtime_config_targets(discovery, output, active_deployment, pack_root)
+    config['runtime_config_targets'] = runtime_config_targets(discovery, output, active_deployment, shim_pack, central_pack)
     return config
 
 
@@ -681,51 +689,34 @@ def file_sha256(path: Path) -> str:
 
 
 def collect_pack_checksums(pack_root: Path) -> dict[str, str]:
-    checksums: dict[str, str] = {}
-    for path in sorted(pack_root.rglob('*')):
-        if path.is_file():
-            checksums[str(path.relative_to(pack_root))] = file_sha256(path)
-    return checksums
+    return {str(path.relative_to(pack_root)): file_sha256(path) for path in sorted(pack_root.rglob('*')) if path.is_file()}
 
 
-def install_receipt_payload(config: dict[str, Any], target_root: Path, installed_file_count: int) -> dict[str, Any]:
+def install_receipt_payload(config: dict[str, Any], target_root: Path, installed_file_count: int, install_kind: str) -> dict[str, Any]:
     return {
         'project_name': config['project_name'],
         'project_version': config['project_version'],
         'runtime_target': config['runtime_target'],
+        'install_kind': install_kind,
         'install_target_root': str(target_root),
         'install_target_type': config['install_target_type'],
         'install_mode': config['install_mode'],
         'installed_at': current_timestamp(),
         'agent_entrypoint': config['agent_entrypoint'],
         'runtime_config': 'runtime.generated.json',
-        'runtime_pack_manifest': 'runtime-pack.manifest.json',
         'managed_subtree': target_root.name,
         'active_cluster_count': len(config['active_clusters']),
         'active_role_count': len(config['active_roles']),
         'active_skill_count': len(config['active_skills']),
         'installed_file_count': installed_file_count,
-    }
-
-
-def generate_pack_manifest(config: dict[str, Any]) -> dict[str, Any]:
-    return {
-        'project_name': config['project_name'],
-        'project_version': config['project_version'],
-        'runtime_target': config['runtime_target'],
-        'generated_at': current_timestamp(),
-        'agent_entrypoint': config['agent_entrypoint'],
-        'handshake_doc': 'runtime-adapters/universal/RUNTIME_HANDSHAKE.md',
-        'bootstrap_example': 'examples/BOOTSTRAP_EXAMPLE.json',
-        'active_clusters': config['active_clusters'],
-        'active_skill_names': [skill['name'] for skill in config['active_skills']],
-        'install_target_type': config['install_target_type'],
+        'central_home_root': config['central_home_root'],
+        'runtime_attach_mode': config['runtime_attach_mode'],
     }
 
 
 def copy_path(src: Path, dst: Path) -> None:
     if src.is_dir():
-        shutil.copytree(src, dst, dirs_exist_ok=True)
+        shutil.copytree(src, dst, dirs_exist_ok=True, symlinks=True)
     else:
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, dst)
@@ -738,8 +729,10 @@ def write_yaml_like(path: Path, config: dict[str, Any]) -> None:
         f"runtime_target: {config['runtime_target']}",
         f"memory_mode: {config['memory_mode']}",
         f"governance_mode: {config['governance_mode']}",
+        f"central_home_root: {config['central_home_root']}",
+        f"runtime_shim_root: {config['runtime_shim_root']}",
         f"runtime_pack_root: {config['runtime_pack_root']}",
-        f"install_target_root: {config['install_target_root']}",
+        f"central_pack_root: {config['central_pack_root']}",
         'human_approval_required_for:',
     ]
     lines.extend(f"  - {item}" for item in config['human_approval_required_for'])
@@ -750,75 +743,98 @@ def write_yaml_like(path: Path, config: dict[str, Any]) -> None:
     path.write_text('\n'.join(lines) + '\n')
 
 
+def generate_pack_manifest(config: dict[str, Any], pack_kind: str) -> dict[str, Any]:
+    return {
+        'project_name': config['project_name'],
+        'project_version': config['project_version'],
+        'runtime_target': config['runtime_target'],
+        'pack_kind': pack_kind,
+        'generated_at': current_timestamp(),
+        'agent_entrypoint': config['agent_entrypoint'],
+        'handshake_doc': 'runtime-adapters/universal/RUNTIME_HANDSHAKE.md',
+        'bootstrap_example': 'examples/BOOTSTRAP_EXAMPLE.json',
+        'active_clusters': config['active_clusters'],
+        'active_skill_names': [skill['name'] for skill in config['active_skills']],
+        'install_target_type': config['install_target_type'],
+        'central_home_root': config['central_home_root'],
+        'runtime_attach_mode': config['runtime_attach_mode'],
+    }
+
+
+def central_home_copy_list() -> list[Path]:
+    return [
+        Path('AGENT_README.md'), Path('README.md'), Path('INSTALL.md'), Path('docs'), Path('examples'),
+        Path('knowledge-base'), Path('prompts'), Path('runtime-adapters'), Path('schemas'), Path('scripts'),
+        Path('skills'), Path('configs/government_logic_rules.json'), Path('configs/authority_matrix.json')
+    ]
+
+
+def build_central_home_pack(config: dict[str, Any]) -> dict[str, Any]:
+    pack_root = ROOT / config['central_pack_root'] if not Path(config['central_pack_root']).is_absolute() else Path(config['central_pack_root'])
+    if pack_root.exists():
+        shutil.rmtree(pack_root)
+    pack_root.mkdir(parents=True, exist_ok=True)
+    for rel in central_home_copy_list():
+        copy_path(ROOT / rel, pack_root / rel)
+    central_config = json.loads(json.dumps(config))
+    central_config['central_pack_root'] = '.'
+    (pack_root / 'configs').mkdir(parents=True, exist_ok=True)
+    (pack_root / 'configs' / 'runtime.generated.json').write_text(json.dumps(central_config, ensure_ascii=False, indent=2) + '\n')
+    manifest = generate_pack_manifest(config, 'central-home')
+    manifest['checksums'] = collect_pack_checksums(pack_root)
+    (pack_root / 'central-home.manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
+    return {'pack_root': str(pack_root), 'config_path': str(pack_root / 'configs' / 'runtime.generated.json'), 'manifest_path': str(pack_root / 'central-home.manifest.json')}
+
+
 def build_runtime_pack(config: dict[str, Any], output: Path, active_deployment: Path) -> dict[str, Any]:
     pack_root = ROOT / config['runtime_pack_root'] if not Path(config['runtime_pack_root']).is_absolute() else Path(config['runtime_pack_root'])
     if pack_root.exists():
         shutil.rmtree(pack_root)
     pack_root.mkdir(parents=True, exist_ok=True)
-
     files_to_copy = [
-        Path(config['agent_entrypoint']),
-        Path(config['runtime_handshake']),
-        Path(config['bootstrap_example']),
-        Path(config['system_prompt']),
-        Path(config['shared_guardrail_skill']),
-        Path(config['government_work_logic']),
-        Path(config['authority_matrix']),
-        Path(config['decision_engine_entrypoint']),
-        Path(config['decision_engine']['workflow_schema']),
-        Path(config['decision_engine']['rules_config']),
-        Path(config['audit_schema']),
-        Path(config['acceptance_tests']),
-        Path(config['adapter_profile_path']),
+        Path(config['agent_entrypoint']), Path(config['runtime_handshake']), Path(config['bootstrap_example']),
+        Path(config['system_prompt']), Path(config['shared_guardrail_skill']), Path(config['government_work_logic']),
+        Path(config['authority_matrix']), Path(config['decision_engine_entrypoint']), Path(config['decision_engine']['workflow_schema']),
+        Path(config['decision_engine']['rules_config']), Path(config['audit_schema']), Path(config['acceptance_tests']),
+        Path(config['adapter_profile_path']), Path('skills/roles/top-layer__gov-ai_yayak'), Path('prompts/roles/top-layer__gov-ai_yayak.md')
     ]
     for adapter_doc in config.get('runtime_adapter', {}).get('adapter_docs', []):
         files_to_copy.append(Path(adapter_doc))
-    for role in config['active_roles']:
-        files_to_copy.extend([Path(role['prompt_path']), Path(role['knowledge_path'])])
-    for skill in config['active_skills']:
-        files_to_copy.append(Path(skill['skill_path']))
-    files_to_copy.append(Path(config['shared_knowledge_root']))
-
-    seen: set[str] = set()
+    seen=set()
     for rel in files_to_copy:
-        rel_str = str(rel)
-        if rel_str in seen:
+        s=str(rel)
+        if s in seen:
             continue
-        seen.add(rel_str)
+        seen.add(s)
         copy_path(ROOT / rel, pack_root / rel)
-
+    link_payload = {
+        'central_home_root': config['central_home_root'],
+        'canonical_skill_manifest': config['canonical_skill_manifest'],
+        'canonical_knowledge_root': config['canonical_knowledge_root'],
+        'canonical_system_prompt': config['canonical_system_prompt'],
+        'canonical_agent_entrypoint': config['canonical_agent_entrypoint'],
+        'canonical_runtime_config': config['canonical_runtime_config'],
+        'runtime_attach_mode': config['runtime_attach_mode'],
+        'shim_installed_skills': config['shim_installed_skills'],
+    }
     pack_config = json.loads(json.dumps(config))
     pack_config['runtime_pack_root'] = '.'
-    pack_config['runtime_config_targets'] = dict(pack_config['runtime_config_targets'])
-    pack_config['runtime_config_targets']['repo_local'] = 'runtime.generated.json'
-    pack_config['runtime_config_targets']['active_deployment'] = 'active.deployment.yaml'
-    pack_config['runtime_config_targets']['runtime_pack_root'] = '.'
     pack_config_path = pack_root / 'runtime.generated.json'
     pack_deployment_path = pack_root / 'active.deployment.yaml'
     pack_adapter_path = pack_root / 'runtime-adapter.profile.json'
     pack_skills_manifest = pack_root / 'active-skills.json'
     pack_manifest_path = pack_root / 'runtime-pack.manifest.json'
-
+    pack_link_path = pack_root / 'runtime-link.json'
+    subset_skills = [skill for skill in config['active_skills'] if skill['name'] in SHIM_SKILL_NAMES]
     pack_config_path.write_text(json.dumps(pack_config, ensure_ascii=False, indent=2) + '\n')
     pack_deployment_path.write_text(active_deployment.read_text())
     pack_adapter_path.write_text(json.dumps(config['runtime_adapter'], ensure_ascii=False, indent=2) + '\n')
-    pack_skills_manifest.write_text(json.dumps({'skills': config['active_skills']}, ensure_ascii=False, indent=2) + '\n')
-    pack_manifest = generate_pack_manifest(config)
-    pack_manifest_path.write_text(json.dumps(pack_manifest, ensure_ascii=False, indent=2) + '\n')
-    checksums = collect_pack_checksums(pack_root)
-    pack_manifest['checksums'] = checksums
-    pack_manifest_path.write_text(json.dumps(pack_manifest, ensure_ascii=False, indent=2) + '\n')
-
-    return {
-        'pack_root': str(pack_root),
-        'config_path': str(pack_config_path),
-        'deployment_path': str(pack_deployment_path),
-        'adapter_profile_path': str(pack_adapter_path),
-        'skills_manifest_path': str(pack_skills_manifest),
-        'manifest_path': str(pack_manifest_path),
-    }
-
-
+    pack_skills_manifest.write_text(json.dumps({'skills': subset_skills}, ensure_ascii=False, indent=2) + '\n')
+    pack_link_path.write_text(json.dumps(link_payload, ensure_ascii=False, indent=2) + '\n')
+    manifest = generate_pack_manifest(config, 'runtime-shim')
+    manifest['checksums'] = collect_pack_checksums(pack_root)
+    pack_manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
+    return {'pack_root': str(pack_root), 'config_path': str(pack_config_path), 'deployment_path': str(pack_deployment_path), 'adapter_profile_path': str(pack_adapter_path), 'skills_manifest_path': str(pack_skills_manifest), 'manifest_path': str(pack_manifest_path), 'link_path': str(pack_link_path)}
 
 
 def summarize_tree(root: Path, max_items: int = 18) -> list[str]:
@@ -1007,12 +1023,27 @@ def collect_interactive_selection(defaults: dict[str, Any], clusters: list[str],
             raise SystemExit('Interactive installer cancelled by user before write.')
 
 
-def install_runtime_pack(pack_root: Path, target_root: Path, config: dict[str, Any]) -> dict[str, Any]:
-    target_root.mkdir(parents=True, exist_ok=True)
+def install_central_home(pack_root: Path, target_root: Path, config: dict[str, Any]) -> dict[str, Any]:
     existing_files = sum(1 for path in target_root.rglob('*') if path.is_file()) if target_root.exists() else 0
-    shutil.copytree(pack_root, target_root, dirs_exist_ok=True)
+    if target_root.exists():
+        shutil.rmtree(target_root)
+    target_root.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(pack_root, target_root, dirs_exist_ok=True, symlinks=True)
     installed_files = sum(1 for path in target_root.rglob('*') if path.is_file())
-    receipt = install_receipt_payload(config, target_root, installed_files)
+    receipt = install_receipt_payload(config, target_root, installed_files, 'central-home')
+    (target_root / 'install.receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n')
+    installed_files = sum(1 for path in target_root.rglob('*') if path.is_file())
+    return {'target_root': str(target_root), 'existing_file_count': existing_files, 'installed_file_count': installed_files, 'receipt_path': str(target_root / 'install.receipt.json')}
+
+
+def install_runtime_pack(pack_root: Path, target_root: Path, config: dict[str, Any]) -> dict[str, Any]:
+    existing_files = sum(1 for path in target_root.rglob('*') if path.is_file()) if target_root.exists() else 0
+    if target_root.exists():
+        shutil.rmtree(target_root)
+    target_root.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(pack_root, target_root, dirs_exist_ok=True, symlinks=True)
+    installed_files = sum(1 for path in target_root.rglob('*') if path.is_file())
+    receipt = install_receipt_payload(config, target_root, installed_files, 'runtime-shim')
     (target_root / 'install.receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n')
     installed_files = sum(1 for path in target_root.rglob('*') if path.is_file())
     return {'target_root': str(target_root), 'existing_file_count': existing_files, 'installed_file_count': installed_files, 'receipt_path': str(target_root / 'install.receipt.json')}
@@ -1027,16 +1058,15 @@ def main() -> int:
     parser.add_argument('--clusters', help='Comma-separated active clusters. Default: all clusters.')
     parser.add_argument('--output', default=str(DEFAULT_OUTPUT), help='Runtime JSON output path.')
     parser.add_argument('--active-deployment', default=str(DEFAULT_ACTIVE_DEPLOYMENT), help='YAML summary output path.')
-    parser.add_argument('--install-target-root', help='Override install target root for testing or explicit deployment.')
-    parser.add_argument('--local-only', action='store_true', help='Generate local config and pack only, without installing to runtime home.')
+    parser.add_argument('--install-target-root', help='Override runtime shim install target root for testing or explicit deployment.')
+    parser.add_argument('--central-home-root', help='Override canonical central home root.')
+    parser.add_argument('--local-only', action='store_true', help='Generate local config and packs only, without installing to runtime home.')
     args = parser.parse_args()
-
     defaults = load_json(DEFAULTS_PATH) if DEFAULTS_PATH.exists() else {}
     kb = load_json(KB_MANIFEST)
     clusters = sorted({role['cluster'] for role in kb['roles']})
     output = (ROOT / args.output).resolve() if not Path(args.output).is_absolute() else Path(args.output)
     active_deployment = (ROOT / args.active_deployment).resolve() if not Path(args.active_deployment).is_absolute() else Path(args.active_deployment)
-
     if args.defaults:
         runtime = args.runtime or defaults.get('runtime_target', 'generic')
         memory = args.memory or defaults.get('memory_mode', 'hybrid')
@@ -1047,34 +1077,32 @@ def main() -> int:
         runtime, memory, governance, active_clusters, final_action = collect_interactive_selection(defaults, clusters, output, active_deployment)
         if args.local_only:
             final_action = 'local_only'
-
     unknown = sorted(set(active_clusters) - set(clusters))
     if unknown:
         raise SystemExit(f'Unknown clusters: {", ".join(unknown)}')
-
-    initial_config = build_config(runtime, memory, governance, active_clusters, output, active_deployment)
+    discovery = discover_runtime(runtime)
+    central_home_root = args.central_home_root or discovery.get('central_home_root') or str(DEFAULT_CENTRAL_HOME)
+    shim_pack_root = shim_pack_root_for(runtime, output)
+    central_pack_root = central_pack_root_for(output)
+    install_target_root = args.install_target_root or discovery.get('install_target_root')
+    initial_config = build_config(runtime, memory, governance, active_clusters, output, active_deployment, install_target_root=install_target_root, pack_root=shim_pack_root, central_home_root=central_home_root, central_pack_root=central_pack_root)
     output.parent.mkdir(parents=True, exist_ok=True)
     active_deployment.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(initial_config, ensure_ascii=False, indent=2) + '\n')
     write_yaml_like(active_deployment, initial_config)
-
-    pack_info = build_runtime_pack(initial_config, output, active_deployment)
-    install_target_root = args.install_target_root or initial_config['install_target_root']
-    install_result = None
-    if final_action == 'apply_install' and install_target_root:
-        install_result = install_runtime_pack(Path(pack_info['pack_root']), Path(install_target_root), initial_config)
-
-    final_config = build_config(
-        runtime, memory, governance, active_clusters, output, active_deployment,
-        install_mode='copy',
-        install_applied=install_result is not None,
-        install_target_root=install_target_root,
-        pack_root=Path(pack_info['pack_root']),
-    )
+    central_pack_info = build_central_home_pack(initial_config)
+    shim_pack_info = build_runtime_pack(initial_config, output, active_deployment)
+    central_install_result = None
+    shim_install_result = None
+    if final_action == 'apply_install':
+        central_install_result = install_central_home(Path(central_pack_info['pack_root']), Path(central_home_root), initial_config)
+        if install_target_root:
+            shim_install_result = install_runtime_pack(Path(shim_pack_info['pack_root']), Path(install_target_root), initial_config)
+    final_config = build_config(runtime, memory, governance, active_clusters, output, active_deployment, install_mode='copy', install_applied=bool(central_install_result or shim_install_result), install_target_root=install_target_root, pack_root=Path(shim_pack_info['pack_root']), central_home_root=central_home_root, central_pack_root=Path(central_pack_info['pack_root']))
     output.write_text(json.dumps(final_config, ensure_ascii=False, indent=2) + '\n')
     write_yaml_like(active_deployment, final_config)
-    Path(pack_info['config_path']).write_text(json.dumps(final_config | {'runtime_pack_root': '.'}, ensure_ascii=False, indent=2) + '\n')
-
+    Path(shim_pack_info['config_path']).write_text(json.dumps(final_config | {'runtime_pack_root': '.', 'central_pack_root': final_config['central_pack_root']}, ensure_ascii=False, indent=2) + '\n')
+    Path(central_pack_info['config_path']).write_text(json.dumps(final_config | {'runtime_pack_root': final_config['runtime_pack_root'], 'central_pack_root': '.'}, ensure_ascii=False, indent=2) + '\n')
     print(f'wrote_runtime_config={relative_to_root(output)}')
     print(f'wrote_active_deployment={relative_to_root(active_deployment)}')
     print(f'runtime_target={runtime}')
@@ -1084,20 +1112,20 @@ def main() -> int:
     print(f'active_roles={len(final_config["active_roles"])}')
     print(f'active_skills={len(final_config["active_skills"])}')
     print(f'adapter_profile={final_config.get("adapter_profile_path")}')
-    print(f'runtime_pack_root={pack_info["pack_root"]}')
+    print(f'central_home_root={central_home_root}')
+    print(f'central_pack_root={central_pack_info["pack_root"]}')
+    print(f'runtime_pack_root={shim_pack_info["pack_root"]}')
     print(f'install_action={final_action}')
-    discovery = final_config.get('runtime_discovery', {})
-    print(f'runtime_discovery={discovery.get("status")}: {discovery.get("message")}')
-    if discovery.get('recommended_runtime_config'):
-        print(f'runtime_config_recommended={discovery.get("recommended_runtime_config")}')
-    if install_result:
-        print(f'install_target_root={install_result["target_root"]}')
-        print(f'install_existing_file_count={install_result["existing_file_count"]}')
-        print(f'install_installed_file_count={install_result["installed_file_count"]}')
-        print(f'install_receipt={install_result["receipt_path"]}')
+    if shim_install_result:
+        print(f'install_target_root={shim_install_result["target_root"]}')
+        print(f'install_existing_file_count={shim_install_result["existing_file_count"]}')
+        print(f'install_installed_file_count={shim_install_result["installed_file_count"]}')
+        print(f'install_receipt={shim_install_result["receipt_path"]}')
+    if central_install_result:
+        print(f'central_install_root={central_install_result["target_root"]}')
+        print(f'central_install_receipt={central_install_result["receipt_path"]}')
     print(f'governance_summary={final_config.get("governance_policy", {}).get("mode_summary")}')
     return 0
-
 
 if __name__ == '__main__':
     try:

@@ -3,54 +3,62 @@
   "title": "Gov-Agentic AI Runtime Config",
   "type": "object",
   "required": [
+    "project_name",
+    "project_version",
+    "runtime_target",
+    "memory_mode",
+    "governance_mode",
+    "agent_entrypoint",
+    "runtime_handshake",
+    "bootstrap_example",
+    "system_prompt",
+    "shared_guardrail_skill",
+    "audit_schema",
     "acceptance_tests",
     "active_clusters",
     "active_roles",
     "active_skills",
-    "agent_entrypoint",
+    "knowledge_base_root",
+    "shared_knowledge_root",
+    "human_approval_required_for",
     "adapter_name",
     "adapter_profile_path",
-    "audit_schema",
-    "default_router_alias",
-    "default_router_role",
-    "default_router_skill",
-    "governance_mode",
+    "runtime_paths",
+    "runtime_overrides",
     "governance_policy",
-    "human_approval_required_for",
-    "install_applied",
-    "install_mode",
-    "install_target_config",
-    "install_target_root",
-    "install_target_skills",
-    "install_target_type",
-    "installed_at",
-    "knowledge_base_root",
-    "memory_mode",
-    "memory_policy",
-    "output_contract_required_fields",
-    "project_name",
-    "project_version",
-    "runtime_boot_sequence",
-    "runtime_config_targets",
     "runtime_discovery",
     "runtime_installation",
-    "runtime_overrides",
+    "runtime_config_targets",
+    "default_router_role",
+    "default_router_alias",
+    "default_router_skill",
+    "output_contract_required_fields",
+    "runtime_boot_sequence",
     "runtime_pack_root",
-    "runtime_paths",
-    "runtime_target",
-    "shared_guardrail_skill",
-    "shared_knowledge_root",
-    "system_prompt",
+    "central_pack_root",
+    "install_target_root",
+    "install_target_config",
+    "install_target_skills",
+    "install_target_type",
+    "install_mode",
+    "install_applied",
+    "installed_at",
     "government_work_logic",
     "authority_matrix",
     "decision_engine",
     "decision_engine_entrypoint",
-    "runtime_handshake"
+    "central_home_root",
+    "runtime_shim_root",
+    "runtime_attach_mode",
+    "canonical_repo_root",
+    "shim_installed_skills",
+    "canonical_skill_manifest",
+    "canonical_knowledge_root",
+    "canonical_system_prompt",
+    "canonical_agent_entrypoint",
+    "canonical_runtime_config"
   ],
   "properties": {
-    "project_name": {
-      "type": "string"
-    },
     "runtime_target": {
       "enum": [
         "openclaw",
@@ -61,123 +69,6 @@
         "generic"
       ]
     },
-    "adapter_name": {
-      "type": "string"
-    },
-    "adapter_profile_path": {
-      "type": "string"
-    },
-    "runtime_paths": {
-      "type": "object"
-    },
-    "runtime_overrides": {
-      "type": "object"
-    },
-    "runtime_discovery": {
-      "type": "object",
-      "required": [
-        "os_name",
-        "home_dir",
-        "status",
-        "candidate_paths",
-        "discovered_paths",
-        "selected_runtime_home",
-        "message"
-      ],
-      "properties": {
-        "os_name": {
-          "type": "string"
-        },
-        "home_dir": {
-          "type": "string"
-        },
-        "status": {
-          "enum": [
-            "found",
-            "not_found",
-            "not_required"
-          ]
-        },
-        "candidate_paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "discovered_paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "selected_runtime_home": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "message": {
-          "type": "string"
-        },
-        "recommended_runtime_config": {
-          "type": [
-            "string",
-            "null"
-          ]
-        }
-      }
-    },
-    "runtime_installation": {
-      "type": "object",
-      "required": [
-        "mode",
-        "writes_external_runtime_config",
-        "selected_runtime_home"
-      ],
-      "properties": {
-        "mode": {
-          "enum": [
-            "advisory",
-          "copy"
-          ]
-        },
-        "writes_external_runtime_config": {
-          "type": "boolean"
-        },
-        "selected_runtime_home": {
-          "type": [
-            "string",
-            "null"
-          ]
-        }
-      }
-    },
-    "runtime_config_targets": {
-      "type": "object",
-      "required": [
-        "repo_local",
-        "active_deployment",
-        "runtime_home_recommended",
-        "write_runtime_config_default"
-      ],
-      "properties": {
-        "repo_local": {
-          "type": "string"
-        },
-        "active_deployment": {
-          "type": "string"
-        },
-        "runtime_home_recommended": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "write_runtime_config_default": {
-          "type": "boolean"
-        }
-      }
-    },
     "memory_mode": {
       "enum": [
         "local",
@@ -185,32 +76,42 @@
         "hybrid"
       ]
     },
-    "memory_policy": {
-      "type": "object"
-    },
     "governance_mode": {
       "enum": [
         "sandbox",
         "production"
       ]
     },
-    "governance_policy": {
+    "install_target_type": {
+      "enum": [
+        "runtime-home",
+        "global-surface"
+      ]
+    },
+    "install_mode": {
+      "enum": [
+        "copy"
+      ]
+    },
+    "runtime_attach_mode": {
+      "enum": [
+        "thin-shim"
+      ]
+    },
+    "runtime_installation": {
       "type": "object"
     },
-    "agent_entrypoint": {
-      "type": "string"
+    "runtime_discovery": {
+      "type": "object"
     },
-    "system_prompt": {
-      "type": "string"
+    "runtime_paths": {
+      "type": "object"
     },
-    "shared_guardrail_skill": {
-      "type": "string"
+    "runtime_overrides": {
+      "type": "object"
     },
-    "audit_schema": {
-      "type": "string"
-    },
-    "acceptance_tests": {
-      "type": "string"
+    "decision_engine": {
+      "type": "object"
     },
     "active_clusters": {
       "type": "array",
@@ -230,131 +131,10 @@
         "type": "object"
       }
     },
-    "knowledge_base_root": {
-      "type": "string"
-    },
-    "shared_knowledge_root": {
-      "type": "string"
-    },
-    "human_approval_required_for": {
+    "shim_installed_skills": {
       "type": "array",
       "items": {
         "type": "string"
-      }
-    },
-    "default_router_role": {
-      "type": "string"
-    },
-    "default_router_alias": {
-      "type": "string"
-    },
-    "default_router_skill": {
-      "type": "string"
-    },
-    "output_contract_required_fields": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "runtime_boot_sequence": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "project_version": {
-      "type": "string"
-    },
-    "runtime_pack_root": {
-      "type": "string"
-    },
-    "install_target_root": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "install_target_config": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "install_target_skills": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "install_target_type": {
-      "enum": [
-        "runtime-home",
-        "global-surface"
-      ]
-    },
-    "install_mode": {
-      "enum": [
-        "copy"
-      ]
-    },
-    "install_applied": {
-      "type": "boolean"
-    },
-    "installed_at": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "government_work_logic": {
-      "type": "string"
-    },
-    "authority_matrix": {
-      "type": "string"
-    },
-    "decision_engine_entrypoint": {
-      "type": "string"
-    },
-    "runtime_handshake": {
-      "type": "string"
-    },
-    "bootstrap_example": {
-      "type": "string"
-    },
-    "decision_engine": {
-      "type": "object",
-      "required": [
-        "enabled",
-        "entrypoint",
-        "workflow_schema",
-        "authority_matrix",
-        "rules_config",
-        "default_mode"
-      ],
-      "properties": {
-        "enabled": {
-          "type": "boolean"
-        },
-        "entrypoint": {
-          "type": "string"
-        },
-        "workflow_schema": {
-          "type": "string"
-        },
-        "authority_matrix": {
-          "type": "string"
-        },
-        "rules_config": {
-          "type": "string"
-        },
-        "default_mode": {
-          "type": "string",
-          "enum": [
-            "advisory",
-            "gating"
-          ]
-        }
       }
     }
   }
