@@ -29,6 +29,27 @@
     "schemas_mount": "schemas"
   },
   "runtime_overrides": {},
+  "runtime_discovery": {
+    "os_name": "Darwin",
+    "home_dir": "/Users/dendyadinirwana",
+    "status": "not_required",
+    "candidate_paths": [],
+    "discovered_paths": [],
+    "selected_runtime_home": null,
+    "message": "Generic runtime uses repo-local config only; no external runtime home is required.",
+    "recommended_runtime_config": null
+  },
+  "runtime_installation": {
+    "mode": "advisory",
+    "writes_external_runtime_config": false,
+    "selected_runtime_home": null
+  },
+  "runtime_config_targets": {
+    "repo_local": "configs/runtime.generated.json",
+    "active_deployment": "configs/active.deployment.yaml",
+    "runtime_home_recommended": null,
+    "write_runtime_config_default": false
+  },
   "memory_mode": "hybrid",
   "memory_policy": {
     "canonical_knowledge": "local knowledge-base is source of truth",

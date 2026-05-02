@@ -9,7 +9,11 @@
     "adapter_profile_path",
     "runtime_paths",
     "runtime_overrides",
+    "runtime_discovery",
+    "runtime_installation",
+    "runtime_config_targets",
     "memory_mode",
+    "memory_policy",
     "governance_mode",
     "governance_policy",
     "system_prompt",
@@ -21,7 +25,12 @@
     "active_skills",
     "knowledge_base_root",
     "shared_knowledge_root",
-    "human_approval_required_for"
+    "human_approval_required_for",
+    "default_router_role",
+    "default_router_alias",
+    "default_router_skill",
+    "output_contract_required_fields",
+    "runtime_boot_sequence"
   ],
   "properties": {
     "project_name": {"type": "string"},
@@ -30,7 +39,41 @@
     "adapter_profile_path": {"type": "string"},
     "runtime_paths": {"type": "object"},
     "runtime_overrides": {"type": "object"},
+    "runtime_discovery": {
+      "type": "object",
+      "required": ["os_name", "home_dir", "status", "candidate_paths", "discovered_paths", "selected_runtime_home", "message"],
+      "properties": {
+        "os_name": {"type": "string"},
+        "home_dir": {"type": "string"},
+        "status": {"enum": ["found", "not_found", "not_required"]},
+        "candidate_paths": {"type": "array", "items": {"type": "string"}},
+        "discovered_paths": {"type": "array", "items": {"type": "string"}},
+        "selected_runtime_home": {"type": ["string", "null"]},
+        "message": {"type": "string"},
+        "recommended_runtime_config": {"type": ["string", "null"]}
+      }
+    },
+    "runtime_installation": {
+      "type": "object",
+      "required": ["mode", "writes_external_runtime_config", "selected_runtime_home"],
+      "properties": {
+        "mode": {"enum": ["advisory"]},
+        "writes_external_runtime_config": {"type": "boolean"},
+        "selected_runtime_home": {"type": ["string", "null"]}
+      }
+    },
+    "runtime_config_targets": {
+      "type": "object",
+      "required": ["repo_local", "active_deployment", "runtime_home_recommended", "write_runtime_config_default"],
+      "properties": {
+        "repo_local": {"type": "string"},
+        "active_deployment": {"type": "string"},
+        "runtime_home_recommended": {"type": ["string", "null"]},
+        "write_runtime_config_default": {"type": "boolean"}
+      }
+    },
     "memory_mode": {"enum": ["local", "mem9", "hybrid"]},
+    "memory_policy": {"type": "object"},
     "governance_mode": {"enum": ["sandbox", "production"]},
     "governance_policy": {"type": "object"},
     "system_prompt": {"type": "string"},
@@ -42,6 +85,11 @@
     "active_skills": {"type": "array", "items": {"type": "object"}},
     "knowledge_base_root": {"type": "string"},
     "shared_knowledge_root": {"type": "string"},
-    "human_approval_required_for": {"type": "array", "items": {"type": "string"}}
+    "human_approval_required_for": {"type": "array", "items": {"type": "string"}},
+    "default_router_role": {"type": "string"},
+    "default_router_alias": {"type": "string"},
+    "default_router_skill": {"type": "string"},
+    "output_contract_required_fields": {"type": "array", "items": {"type": "string"}},
+    "runtime_boot_sequence": {"type": "array", "items": {"type": "string"}}
   }
 }

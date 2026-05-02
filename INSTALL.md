@@ -52,6 +52,24 @@ cd gov-agentic-AI
 ./install.ps1 -TargetDir .
 ```
 
+
+## Interactive Checklist UX
+
+The installer prompts use typed values instead of requiring numeric menu choices. For cluster activation, the installer displays a checklist and lets users toggle clusters by typing a cluster name or prefix.
+
+Useful cluster commands:
+
+- `all` activates every cluster.
+- `none` clears the checklist.
+- `done` accepts the current checklist.
+- Enter accepts the current checklist.
+
+## Runtime Discovery
+
+When you choose a runtime such as `hermes`, `openclaw`, `codex`, `claude`, or `antigravity`, the installer scans common macOS/Linux/Windows runtime config locations and records the result in `configs/runtime.generated.json`.
+
+The installer does not write external runtime folders by default. It generates repo-local config plus advisory target paths so the selected runtime can mount or import the config safely.
+
 ## Supported Installer Options
 
 - `--defaults`

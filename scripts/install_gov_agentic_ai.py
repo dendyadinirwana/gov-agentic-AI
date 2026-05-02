@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import platform
 import sys
 from pathlib import Path
 from typing import Any
@@ -17,6 +19,35 @@ DEFAULT_ACTIVE_DEPLOYMENT = ROOT / 'configs' / 'active.deployment.yaml'
 RUNTIMES = ['openclaw', 'hermes', 'codex', 'claude', 'antigravity', 'generic']
 MEMORY_MODES = ['local', 'mem9', 'hybrid']
 GOVERNANCE_MODES = ['sandbox', 'production']
+
+RUNTIME_DISCOVERY_CANDIDATES = {
+    'generic': {},
+    'hermes': {
+        'Darwin': ['~/Library/Application Support/Hermes', '~/.hermes', '~/.config/hermes'],
+        'Linux': ['~/.config/hermes', '~/.hermes'],
+        'Windows': ['%APPDATA%/Hermes', '%USERPROFILE%/.hermes'],
+    },
+    'openclaw': {
+        'Darwin': ['~/.openclaw', '~/.config/openclaw'],
+        'Linux': ['~/.config/openclaw', '~/.openclaw'],
+        'Windows': ['%APPDATA%/OpenClaw', '%USERPROFILE%/.openclaw'],
+    },
+    'codex': {
+        'Darwin': ['${CODEX_HOME}', '~/.codex'],
+        'Linux': ['${CODEX_HOME}', '~/.codex'],
+        'Windows': ['%CODEX_HOME%', '%USERPROFILE%/.codex'],
+    },
+    'claude': {
+        'Darwin': ['~/.claude', '~/Library/Application Support/Claude'],
+        'Linux': ['~/.claude', '~/.config/claude'],
+        'Windows': ['%APPDATA%/Claude', '%USERPROFILE%/.claude'],
+    },
+    'antigravity': {
+        'Darwin': ['~/.antigravity', '~/.config/antigravity'],
+        'Linux': ['~/.config/antigravity', '~/.antigravity'],
+        'Windows': ['%APPDATA%/Antigravity', '%USERPROFILE%/.antigravity'],
+    },
+}
 
 OPTION_DESCRIPTIONS = {
     'runtime': {
@@ -46,39 +77,58 @@ def load_json(path: Path) -> dict[str, Any]:
 def prompt_choice(label: str, options: list[str], default: str, description_group: str | None = None) -> str:
     print(f'\n{label}')
     descriptions = OPTION_DESCRIPTIONS.get(description_group or '', {})
-    for idx, option in enumerate(options, 1):
+    for option in options:
         marker = ' (default)' if option == default else ''
         detail = f' - {descriptions[option]}' if option in descriptions else ''
-        print(f'  {idx}. {option}{marker}{detail}')
-    raw = input('Choose number or value: ').strip()
+        print(f'  - {option}{marker}{detail}')
+    raw = input('Type value, or press Enter for default: ').strip()
     if not raw:
         return default
-    if raw.isdigit() and 1 <= int(raw) <= len(options):
-        return options[int(raw) - 1]
     if raw in options:
         return raw
+    matches = [option for option in options if option.startswith(raw)]
+    if len(matches) == 1:
+        return matches[0]
+    if len(matches) > 1:
+        print(f'Ambiguous choice: {raw}. Matches: {", ".join(matches)}', file=sys.stderr)
+        return prompt_choice(label, options, default, description_group)
     print(f'Invalid choice: {raw}', file=sys.stderr)
     return prompt_choice(label, options, default, description_group)
 
 
 def prompt_clusters(clusters: list[str], default_all: bool = True) -> list[str]:
-    print('\nCluster activation')
-    for idx, cluster in enumerate(clusters, 1):
-        print(f'  {idx}. {cluster}')
-    print('Enter comma-separated numbers/names, or press Enter for all clusters.')
-    raw = input('Clusters: ').strip()
-    if not raw and default_all:
-        return clusters
-    selected: list[str] = []
-    for part in [p.strip() for p in raw.split(',') if p.strip()]:
-        if part.isdigit() and 1 <= int(part) <= len(clusters):
-            selected.append(clusters[int(part) - 1])
-        elif part in clusters:
-            selected.append(part)
-        else:
-            raise SystemExit(f'Unknown cluster selection: {part}')
-    return dedupe(selected)
-
+    selected = set(clusters if default_all else [])
+    print('\nCluster activation checklist')
+    print('Toggle by typing a cluster name. Commands: all, none, done. Press Enter to accept current selection.')
+    while True:
+        print('')
+        for cluster in clusters:
+            marker = 'x' if cluster in selected else ' '
+            print(f'  [{marker}] {cluster}')
+        raw = input('Selection: ').strip()
+        if not raw or raw == 'done':
+            if not selected:
+                print('At least one cluster must be selected.')
+                continue
+            return [cluster for cluster in clusters if cluster in selected]
+        if raw == 'all':
+            selected = set(clusters)
+            continue
+        if raw == 'none':
+            selected = set()
+            continue
+        matches = [cluster for cluster in clusters if cluster == raw or cluster.startswith(raw)]
+        if len(matches) == 1:
+            cluster = matches[0]
+            if cluster in selected:
+                selected.remove(cluster)
+            else:
+                selected.add(cluster)
+            continue
+        if len(matches) > 1:
+            print(f'Ambiguous cluster name: {raw}. Matches: {", ".join(matches)}')
+            continue
+        print(f'Unknown cluster: {raw}')
 
 def dedupe(values: list[str]) -> list[str]:
     seen = set()
@@ -102,6 +152,51 @@ def runtime_profile(runtime: str) -> dict[str, Any]:
         return load_json(profile_path)
     return load_json(ROOT / 'runtime-adapters' / 'generic' / 'profile.json')
 
+def expand_candidate_path(value: str) -> str:
+    expanded = value
+    for key, env_value in os.environ.items():
+        expanded = expanded.replace(f'${{{key}}}', env_value).replace(f'%{key}%', env_value)
+    return str(Path(os.path.expanduser(expanded)))
+
+def discover_runtime(runtime: str) -> dict[str, Any]:
+    os_name = platform.system() or 'Unknown'
+    home_dir = str(Path.home())
+    candidate_map = RUNTIME_DISCOVERY_CANDIDATES.get(runtime, {})
+    candidates = candidate_map.get(os_name, candidate_map.get('Linux', []))
+    expanded = [expand_candidate_path(candidate) for candidate in candidates if candidate and 'None' not in candidate]
+    existing = [path for path in expanded if Path(path).exists()]
+    selected = existing[0] if existing else None
+    recommended = None
+    if selected:
+        recommended = str(Path(selected) / 'gov-agentic-ai' / 'runtime.generated.json')
+    elif runtime != 'generic' and expanded:
+        recommended = str(Path(expanded[0]) / 'gov-agentic-ai' / 'runtime.generated.json')
+    return {
+        'os_name': os_name,
+        'home_dir': home_dir,
+        'status': 'found' if selected else ('not_required' if runtime == 'generic' else 'not_found'),
+        'candidate_paths': expanded,
+        'discovered_paths': existing,
+        'selected_runtime_home': selected,
+        'message': runtime_discovery_message(runtime, selected),
+        'recommended_runtime_config': recommended,
+    }
+
+def runtime_discovery_message(runtime: str, selected: str | None) -> str:
+    if runtime == 'generic':
+        return 'Generic runtime uses repo-local config only; no external runtime home is required.'
+    if selected:
+        return f'{runtime} runtime home found. Repo-local config remains canonical unless copied intentionally.'
+    return f'{runtime} runtime home not found. Generated repo-local config only; mount this repo or copy runtime.generated.json manually.'
+
+def runtime_config_targets(discovery: dict[str, Any]) -> dict[str, Any]:
+    return {
+        'repo_local': 'configs/runtime.generated.json',
+        'active_deployment': 'configs/active.deployment.yaml',
+        'runtime_home_recommended': discovery.get('recommended_runtime_config'),
+        'write_runtime_config_default': False,
+    }
+
 def governance_policy(governance: str) -> dict[str, Any]:
     if governance == 'production':
         return {
@@ -123,6 +218,7 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
     kb = load_json(KB_MANIFEST)
     skills = load_json(SKILL_MANIFEST)
     profile = runtime_profile(runtime)
+    discovery = discover_runtime(runtime)
     governance_details = governance_policy(governance)
     role_rows = kb['roles']
     skill_by_role = {(s['cluster'], s['role'], s['alias']): s for s in skills['skills']}
@@ -157,6 +253,13 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
         'adapter_profile_path': profile.get('adapter_path'),
         'runtime_paths': profile.get('runtime_paths', {}),
         'runtime_overrides': profile.get('runtime_overrides', {}),
+        'runtime_discovery': discovery,
+        'runtime_installation': {
+            'mode': 'advisory',
+            'writes_external_runtime_config': False,
+            'selected_runtime_home': discovery.get('selected_runtime_home'),
+        },
+        'runtime_config_targets': runtime_config_targets(discovery),
         'memory_mode': memory,
         'memory_policy': memory_policy(memory),
         'governance_mode': governance,
@@ -258,8 +361,8 @@ def main() -> None:
     else:
         runtime = args.runtime or prompt_choice('Runtime target', RUNTIMES, defaults.get('runtime_target', 'generic'), 'runtime')
         memory = args.memory or prompt_choice('Memory mode', MEMORY_MODES, defaults.get('memory_mode', 'hybrid'), 'memory')
-        governance = args.governance or prompt_choice('Governance mode', GOVERNANCE_MODES, defaults.get('governance_mode', 'production'), 'governance')
         active_clusters = parse_csv(args.clusters) or prompt_clusters(clusters)
+        governance = args.governance or prompt_choice('Governance mode', GOVERNANCE_MODES, defaults.get('governance_mode', 'production'), 'governance')
 
     unknown = sorted(set(active_clusters) - set(clusters))
     if unknown:
@@ -282,6 +385,11 @@ def main() -> None:
     print(f'active_roles={len(config["active_roles"])}')
     print(f'active_skills={len(config["active_skills"])}')
     print(f'adapter_profile={config.get("adapter_profile_path")}')
+    discovery = config.get('runtime_discovery', {})
+    print(f'runtime_discovery={discovery.get("status")}: {discovery.get("message")}')
+    target = config.get('runtime_config_targets', {}).get('runtime_home_recommended')
+    if target:
+        print(f'runtime_config_recommended={target}')
     print(f'governance_summary={config.get("governance_policy", {}).get("mode_summary")}')
 
 if __name__ == '__main__':
