@@ -1,0 +1,553 @@
+{
+  "project_name": "gov-agentic-ai",
+  "runtime_target": "generic",
+  "memory_mode": "hybrid",
+  "memory_policy": {
+    "canonical_knowledge": "local knowledge-base is source of truth",
+    "working_memory": "mem9 stores preferences, session memory, and operational recall",
+    "external_memory": "mem9 optional but expected"
+  },
+  "governance_mode": "production",
+  "system_prompt": "prompts/system/YayakAI_Master_System_Prompt_v3.0.md",
+  "default_router_role": "GOV-AI",
+  "default_router_alias": "Yayak",
+  "default_router_skill": "gov-gov-ai-yayak",
+  "shared_guardrail_skill": "skills/_shared/gov-agentic-common/SKILL.md",
+  "audit_schema": "schemas/audit_log_template_v3.0.json",
+  "acceptance_tests": "schemas/Gov_Agentic_AI_v3.1_Acceptance_Tests.json",
+  "knowledge_base_root": "knowledge-base",
+  "shared_knowledge_root": "knowledge-base/_shared",
+  "active_clusters": [
+    "top-layer",
+    "kebijakan-dan-hukum",
+    "perencanaan-dan-anggaran",
+    "pengadaan-barang-dan-jasa",
+    "data-dan-analitik",
+    "komunikasi-dan-dokumen",
+    "sdm-dan-kinerja",
+    "hubungan-eksternal-dan-lapangan",
+    "tata-usaha",
+    "bottom-gate"
+  ],
+  "active_roles": [
+    {
+      "cluster": "top-layer",
+      "role": "GOV-AI",
+      "alias": "Yayak",
+      "knowledge_path": "knowledge-base/top-layer/gov-ai_yayak",
+      "skill_name": "gov-gov-ai-yayak",
+      "skill_path": "skills/roles/top-layer__gov-ai_yayak",
+      "prompt_path": "prompts/roles/top-layer__gov-ai_yayak.md"
+    },
+    {
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Analis Kebijakan",
+      "alias": "Azis",
+      "knowledge_path": "knowledge-base/kebijakan-dan-hukum/analis-kebijakan_azis",
+      "skill_name": "gov-analis-kebijakan-azis",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__analis-kebijakan_azis",
+      "prompt_path": "prompts/roles/kebijakan-dan-hukum__analis-kebijakan_azis.md"
+    },
+    {
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Konsultan Hukum",
+      "alias": "Audy",
+      "knowledge_path": "knowledge-base/kebijakan-dan-hukum/konsultan-hukum_audy",
+      "skill_name": "gov-konsultan-hukum-audy",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__konsultan-hukum_audy",
+      "prompt_path": "prompts/roles/kebijakan-dan-hukum__konsultan-hukum_audy.md"
+    },
+    {
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Monitor Kepatuhan Hukum",
+      "alias": "Edi",
+      "knowledge_path": "knowledge-base/kebijakan-dan-hukum/monitor-kepatuhan-hukum_edi",
+      "skill_name": "gov-monitor-kepatuhan-hukum-edi",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi",
+      "prompt_path": "prompts/roles/kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi.md"
+    },
+    {
+      "cluster": "perencanaan-dan-anggaran",
+      "role": "Perencana Program",
+      "alias": "Faris",
+      "knowledge_path": "knowledge-base/perencanaan-dan-anggaran/perencana-program_faris",
+      "skill_name": "gov-perencana-program-faris",
+      "skill_path": "skills/roles/perencanaan-dan-anggaran__perencana-program_faris",
+      "prompt_path": "prompts/roles/perencanaan-dan-anggaran__perencana-program_faris.md"
+    },
+    {
+      "cluster": "perencanaan-dan-anggaran",
+      "role": "Analis Anggaran",
+      "alias": "Anastasia",
+      "knowledge_path": "knowledge-base/perencanaan-dan-anggaran/analis-anggaran_anastasia",
+      "skill_name": "gov-analis-anggaran-anastasia",
+      "skill_path": "skills/roles/perencanaan-dan-anggaran__analis-anggaran_anastasia",
+      "prompt_path": "prompts/roles/perencanaan-dan-anggaran__analis-anggaran_anastasia.md"
+    },
+    {
+      "cluster": "perencanaan-dan-anggaran",
+      "role": "Monitor Kepatuhan Anggaran",
+      "alias": "Nanang",
+      "knowledge_path": "knowledge-base/perencanaan-dan-anggaran/monitor-kepatuhan-anggaran_nanang",
+      "skill_name": "gov-monitor-kepatuhan-anggaran-nanang",
+      "skill_path": "skills/roles/perencanaan-dan-anggaran__monitor-kepatuhan-anggaran_nanang",
+      "prompt_path": "prompts/roles/perencanaan-dan-anggaran__monitor-kepatuhan-anggaran_nanang.md"
+    },
+    {
+      "cluster": "pengadaan-barang-dan-jasa",
+      "role": "Admin Pengadaan",
+      "alias": "Ihsan",
+      "knowledge_path": "knowledge-base/pengadaan-barang-dan-jasa/admin-pengadaan_ihsan",
+      "skill_name": "gov-admin-pengadaan-ihsan",
+      "skill_path": "skills/roles/pengadaan-barang-dan-jasa__admin-pengadaan_ihsan",
+      "prompt_path": "prompts/roles/pengadaan-barang-dan-jasa__admin-pengadaan_ihsan.md"
+    },
+    {
+      "cluster": "pengadaan-barang-dan-jasa",
+      "role": "Evaluator Vendor",
+      "alias": "Dendy",
+      "knowledge_path": "knowledge-base/pengadaan-barang-dan-jasa/evaluator-vendor_dendy",
+      "skill_name": "gov-evaluator-vendor-dendy",
+      "skill_path": "skills/roles/pengadaan-barang-dan-jasa__evaluator-vendor_dendy",
+      "prompt_path": "prompts/roles/pengadaan-barang-dan-jasa__evaluator-vendor_dendy.md"
+    },
+    {
+      "cluster": "pengadaan-barang-dan-jasa",
+      "role": "Penjaga Spesifikasi",
+      "alias": "Hafidus",
+      "knowledge_path": "knowledge-base/pengadaan-barang-dan-jasa/penjaga-spesifikasi_hafidus",
+      "skill_name": "gov-penjaga-spesifikasi-hafidus",
+      "skill_path": "skills/roles/pengadaan-barang-dan-jasa__penjaga-spesifikasi_hafidus",
+      "prompt_path": "prompts/roles/pengadaan-barang-dan-jasa__penjaga-spesifikasi_hafidus.md"
+    },
+    {
+      "cluster": "data-dan-analitik",
+      "role": "Koordinator Data",
+      "alias": "Ardy",
+      "knowledge_path": "knowledge-base/data-dan-analitik/koordinator-data_ardy",
+      "skill_name": "gov-koordinator-data-ardy",
+      "skill_path": "skills/roles/data-dan-analitik__koordinator-data_ardy",
+      "prompt_path": "prompts/roles/data-dan-analitik__koordinator-data_ardy.md"
+    },
+    {
+      "cluster": "data-dan-analitik",
+      "role": "Analisis Statistik",
+      "alias": "Hanan",
+      "knowledge_path": "knowledge-base/data-dan-analitik/analisis-statistik_hanan",
+      "skill_name": "gov-analisis-statistik-hanan",
+      "skill_path": "skills/roles/data-dan-analitik__analisis-statistik_hanan",
+      "prompt_path": "prompts/roles/data-dan-analitik__analisis-statistik_hanan.md"
+    },
+    {
+      "cluster": "data-dan-analitik",
+      "role": "GIS Analyst",
+      "alias": "Varin",
+      "knowledge_path": "knowledge-base/data-dan-analitik/gis-analyst_varin",
+      "skill_name": "gov-gis-analyst-varin",
+      "skill_path": "skills/roles/data-dan-analitik__gis-analyst_varin",
+      "prompt_path": "prompts/roles/data-dan-analitik__gis-analyst_varin.md"
+    },
+    {
+      "cluster": "komunikasi-dan-dokumen",
+      "role": "Penulis Naskah",
+      "alias": "Alfian",
+      "knowledge_path": "knowledge-base/komunikasi-dan-dokumen/penulis-naskah_alfian",
+      "skill_name": "gov-penulis-naskah-alfian",
+      "skill_path": "skills/roles/komunikasi-dan-dokumen__penulis-naskah_alfian",
+      "prompt_path": "prompts/roles/komunikasi-dan-dokumen__penulis-naskah_alfian.md"
+    },
+    {
+      "cluster": "komunikasi-dan-dokumen",
+      "role": "Notulis",
+      "alias": "Anjungan",
+      "knowledge_path": "knowledge-base/komunikasi-dan-dokumen/notulis_anjungan",
+      "skill_name": "gov-notulis-anjungan",
+      "skill_path": "skills/roles/komunikasi-dan-dokumen__notulis_anjungan",
+      "prompt_path": "prompts/roles/komunikasi-dan-dokumen__notulis_anjungan.md"
+    },
+    {
+      "cluster": "komunikasi-dan-dokumen",
+      "role": "Penerjemah Kebijakan",
+      "alias": "Iqbal",
+      "knowledge_path": "knowledge-base/komunikasi-dan-dokumen/penerjemah-kebijakan_iqbal",
+      "skill_name": "gov-penerjemah-kebijakan-iqbal",
+      "skill_path": "skills/roles/komunikasi-dan-dokumen__penerjemah-kebijakan_iqbal",
+      "prompt_path": "prompts/roles/komunikasi-dan-dokumen__penerjemah-kebijakan_iqbal.md"
+    },
+    {
+      "cluster": "sdm-dan-kinerja",
+      "role": "Asisten SDM",
+      "alias": "Satria",
+      "knowledge_path": "knowledge-base/sdm-dan-kinerja/asisten-sdm_satria",
+      "skill_name": "gov-asisten-sdm-satria",
+      "skill_path": "skills/roles/sdm-dan-kinerja__asisten-sdm_satria",
+      "prompt_path": "prompts/roles/sdm-dan-kinerja__asisten-sdm_satria.md"
+    },
+    {
+      "cluster": "sdm-dan-kinerja",
+      "role": "Asisten Pelatihan",
+      "alias": "Tabah",
+      "knowledge_path": "knowledge-base/sdm-dan-kinerja/asisten-pelatihan_tabah",
+      "skill_name": "gov-asisten-pelatihan-tabah",
+      "skill_path": "skills/roles/sdm-dan-kinerja__asisten-pelatihan_tabah",
+      "prompt_path": "prompts/roles/sdm-dan-kinerja__asisten-pelatihan_tabah.md"
+    },
+    {
+      "cluster": "sdm-dan-kinerja",
+      "role": "Monitor Kinerja",
+      "alias": "Reza",
+      "knowledge_path": "knowledge-base/sdm-dan-kinerja/monitor-kinerja_reza",
+      "skill_name": "gov-monitor-kinerja-reza",
+      "skill_path": "skills/roles/sdm-dan-kinerja__monitor-kinerja_reza",
+      "prompt_path": "prompts/roles/sdm-dan-kinerja__monitor-kinerja_reza.md"
+    },
+    {
+      "cluster": "hubungan-eksternal-dan-lapangan",
+      "role": "Liaison Publik",
+      "alias": "Marlin",
+      "knowledge_path": "knowledge-base/hubungan-eksternal-dan-lapangan/liaison-publik_marlin",
+      "skill_name": "gov-liaison-publik-marlin",
+      "skill_path": "skills/roles/hubungan-eksternal-dan-lapangan__liaison-publik_marlin",
+      "prompt_path": "prompts/roles/hubungan-eksternal-dan-lapangan__liaison-publik_marlin.md"
+    },
+    {
+      "cluster": "hubungan-eksternal-dan-lapangan",
+      "role": "Koordinator Lapangan",
+      "alias": "Syarah",
+      "knowledge_path": "knowledge-base/hubungan-eksternal-dan-lapangan/koordinator-lapangan_syarah",
+      "skill_name": "gov-koordinator-lapangan-syarah",
+      "skill_path": "skills/roles/hubungan-eksternal-dan-lapangan__koordinator-lapangan_syarah",
+      "prompt_path": "prompts/roles/hubungan-eksternal-dan-lapangan__koordinator-lapangan_syarah.md"
+    },
+    {
+      "cluster": "hubungan-eksternal-dan-lapangan",
+      "role": "Manajemen Risiko",
+      "alias": "Sauria",
+      "knowledge_path": "knowledge-base/hubungan-eksternal-dan-lapangan/manajemen-risiko_sauria",
+      "skill_name": "gov-manajemen-risiko-sauria",
+      "skill_path": "skills/roles/hubungan-eksternal-dan-lapangan__manajemen-risiko_sauria",
+      "prompt_path": "prompts/roles/hubungan-eksternal-dan-lapangan__manajemen-risiko_sauria.md"
+    },
+    {
+      "cluster": "tata-usaha",
+      "role": "Admin Persuratan",
+      "alias": "Harrisal",
+      "knowledge_path": "knowledge-base/tata-usaha/admin-persuratan_harrisal",
+      "skill_name": "gov-admin-persuratan-harrisal",
+      "skill_path": "skills/roles/tata-usaha__admin-persuratan_harrisal",
+      "prompt_path": "prompts/roles/tata-usaha__admin-persuratan_harrisal.md"
+    },
+    {
+      "cluster": "tata-usaha",
+      "role": "Asisten Disposisi",
+      "alias": "Woro",
+      "knowledge_path": "knowledge-base/tata-usaha/asisten-disposisi_woro",
+      "skill_name": "gov-asisten-disposisi-woro",
+      "skill_path": "skills/roles/tata-usaha__asisten-disposisi_woro",
+      "prompt_path": "prompts/roles/tata-usaha__asisten-disposisi_woro.md"
+    },
+    {
+      "cluster": "tata-usaha",
+      "role": "Arsiparis Digital",
+      "alias": "Sovia",
+      "knowledge_path": "knowledge-base/tata-usaha/arsiparis-digital_sovia",
+      "skill_name": "gov-arsiparis-digital-sovia",
+      "skill_path": "skills/roles/tata-usaha__arsiparis-digital_sovia",
+      "prompt_path": "prompts/roles/tata-usaha__arsiparis-digital_sovia.md"
+    },
+    {
+      "cluster": "tata-usaha",
+      "role": "Agenda & Protokol",
+      "alias": "Ikhsan",
+      "knowledge_path": "knowledge-base/tata-usaha/agenda-dan-protokol_ikhsan",
+      "skill_name": "gov-agenda-dan-protokol-ikhsan",
+      "skill_path": "skills/roles/tata-usaha__agenda-dan-protokol_ikhsan",
+      "prompt_path": "prompts/roles/tata-usaha__agenda-dan-protokol_ikhsan.md"
+    },
+    {
+      "cluster": "tata-usaha",
+      "role": "Admin Layanan Internal",
+      "alias": "Ika",
+      "knowledge_path": "knowledge-base/tata-usaha/admin-layanan-internal_ika",
+      "skill_name": "gov-admin-layanan-internal-ika",
+      "skill_path": "skills/roles/tata-usaha__admin-layanan-internal_ika",
+      "prompt_path": "prompts/roles/tata-usaha__admin-layanan-internal_ika.md"
+    },
+    {
+      "cluster": "tata-usaha",
+      "role": "Monitor SLA Tata Usaha",
+      "alias": "Izza",
+      "knowledge_path": "knowledge-base/tata-usaha/monitor-sla-tata-usaha_izza",
+      "skill_name": "gov-monitor-sla-tata-usaha-izza",
+      "skill_path": "skills/roles/tata-usaha__monitor-sla-tata-usaha_izza",
+      "prompt_path": "prompts/roles/tata-usaha__monitor-sla-tata-usaha_izza.md"
+    },
+    {
+      "cluster": "bottom-gate",
+      "role": "Bot Eskalasi",
+      "alias": "Winda",
+      "knowledge_path": "knowledge-base/bottom-gate/bot-eskalasi_winda",
+      "skill_name": "gov-bot-eskalasi-winda",
+      "skill_path": "skills/roles/bottom-gate__bot-eskalasi_winda",
+      "prompt_path": "prompts/roles/bottom-gate__bot-eskalasi_winda.md"
+    }
+  ],
+  "active_skills": [
+    {
+      "name": "gov-gov-ai-yayak",
+      "skill_path": "skills/roles/top-layer__gov-ai_yayak",
+      "skill_md": "skills/roles/top-layer__gov-ai_yayak/SKILL.md",
+      "role": "GOV-AI",
+      "alias": "Yayak",
+      "cluster": "top-layer"
+    },
+    {
+      "name": "gov-analis-kebijakan-azis",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__analis-kebijakan_azis",
+      "skill_md": "skills/roles/kebijakan-dan-hukum__analis-kebijakan_azis/SKILL.md",
+      "role": "Analis Kebijakan",
+      "alias": "Azis",
+      "cluster": "kebijakan-dan-hukum"
+    },
+    {
+      "name": "gov-konsultan-hukum-audy",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__konsultan-hukum_audy",
+      "skill_md": "skills/roles/kebijakan-dan-hukum__konsultan-hukum_audy/SKILL.md",
+      "role": "Konsultan Hukum",
+      "alias": "Audy",
+      "cluster": "kebijakan-dan-hukum"
+    },
+    {
+      "name": "gov-monitor-kepatuhan-hukum-edi",
+      "skill_path": "skills/roles/kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi",
+      "skill_md": "skills/roles/kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi/SKILL.md",
+      "role": "Monitor Kepatuhan Hukum",
+      "alias": "Edi",
+      "cluster": "kebijakan-dan-hukum"
+    },
+    {
+      "name": "gov-perencana-program-faris",
+      "skill_path": "skills/roles/perencanaan-dan-anggaran__perencana-program_faris",
+      "skill_md": "skills/roles/perencanaan-dan-anggaran__perencana-program_faris/SKILL.md",
+      "role": "Perencana Program",
+      "alias": "Faris",
+      "cluster": "perencanaan-dan-anggaran"
+    },
+    {
+      "name": "gov-analis-anggaran-anastasia",
+      "skill_path": "skills/roles/perencanaan-dan-anggaran__analis-anggaran_anastasia",
+      "skill_md": "skills/roles/perencanaan-dan-anggaran__analis-anggaran_anastasia/SKILL.md",
+      "role": "Analis Anggaran",
+      "alias": "Anastasia",
+      "cluster": "perencanaan-dan-anggaran"
+    },
+    {
+      "name": "gov-monitor-kepatuhan-anggaran-nanang",
+      "skill_path": "skills/roles/perencanaan-dan-anggaran__monitor-kepatuhan-anggaran_nanang",
+      "skill_md": "skills/roles/perencanaan-dan-anggaran__monitor-kepatuhan-anggaran_nanang/SKILL.md",
+      "role": "Monitor Kepatuhan Anggaran",
+      "alias": "Nanang",
+      "cluster": "perencanaan-dan-anggaran"
+    },
+    {
+      "name": "gov-admin-pengadaan-ihsan",
+      "skill_path": "skills/roles/pengadaan-barang-dan-jasa__admin-pengadaan_ihsan",
+      "skill_md": "skills/roles/pengadaan-barang-dan-jasa__admin-pengadaan_ihsan/SKILL.md",
+      "role": "Admin Pengadaan",
+      "alias": "Ihsan",
+      "cluster": "pengadaan-barang-dan-jasa"
+    },
+    {
+      "name": "gov-evaluator-vendor-dendy",
+      "skill_path": "skills/roles/pengadaan-barang-dan-jasa__evaluator-vendor_dendy",
+      "skill_md": "skills/roles/pengadaan-barang-dan-jasa__evaluator-vendor_dendy/SKILL.md",
+      "role": "Evaluator Vendor",
+      "alias": "Dendy",
+      "cluster": "pengadaan-barang-dan-jasa"
+    },
+    {
+      "name": "gov-penjaga-spesifikasi-hafidus",
+      "skill_path": "skills/roles/pengadaan-barang-dan-jasa__penjaga-spesifikasi_hafidus",
+      "skill_md": "skills/roles/pengadaan-barang-dan-jasa__penjaga-spesifikasi_hafidus/SKILL.md",
+      "role": "Penjaga Spesifikasi",
+      "alias": "Hafidus",
+      "cluster": "pengadaan-barang-dan-jasa"
+    },
+    {
+      "name": "gov-koordinator-data-ardy",
+      "skill_path": "skills/roles/data-dan-analitik__koordinator-data_ardy",
+      "skill_md": "skills/roles/data-dan-analitik__koordinator-data_ardy/SKILL.md",
+      "role": "Koordinator Data",
+      "alias": "Ardy",
+      "cluster": "data-dan-analitik"
+    },
+    {
+      "name": "gov-analisis-statistik-hanan",
+      "skill_path": "skills/roles/data-dan-analitik__analisis-statistik_hanan",
+      "skill_md": "skills/roles/data-dan-analitik__analisis-statistik_hanan/SKILL.md",
+      "role": "Analisis Statistik",
+      "alias": "Hanan",
+      "cluster": "data-dan-analitik"
+    },
+    {
+      "name": "gov-gis-analyst-varin",
+      "skill_path": "skills/roles/data-dan-analitik__gis-analyst_varin",
+      "skill_md": "skills/roles/data-dan-analitik__gis-analyst_varin/SKILL.md",
+      "role": "GIS Analyst",
+      "alias": "Varin",
+      "cluster": "data-dan-analitik"
+    },
+    {
+      "name": "gov-penulis-naskah-alfian",
+      "skill_path": "skills/roles/komunikasi-dan-dokumen__penulis-naskah_alfian",
+      "skill_md": "skills/roles/komunikasi-dan-dokumen__penulis-naskah_alfian/SKILL.md",
+      "role": "Penulis Naskah",
+      "alias": "Alfian",
+      "cluster": "komunikasi-dan-dokumen"
+    },
+    {
+      "name": "gov-notulis-anjungan",
+      "skill_path": "skills/roles/komunikasi-dan-dokumen__notulis_anjungan",
+      "skill_md": "skills/roles/komunikasi-dan-dokumen__notulis_anjungan/SKILL.md",
+      "role": "Notulis",
+      "alias": "Anjungan",
+      "cluster": "komunikasi-dan-dokumen"
+    },
+    {
+      "name": "gov-penerjemah-kebijakan-iqbal",
+      "skill_path": "skills/roles/komunikasi-dan-dokumen__penerjemah-kebijakan_iqbal",
+      "skill_md": "skills/roles/komunikasi-dan-dokumen__penerjemah-kebijakan_iqbal/SKILL.md",
+      "role": "Penerjemah Kebijakan",
+      "alias": "Iqbal",
+      "cluster": "komunikasi-dan-dokumen"
+    },
+    {
+      "name": "gov-asisten-sdm-satria",
+      "skill_path": "skills/roles/sdm-dan-kinerja__asisten-sdm_satria",
+      "skill_md": "skills/roles/sdm-dan-kinerja__asisten-sdm_satria/SKILL.md",
+      "role": "Asisten SDM",
+      "alias": "Satria",
+      "cluster": "sdm-dan-kinerja"
+    },
+    {
+      "name": "gov-asisten-pelatihan-tabah",
+      "skill_path": "skills/roles/sdm-dan-kinerja__asisten-pelatihan_tabah",
+      "skill_md": "skills/roles/sdm-dan-kinerja__asisten-pelatihan_tabah/SKILL.md",
+      "role": "Asisten Pelatihan",
+      "alias": "Tabah",
+      "cluster": "sdm-dan-kinerja"
+    },
+    {
+      "name": "gov-monitor-kinerja-reza",
+      "skill_path": "skills/roles/sdm-dan-kinerja__monitor-kinerja_reza",
+      "skill_md": "skills/roles/sdm-dan-kinerja__monitor-kinerja_reza/SKILL.md",
+      "role": "Monitor Kinerja",
+      "alias": "Reza",
+      "cluster": "sdm-dan-kinerja"
+    },
+    {
+      "name": "gov-liaison-publik-marlin",
+      "skill_path": "skills/roles/hubungan-eksternal-dan-lapangan__liaison-publik_marlin",
+      "skill_md": "skills/roles/hubungan-eksternal-dan-lapangan__liaison-publik_marlin/SKILL.md",
+      "role": "Liaison Publik",
+      "alias": "Marlin",
+      "cluster": "hubungan-eksternal-dan-lapangan"
+    },
+    {
+      "name": "gov-koordinator-lapangan-syarah",
+      "skill_path": "skills/roles/hubungan-eksternal-dan-lapangan__koordinator-lapangan_syarah",
+      "skill_md": "skills/roles/hubungan-eksternal-dan-lapangan__koordinator-lapangan_syarah/SKILL.md",
+      "role": "Koordinator Lapangan",
+      "alias": "Syarah",
+      "cluster": "hubungan-eksternal-dan-lapangan"
+    },
+    {
+      "name": "gov-manajemen-risiko-sauria",
+      "skill_path": "skills/roles/hubungan-eksternal-dan-lapangan__manajemen-risiko_sauria",
+      "skill_md": "skills/roles/hubungan-eksternal-dan-lapangan__manajemen-risiko_sauria/SKILL.md",
+      "role": "Manajemen Risiko",
+      "alias": "Sauria",
+      "cluster": "hubungan-eksternal-dan-lapangan"
+    },
+    {
+      "name": "gov-admin-persuratan-harrisal",
+      "skill_path": "skills/roles/tata-usaha__admin-persuratan_harrisal",
+      "skill_md": "skills/roles/tata-usaha__admin-persuratan_harrisal/SKILL.md",
+      "role": "Admin Persuratan",
+      "alias": "Harrisal",
+      "cluster": "tata-usaha"
+    },
+    {
+      "name": "gov-asisten-disposisi-woro",
+      "skill_path": "skills/roles/tata-usaha__asisten-disposisi_woro",
+      "skill_md": "skills/roles/tata-usaha__asisten-disposisi_woro/SKILL.md",
+      "role": "Asisten Disposisi",
+      "alias": "Woro",
+      "cluster": "tata-usaha"
+    },
+    {
+      "name": "gov-arsiparis-digital-sovia",
+      "skill_path": "skills/roles/tata-usaha__arsiparis-digital_sovia",
+      "skill_md": "skills/roles/tata-usaha__arsiparis-digital_sovia/SKILL.md",
+      "role": "Arsiparis Digital",
+      "alias": "Sovia",
+      "cluster": "tata-usaha"
+    },
+    {
+      "name": "gov-agenda-dan-protokol-ikhsan",
+      "skill_path": "skills/roles/tata-usaha__agenda-dan-protokol_ikhsan",
+      "skill_md": "skills/roles/tata-usaha__agenda-dan-protokol_ikhsan/SKILL.md",
+      "role": "Agenda & Protokol",
+      "alias": "Ikhsan",
+      "cluster": "tata-usaha"
+    },
+    {
+      "name": "gov-admin-layanan-internal-ika",
+      "skill_path": "skills/roles/tata-usaha__admin-layanan-internal_ika",
+      "skill_md": "skills/roles/tata-usaha__admin-layanan-internal_ika/SKILL.md",
+      "role": "Admin Layanan Internal",
+      "alias": "Ika",
+      "cluster": "tata-usaha"
+    },
+    {
+      "name": "gov-monitor-sla-tata-usaha-izza",
+      "skill_path": "skills/roles/tata-usaha__monitor-sla-tata-usaha_izza",
+      "skill_md": "skills/roles/tata-usaha__monitor-sla-tata-usaha_izza/SKILL.md",
+      "role": "Monitor SLA Tata Usaha",
+      "alias": "Izza",
+      "cluster": "tata-usaha"
+    },
+    {
+      "name": "gov-bot-eskalasi-winda",
+      "skill_path": "skills/roles/bottom-gate__bot-eskalasi_winda",
+      "skill_md": "skills/roles/bottom-gate__bot-eskalasi_winda/SKILL.md",
+      "role": "Bot Eskalasi",
+      "alias": "Winda",
+      "cluster": "bottom-gate"
+    }
+  ],
+  "human_approval_required_for": [
+    "L3",
+    "L4"
+  ],
+  "output_contract_required_fields": [
+    "summary",
+    "evidence_map",
+    "assumptions",
+    "confidence_status",
+    "red_flags",
+    "human_touchpoint",
+    "next_step"
+  ],
+  "runtime_boot_sequence": [
+    "read_runtime_config",
+    "load_system_prompt",
+    "load_shared_guardrail_skill",
+    "default_to_yayak_router",
+    "select_only_active_roles_and_skills",
+    "retrieve_active_role_and_shared_knowledge",
+    "apply_memory_policy",
+    "emit_required_output_contract",
+    "require_hitl_for_configured_action_levels"
+  ]
+}

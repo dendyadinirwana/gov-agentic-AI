@@ -1,0 +1,17 @@
+{
+  "runtime_target": "generic",
+  "memory_mode": "hybrid",
+  "governance_mode": "production",
+  "active_clusters": [
+    "top-layer",
+    "kebijakan-dan-hukum",
+    "perencanaan-dan-anggaran",
+    "pengadaan-barang-dan-jasa",
+    "data-dan-analitik",
+    "komunikasi-dan-dokumen",
+    "sdm-dan-kinerja",
+    "hubungan-eksternal-dan-lapangan",
+    "tata-usaha",
+    "bottom-gate"
+  ]
+}

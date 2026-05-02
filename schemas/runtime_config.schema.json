@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Gov-Agentic AI Runtime Config",
+  "type": "object",
+  "required": [
+    "project_name",
+    "runtime_target",
+    "memory_mode",
+    "governance_mode",
+    "system_prompt",
+    "shared_guardrail_skill",
+    "audit_schema",
+    "acceptance_tests",
+    "active_clusters",
+    "active_roles",
+    "active_skills",
+    "knowledge_base_root",
+    "shared_knowledge_root",
+    "human_approval_required_for"
+  ],
+  "properties": {
+    "project_name": {"type": "string"},
+    "runtime_target": {"enum": ["openclaw", "hermes", "codex", "claude", "antigravity", "generic"]},
+    "memory_mode": {"enum": ["local", "mem9", "hybrid"]},
+    "governance_mode": {"enum": ["sandbox", "production"]},
+    "system_prompt": {"type": "string"},
+    "shared_guardrail_skill": {"type": "string"},
+    "audit_schema": {"type": "string"},
+    "acceptance_tests": {"type": "string"},
+    "active_clusters": {"type": "array", "items": {"type": "string"}},
+    "active_roles": {"type": "array", "items": {"type": "object"}},
+    "active_skills": {"type": "array", "items": {"type": "object"}},
+    "knowledge_base_root": {"type": "string"},
+    "shared_knowledge_root": {"type": "string"},
+    "human_approval_required_for": {"type": "array", "items": {"type": "string"}}
+  }
+}
