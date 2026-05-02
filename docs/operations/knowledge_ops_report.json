@@ -1,0 +1,1417 @@
+{
+  "summary": {
+    "seed": 0,
+    "usable": 0,
+    "operational": 28,
+    "high_confidence": 1
+  },
+  "role_count": 29,
+  "high_confidence_candidates": [
+    {
+      "alias": "Yayak",
+      "role": "GOV-AI",
+      "cluster": "top-layer",
+      "average_score": 3.38,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "template_coverage",
+        "output_example_coverage",
+        "review_note_coverage"
+      ]
+    },
+    {
+      "alias": "Azis",
+      "role": "Analis Kebijakan",
+      "cluster": "kebijakan-dan-hukum",
+      "average_score": 3.25,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Audy",
+      "role": "Konsultan Hukum",
+      "cluster": "kebijakan-dan-hukum",
+      "average_score": 3.38,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Edi",
+      "role": "Monitor Kepatuhan Hukum",
+      "cluster": "kebijakan-dan-hukum",
+      "average_score": 3.38,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Faris",
+      "role": "Perencana Program",
+      "cluster": "perencanaan-dan-anggaran",
+      "average_score": 3.38,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "template_coverage",
+        "output_example_coverage",
+        "review_note_coverage"
+      ]
+    },
+    {
+      "alias": "Anastasia",
+      "role": "Analis Anggaran",
+      "cluster": "perencanaan-dan-anggaran",
+      "average_score": 3.38,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Nanang",
+      "role": "Monitor Kepatuhan Anggaran",
+      "cluster": "perencanaan-dan-anggaran",
+      "average_score": 3.38,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Ihsan",
+      "role": "Admin Pengadaan",
+      "cluster": "pengadaan-barang-dan-jasa",
+      "average_score": 3.25,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Dendy",
+      "role": "Evaluator Vendor",
+      "cluster": "pengadaan-barang-dan-jasa",
+      "average_score": 3.25,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Hafidus",
+      "role": "Penjaga Spesifikasi",
+      "cluster": "pengadaan-barang-dan-jasa",
+      "average_score": 3.38,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Ardy",
+      "role": "Koordinator Data",
+      "cluster": "data-dan-analitik",
+      "average_score": 3.25,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Hanan",
+      "role": "Analisis Statistik",
+      "cluster": "data-dan-analitik",
+      "average_score": 3.38,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Varin",
+      "role": "GIS Analyst",
+      "cluster": "data-dan-analitik",
+      "average_score": 3.25,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Alfian",
+      "role": "Penulis Naskah",
+      "cluster": "komunikasi-dan-dokumen",
+      "average_score": 3.25,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Iqbal",
+      "role": "Penerjemah Kebijakan",
+      "cluster": "komunikasi-dan-dokumen",
+      "average_score": 3.25,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "source_coverage",
+        "sop_coverage",
+        "template_coverage"
+      ]
+    },
+    {
+      "alias": "Marlin",
+      "role": "Liaison Publik",
+      "cluster": "hubungan-eksternal-dan-lapangan",
+      "average_score": 3.25,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Syarah",
+      "role": "Koordinator Lapangan",
+      "cluster": "hubungan-eksternal-dan-lapangan",
+      "average_score": 3.25,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "source_coverage",
+        "sop_coverage",
+        "template_coverage"
+      ]
+    },
+    {
+      "alias": "Harrisal",
+      "role": "Admin Persuratan",
+      "cluster": "tata-usaha",
+      "average_score": 3.38,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Woro",
+      "role": "Asisten Disposisi",
+      "cluster": "tata-usaha",
+      "average_score": 3.38,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "template_coverage",
+        "output_example_coverage",
+        "review_note_coverage"
+      ]
+    },
+    {
+      "alias": "Sovia",
+      "role": "Arsiparis Digital",
+      "cluster": "tata-usaha",
+      "average_score": 3.38,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "template_coverage",
+        "output_example_coverage",
+        "review_note_coverage"
+      ]
+    },
+    {
+      "alias": "Ikhsan",
+      "role": "Agenda & Protokol",
+      "cluster": "tata-usaha",
+      "average_score": 3.38,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Izza",
+      "role": "Monitor SLA Tata Usaha",
+      "cluster": "tata-usaha",
+      "average_score": 3.38,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    },
+    {
+      "alias": "Winda",
+      "role": "Bot Eskalasi",
+      "cluster": "bottom-gate",
+      "average_score": 3.25,
+      "current_readiness": "operational",
+      "upgrade_levers": [
+        "sop_coverage",
+        "template_coverage",
+        "output_example_coverage"
+      ]
+    }
+  ],
+  "weakest_roles": [
+    {
+      "path": "komunikasi-dan-dokumen/notulis_anjungan",
+      "cluster": "komunikasi-dan-dokumen",
+      "role": "Notulis",
+      "alias": "Anjungan",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.0,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 2,
+          "label": "usable",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "hubungan-eksternal-dan-lapangan/manajemen-risiko_sauria",
+      "cluster": "hubungan-eksternal-dan-lapangan",
+      "role": "Manajemen Risiko",
+      "alias": "Sauria",
+      "role_class": "monitor",
+      "readiness": "operational",
+      "average_score": 3.12,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "sdm-dan-kinerja/monitor-kinerja_reza",
+      "cluster": "sdm-dan-kinerja",
+      "role": "Monitor Kinerja",
+      "alias": "Reza",
+      "role_class": "monitor",
+      "readiness": "operational",
+      "average_score": 3.12,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "sdm-dan-kinerja/asisten-sdm_satria",
+      "cluster": "sdm-dan-kinerja",
+      "role": "Asisten SDM",
+      "alias": "Satria",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.12,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "sdm-dan-kinerja/asisten-pelatihan_tabah",
+      "cluster": "sdm-dan-kinerja",
+      "role": "Asisten Pelatihan",
+      "alias": "Tabah",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.12,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "bottom-gate/bot-eskalasi_winda",
+      "cluster": "bottom-gate",
+      "role": "Bot Eskalasi",
+      "alias": "Winda",
+      "role_class": "escalation",
+      "readiness": "operational",
+      "average_score": 3.25,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "data-dan-analitik/koordinator-data_ardy",
+      "cluster": "data-dan-analitik",
+      "role": "Koordinator Data",
+      "alias": "Ardy",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.25,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "data-dan-analitik/gis-analyst_varin",
+      "cluster": "data-dan-analitik",
+      "role": "GIS Analyst",
+      "alias": "Varin",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.25,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "hubungan-eksternal-dan-lapangan/liaison-publik_marlin",
+      "cluster": "hubungan-eksternal-dan-lapangan",
+      "role": "Liaison Publik",
+      "alias": "Marlin",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.25,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "hubungan-eksternal-dan-lapangan/koordinator-lapangan_syarah",
+      "cluster": "hubungan-eksternal-dan-lapangan",
+      "role": "Koordinator Lapangan",
+      "alias": "Syarah",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.25,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    }
+  ],
+  "strongest_roles": [
+    {
+      "path": "tata-usaha/admin-layanan-internal_ika",
+      "cluster": "tata-usaha",
+      "role": "Admin Layanan Internal",
+      "alias": "Ika",
+      "role_class": "specialist",
+      "readiness": "high-confidence",
+      "average_score": 3.5,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "data-dan-analitik/analisis-statistik_hanan",
+      "cluster": "data-dan-analitik",
+      "role": "Analisis Statistik",
+      "alias": "Hanan",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.38,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "kebijakan-dan-hukum/konsultan-hukum_audy",
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Konsultan Hukum",
+      "alias": "Audy",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.38,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "kebijakan-dan-hukum/monitor-kepatuhan-hukum_edi",
+      "cluster": "kebijakan-dan-hukum",
+      "role": "Monitor Kepatuhan Hukum",
+      "alias": "Edi",
+      "role_class": "monitor",
+      "readiness": "operational",
+      "average_score": 3.38,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "pengadaan-barang-dan-jasa/penjaga-spesifikasi_hafidus",
+      "cluster": "pengadaan-barang-dan-jasa",
+      "role": "Penjaga Spesifikasi",
+      "alias": "Hafidus",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.38,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "perencanaan-dan-anggaran/analis-anggaran_anastasia",
+      "cluster": "perencanaan-dan-anggaran",
+      "role": "Analis Anggaran",
+      "alias": "Anastasia",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.38,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "perencanaan-dan-anggaran/perencana-program_faris",
+      "cluster": "perencanaan-dan-anggaran",
+      "role": "Perencana Program",
+      "alias": "Faris",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.38,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "perencanaan-dan-anggaran/monitor-kepatuhan-anggaran_nanang",
+      "cluster": "perencanaan-dan-anggaran",
+      "role": "Monitor Kepatuhan Anggaran",
+      "alias": "Nanang",
+      "role_class": "monitor",
+      "readiness": "operational",
+      "average_score": 3.38,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "tata-usaha/admin-persuratan_harrisal",
+      "cluster": "tata-usaha",
+      "role": "Admin Persuratan",
+      "alias": "Harrisal",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.38,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    },
+    {
+      "path": "tata-usaha/agenda-dan-protokol_ikhsan",
+      "cluster": "tata-usaha",
+      "role": "Agenda & Protokol",
+      "alias": "Ikhsan",
+      "role_class": "specialist",
+      "readiness": "operational",
+      "average_score": 3.38,
+      "missing": [],
+      "dimensions": {
+        "source_coverage": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "sop_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "template_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "output_example_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "review_note_coverage": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "ingestion_readiness": {
+          "score": 3,
+          "label": "operational",
+          "present": true
+        },
+        "escalation_clarity": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        },
+        "shared_link_quality": {
+          "score": 4,
+          "label": "high-confidence",
+          "present": true
+        }
+      }
+    }
+  ],
+  "cluster_summary": {
+    "top-layer": {
+      "role_count": 1,
+      "readiness": {
+        "operational": 1
+      },
+      "average_score": 3.38
+    },
+    "kebijakan-dan-hukum": {
+      "role_count": 3,
+      "readiness": {
+        "operational": 3
+      },
+      "average_score": 3.34
+    },
+    "perencanaan-dan-anggaran": {
+      "role_count": 3,
+      "readiness": {
+        "operational": 3
+      },
+      "average_score": 3.38
+    },
+    "pengadaan-barang-dan-jasa": {
+      "role_count": 3,
+      "readiness": {
+        "operational": 3
+      },
+      "average_score": 3.29
+    },
+    "data-dan-analitik": {
+      "role_count": 3,
+      "readiness": {
+        "operational": 3
+      },
+      "average_score": 3.29
+    },
+    "komunikasi-dan-dokumen": {
+      "role_count": 3,
+      "readiness": {
+        "operational": 3
+      },
+      "average_score": 3.17
+    },
+    "sdm-dan-kinerja": {
+      "role_count": 3,
+      "readiness": {
+        "operational": 3
+      },
+      "average_score": 3.12
+    },
+    "hubungan-eksternal-dan-lapangan": {
+      "role_count": 3,
+      "readiness": {
+        "operational": 3
+      },
+      "average_score": 3.21
+    },
+    "tata-usaha": {
+      "role_count": 6,
+      "readiness": {
+        "operational": 5,
+        "high-confidence": 1
+      },
+      "average_score": 3.4
+    },
+    "bottom-gate": {
+      "role_count": 1,
+      "readiness": {
+        "operational": 1
+      },
+      "average_score": 3.25
+    }
+  },
+  "bundle_summary": {
+    "total_bundles": 0,
+    "pending_bundles": 0,
+    "review_ready_bundles": 0,
+    "approved_bundles": 0,
+    "published_bundles": 0
+  },
+  "bundles": [],
+  "recommended_next_actions": [
+    "Deepen role-local sources and exemplars for Anjungan (komunikasi-dan-dokumen) to improve its lowest-scoring dimensions.",
+    "Prioritize real approved source uploads for near-ready roles: Yayak, Azis, Audy, Edi, Faris.",
+    "Increase the count of approved real-world policy sources and exemplar outputs to expand high-confidence coverage."
+  ]
+}

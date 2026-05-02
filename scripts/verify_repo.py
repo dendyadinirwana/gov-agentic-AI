@@ -19,11 +19,14 @@ required_root = [
     'knowledge-base/_shared/README.md',
     'knowledge-base/_shared/07-ingestion-staging/bundle.manifest.template.json',
     'docs/operations/INSTITUTION_INGESTION_PACK.md',
+    'docs/operations/KNOWLEDGE_OPS_REPORT.md',
+    'docs/operations/knowledge_ops_report.json',
     'scripts/generate_role_knowledge.py',
     'scripts/verify_knowledge_base.py',
     'scripts/scaffold_ingestion_bundle.py',
     'scripts/verify_ingestion_bundle.py',
     'scripts/publish_ingestion_bundle.py',
+    'scripts/knowledge_ops_report.py',
 ]
 missing = []
 for rel in required_root:
