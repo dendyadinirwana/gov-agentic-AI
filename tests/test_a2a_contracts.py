@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -54,10 +55,10 @@ class A2AContractTests(unittest.TestCase):
         for event in payload['audit_events']:
             self.assertFalse(validate_audit_event(event, payload['trace_id']))
 
-    def test_real_adapter_without_command_falls_back_cleanly(self) -> None:
-        handoff = {
+    def _sample_handoff(self, trace_id: str = 'trace-test-fallback') -> dict:
+        return {
             'contract_version': 'a2a.v1',
-            'trace_id': 'trace-test-fallback',
+            'trace_id': trace_id,
             'handoff_id': 'handoff-test-fallback',
             'from_role': 'top-layer__gov-ai_yayak',
             'to_role': 'komunikasi-dan-dokumen__penulis-naskah_alfian',
@@ -65,7 +66,7 @@ class A2AContractTests(unittest.TestCase):
             'task_summary': 'Buat draft formal awal.',
             'action_level': 'L3',
             'workflow_state': {
-                'trace_id': 'trace-test-fallback',
+                'trace_id': trace_id,
                 'intent_class': 'draft-formal-artifact',
                 'work_state': 'awaiting-approval',
                 'current_owner_role': 'top-layer__gov-ai_yayak',
@@ -92,6 +93,9 @@ class A2AContractTests(unittest.TestCase):
                 'sequence': 1,
             },
         }
+
+    def test_real_adapter_without_command_falls_back_cleanly(self) -> None:
+        handoff = self._sample_handoff()
         with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False, encoding='utf-8') as fh:
             fh.write(json.dumps(handoff, ensure_ascii=False))
             temp_path = fh.name
@@ -109,6 +113,67 @@ class A2AContractTests(unittest.TestCase):
             self.assertFalse(validate_response(payload, handoff))
         finally:
             Path(temp_path).unlink(missing_ok=True)
+
+    def test_real_adapter_normalizes_json_object_output(self) -> None:
+        handoff = self._sample_handoff('trace-test-runtime-json')
+        with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False, encoding='utf-8') as fh:
+            fh.write(json.dumps(handoff, ensure_ascii=False))
+            temp_path = fh.name
+        env = os.environ.copy()
+        env['GOV_AGENTIC_HERMES_ROLE_CMD'] = f'"{sys.executable}" "{ROOT / "scripts" / "runtime_wrapper_example.py"}" --runtime hermes --handoff $handoff_path --role $role_slug --trace $trace_id'
+        try:
+            result = subprocess.run(
+                [sys.executable, str(ADAPTER), '--input-json', temp_path, '--adapter-mode', 'hermes-real', '--runtime-config', str(ROOT / 'configs' / 'runtime.generated.json')],
+                capture_output=True,
+                text=True,
+                check=True,
+                env=env,
+            )
+            payload = json.loads(result.stdout)
+            self.assertEqual(payload['adapter_execution']['mode'], 'hermes-real')
+            self.assertEqual(payload['adapter_execution']['details']['normalized_from'], 'json-object')
+            self.assertIn('--handoff', payload['adapter_execution']['runtime_contract']['resolved_command'])
+            self.assertEqual(payload['adapter_execution']['runtime_contract']['command_source'], 'env:GOV_AGENTIC_HERMES_ROLE_CMD')
+            self.assertFalse(validate_response(payload, handoff))
+        finally:
+            Path(temp_path).unlink(missing_ok=True)
+
+    def test_real_adapter_timeout_returns_reviewable_response(self) -> None:
+        handoff = self._sample_handoff('trace-test-runtime-timeout')
+        with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False, encoding='utf-8') as fh:
+            fh.write(json.dumps(handoff, ensure_ascii=False))
+            temp_path = fh.name
+        with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False, encoding='utf-8') as cfg:
+            cfg.write(json.dumps({
+                'a2a_adapter_execution': {
+                    'prefer_real_runtime': False,
+                    'modes': {
+                        'hermes-real': {
+                            'command': f"{sys.executable} -c \"import time; time.sleep(2)\"",
+                            'timeout_seconds': 1,
+                            'stdout_contract': 'a2a-response-json|json-object|plain-text'
+                        }
+                    }
+                }
+            }))
+            cfg_path = cfg.name
+        try:
+            result = subprocess.run(
+                [sys.executable, str(ADAPTER), '--input-json', temp_path, '--adapter-mode', 'hermes-real', '--runtime-config', cfg_path],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            payload = json.loads(result.stdout)
+            self.assertEqual(payload['status'], 'needs_review')
+            self.assertEqual(payload['adapter_execution']['mode'], 'hermes-real')
+            self.assertEqual(payload['adapter_execution']['runtime_behavior'], 'real-runtime-command-timeout')
+            self.assertTrue(payload['adapter_execution']['audit_hints']['runtime_timeout'])
+            self.assertEqual(payload['adapter_execution']['runtime_contract']['command_source'], 'config.command')
+            self.assertFalse(validate_response(payload, handoff))
+        finally:
+            Path(temp_path).unlink(missing_ok=True)
+            Path(cfg_path).unlink(missing_ok=True)
 
 
 if __name__ == '__main__':

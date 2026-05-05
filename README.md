@@ -228,6 +228,7 @@ This is intentional for the MVP phase:
 
 ## Key docs
 - `docs/architecture/AGENT_TO_AGENT_CONTRACTS_AND_RUNTIME.md`
+- `docs/architecture/A2A_RUNTIME_HARDENING.md`
 - `docs/architecture/GOVERNMENT_WORK_LOGIC.md`
 - `docs/architecture/REPO_CONTRACT.md`
 

@@ -164,6 +164,8 @@ Dipakai melalui `role_runtime_adapter.py` dan diaktifkan oleh:
 - `a2a_adapter_execution.prefer_real_runtime`
 - command runtime yang didefinisikan lewat env var atau config
 
+Untuk kontrak invocation yang lebih detail — termasuk placeholder command, stdout normalization, dan timeout/failure semantics — lihat `docs/architecture/A2A_RUNTIME_HARDENING.md`.
+
 ## Runtime command wiring
 Konfigurasi runtime adapter saat ini berada di:
 - `configs/runtime.generated.json`

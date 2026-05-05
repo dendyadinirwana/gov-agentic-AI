@@ -136,10 +136,14 @@
     "modes": {
       "hermes-real": {
         "env_command_var": "GOV_AGENTIC_HERMES_ROLE_CMD",
+        "command_template_example": "python3 scripts/runtime_wrapper_example.py --runtime hermes --handoff $handoff_path --role $role_slug --trace $trace_id",
+        "stdout_contract": "a2a-response-json|json-object|plain-text",
         "timeout_seconds": 120
       },
       "openclaw-real": {
         "env_command_var": "GOV_AGENTIC_OPENCLAW_ROLE_CMD",
+        "command_template_example": "python3 scripts/runtime_wrapper_example.py --runtime openclaw --handoff $handoff_path --role $role_slug --trace $trace_id",
+        "stdout_contract": "a2a-response-json|json-object|plain-text",
         "timeout_seconds": 120
       }
     }

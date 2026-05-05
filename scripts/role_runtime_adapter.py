@@ -9,6 +9,7 @@ import tempfile
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+from string import Template
 from typing import Any
 
 from a2a_contracts import validate_handoff, validate_response
@@ -79,6 +80,7 @@ def _mk_response(
             "runtime_behavior": runtime_behavior,
             "details": runtime_details or {},
             "audit_hints": audit_hints or {},
+            "runtime_contract": (runtime_details or {}).get("runtime_contract", {}),
         },
         "audit": {
             "handled_at": datetime.now(timezone.utc).isoformat(),
@@ -135,6 +137,27 @@ def _runtime_settings(runtime_config: dict[str, Any], adapter_mode: str) -> dict
     return modes.get(adapter_mode, {}) if isinstance(modes, dict) else {}
 
 
+def _render_command(template_or_command: str, *, handoff_path: str, role_slug: str, trace_id: str) -> str:
+    rendered = Template(template_or_command).safe_substitute(
+        handoff_path=handoff_path,
+        role_slug=role_slug,
+        trace_id=trace_id,
+    )
+    return rendered
+
+
+def _runtime_contract(adapter_mode: str, settings: dict[str, Any], resolved_command: str | None, command_source: str) -> dict[str, Any]:
+    return {
+        "adapter_mode": adapter_mode,
+        "command_source": command_source,
+        "env_command_var": settings.get("env_command_var"),
+        "supports_placeholders": ["$handoff_path", "$role_slug", "$trace_id"],
+        "resolved_command": resolved_command,
+        "stdout_contract": settings.get("stdout_contract", "a2a-response-json|json-object|plain-text"),
+        "timeout_seconds": int(settings.get("timeout_seconds", 120)),
+    }
+
+
 def _normalize_real_runtime_output(raw: str, handoff: dict[str, Any], adapter_mode: str, role_slug: str) -> dict[str, Any]:
     text = raw.strip()
     try:
@@ -182,7 +205,8 @@ def _normalize_real_runtime_output(raw: str, handoff: dict[str, Any], adapter_mo
 
 def try_real_runtime(handoff: dict[str, Any], runtime_config: dict[str, Any], adapter_mode: str) -> dict[str, Any] | None:
     settings = _runtime_settings(runtime_config, adapter_mode)
-    command = settings.get("command") or os.environ.get(settings.get("env_command_var", ""), "")
+    env_command_var = settings.get("env_command_var", "")
+    command = settings.get("command") or os.environ.get(env_command_var, "")
     if not command:
         return None
     timeout = int(settings.get("timeout_seconds", 120))
@@ -190,12 +214,15 @@ def try_real_runtime(handoff: dict[str, Any], runtime_config: dict[str, Any], ad
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as fh:
         fh.write(json.dumps(handoff, ensure_ascii=False, indent=2))
         handoff_path = fh.name
+    command_source = "config.command" if settings.get("command") else f"env:{env_command_var}"
+    resolved_command = _render_command(command, handoff_path=handoff_path, role_slug=role_slug, trace_id=handoff["trace_id"])
+    runtime_contract = _runtime_contract(adapter_mode, settings, resolved_command, command_source)
     try:
         env = os.environ.copy()
         env["GOV_AGENTIC_A2A_HANDOFF_PATH"] = handoff_path
         env["GOV_AGENTIC_A2A_ROLE_SLUG"] = role_slug
         env["GOV_AGENTIC_A2A_TRACE_ID"] = handoff["trace_id"]
-        cmd = shlex.split(command)
+        cmd = shlex.split(resolved_command)
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, env=env, cwd=str(ROOT))
         if result.returncode != 0:
             return _mk_response(
@@ -213,10 +240,13 @@ def try_real_runtime(handoff: dict[str, Any], runtime_config: dict[str, Any], ad
                 "Periksa konfigurasi command runtime lalu ulangi handoff.",
                 adapter_mode,
                 runtime_behavior="real-runtime-command-failed",
-                runtime_details={"returncode": result.returncode},
+                runtime_details={"returncode": result.returncode, "stderr": result.stderr.strip(), "runtime_contract": runtime_contract},
                 audit_hints={"runtime_failed": True, "fallback_used": False, "human_touchpoint_required": True},
             )
-        return _normalize_real_runtime_output(result.stdout, handoff, adapter_mode, role_slug)
+        normalized = _normalize_real_runtime_output(result.stdout, handoff, adapter_mode, role_slug)
+        normalized.setdefault("adapter_execution", {}).setdefault("details", {}).update({"runtime_contract": runtime_contract})
+        normalized.setdefault("adapter_execution", {})["runtime_contract"] = runtime_contract
+        return normalized
     except subprocess.TimeoutExpired:
         return _mk_response(
             handoff["trace_id"],
@@ -233,7 +263,7 @@ def try_real_runtime(handoff: dict[str, Any], runtime_config: dict[str, Any], ad
             "Periksa runtime command atau naikkan timeout lalu ulangi.",
             adapter_mode,
             runtime_behavior="real-runtime-command-timeout",
-            runtime_details={"timeout_seconds": timeout},
+            runtime_details={"timeout_seconds": timeout, "runtime_contract": runtime_contract},
             audit_hints={"runtime_timeout": True, "fallback_used": False, "human_touchpoint_required": True},
         )
     finally:
