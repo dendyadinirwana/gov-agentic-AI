@@ -229,6 +229,7 @@ This is intentional for the MVP phase:
 ## Key docs
 - `docs/architecture/AGENT_TO_AGENT_CONTRACTS_AND_RUNTIME.md`
 - `docs/architecture/A2A_RUNTIME_HARDENING.md`
+- `docs/architecture/A2A_RETRIEVAL_INTEGRATION.md`
 - `docs/architecture/GOVERNMENT_WORK_LOGIC.md`
 - `docs/architecture/REPO_CONTRACT.md`
 
@@ -239,6 +240,7 @@ Current regression fixtures under `examples/agent-to-agent/`:
 - `procurement-neutrality.request.json` — procurement neutrality path (`Hafidus`) sebagai direct review-intent execution
 - `archive-record.request.json` — archive preparation path (`Sovia -> Izza`)
 - `escalation-blocker.request.json` — escalation blocker path (`Winda`) dengan terminal `needs_review` untuk human takeover
+- `retrieval-budget-review.request.json` — retrieval-backed budget review path (`Anastasia`) dengan provenance dari local corpus
 
 Validation helpers:
 - `python3 scripts/smoke_test_agent_to_agent.py`

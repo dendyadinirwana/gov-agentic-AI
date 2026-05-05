@@ -41,6 +41,12 @@ CASES = [
         "expected_path": ["Winda"],
         "expected_status": "needs_review",
     },
+    {
+        "file": "retrieval-budget-review.request.json",
+        "expected_steps": 1,
+        "expected_path": ["Anastasia"],
+        "expected_status": "completed",
+    },
 ]
 
 

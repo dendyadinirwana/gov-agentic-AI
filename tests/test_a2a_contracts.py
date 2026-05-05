@@ -55,6 +55,13 @@ FIXTURE_CASES = [
         'expected_status': 'needs_review',
         'expected_event_types': {'handoff_created', 'role_response_recorded', 'human_touchpoint_required', 'workflow_terminalized'},
     },
+    {
+        'file': 'retrieval-budget-review.request.json',
+        'expected_steps': 1,
+        'expected_path': ['Anastasia'],
+        'expected_status': 'completed',
+        'expected_event_types': {'handoff_created', 'role_response_recorded', 'workflow_terminalized'},
+    },
 ]
 
 
@@ -93,6 +100,13 @@ class A2AContractTests(unittest.TestCase):
                 if 'review_returned' in event_policies:
                     self.assertEqual(event_policies['review_returned']['compliance_class'], 'human_approval')
                     self.assertEqual(event_policies['review_returned']['response_policy'], 'review_required')
+                if case['file'] == 'retrieval-budget-review.request.json':
+                    self.assertTrue(payload['final']['retrieval']['required'])
+                    self.assertEqual(payload['final']['retrieval']['provider'], 'local-json-corpus')
+                    self.assertGreater(payload['final']['retrieval']['hit_count'], 0)
+                    self.assertGreater(len(payload['steps'][0]['response']['evidence_map']), 0)
+                    self.assertEqual(payload['steps'][0]['response']['evidence_map'][0]['use'], 'retrieved evidence')
+                    self.assertIn('source_id', payload['steps'][0]['response']['evidence_map'][0])
                 for event in payload['audit_events']:
                     self.assertFalse(validate_audit_event(event, payload['trace_id']))
 

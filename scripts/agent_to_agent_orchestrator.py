@@ -10,6 +10,7 @@ from typing import Any
 
 from a2a_contracts import AUDIT_POLICY_BY_TYPE, validate_audit_event, validate_handoff, validate_response, validate_terminal_state
 from government_decision_engine import build_decision
+from local_retriever import retrieve
 from role_runner import build_role_runner
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -152,7 +153,24 @@ def emit_response_audit_events(trace_id: str, handoff: dict[str, Any], response:
     return events
 
 
-def build_terminal_state(trace_id: str, workflow_state: dict[str, Any], steps: list[dict[str, Any]], roles_by_slug: dict[str, dict[str, Any]]) -> dict[str, Any]:
+def retrieval_payload(request: dict[str, Any], workflow_state: dict[str, Any]) -> dict[str, Any]:
+    retrieval_required = bool(request.get("retrieval_required"))
+    retrieval_result = retrieve(request.get("request_text", ""), workflow_state.get("intent_class")) if retrieval_required else {"provider": "disabled", "query_terms": [], "hits": []}
+    evidence_sources = list(request.get("evidence_sources", []))
+    for hit in retrieval_result.get("hits", []):
+        label = hit.get("title") or hit.get("source_id")
+        if label and label not in evidence_sources:
+            evidence_sources.append(label)
+    return {
+        "required": retrieval_required,
+        "provider": retrieval_result.get("provider", "disabled"),
+        "query_terms": retrieval_result.get("query_terms", []),
+        "hits": retrieval_result.get("hits", []),
+        "evidence_sources": evidence_sources,
+    }
+
+
+def build_terminal_state(trace_id: str, workflow_state: dict[str, Any], steps: list[dict[str, Any]], roles_by_slug: dict[str, dict[str, Any]], retrieval: dict[str, Any]) -> dict[str, Any]:
     latest = steps[-1]["response"] if steps else None
     findings: list[str] = []
     path: list[str] = []
@@ -175,6 +193,21 @@ def build_terminal_state(trace_id: str, workflow_state: dict[str, Any], steps: l
         "execution_path": path,
         "step_count": len(steps),
         "orchestrator": ROLE_YAYAK,
+        "retrieval": {
+            "required": retrieval.get("required", False),
+            "provider": retrieval.get("provider", "disabled"),
+            "query_terms": retrieval.get("query_terms", []),
+            "hit_count": len(retrieval.get("hits", [])),
+            "sources": [
+                {
+                    "source_id": hit.get("source_id"),
+                    "title": hit.get("title"),
+                    "owner": hit.get("owner"),
+                    "uri": hit.get("uri"),
+                }
+                for hit in retrieval.get("hits", [])
+            ],
+        },
     }
     errors = validate_terminal_state(terminal, trace_id)
     if errors:
@@ -219,15 +252,22 @@ def main() -> int:
         audit_events.append(build_audit_event(trace_id, "governance_gate_triggered", ROLE_YAYAK, trace_id, workflow_state.get("decision_reason")))
         if workflow_state.get("human_touchpoint_required"):
             audit_events.append(build_audit_event(trace_id, "human_touchpoint_required", ROLE_YAYAK, trace_id, workflow_state.get("approval_gate")))
-        final = build_terminal_state(trace_id, workflow_state, [], roles_by_slug)
+        final = build_terminal_state(trace_id, workflow_state, [], roles_by_slug, {"required": False, "provider": "disabled", "query_terms": [], "hits": []})
         audit_events.append(build_audit_event(trace_id, "workflow_terminalized", ROLE_YAYAK, "final", final["summary"]))
         output = {"contract_version": CONTRACT_VERSION, "trace_id": trace_id, "workflow_state": workflow_state, "steps": [], "audit_events": audit_events, "final": final}
         print(json.dumps(output, indent=2 if args.pretty else None, ensure_ascii=False))
         return 0
 
+    retrieval = retrieval_payload(request, workflow_state)
+
     common_payload = {
         "request_text": request_text,
-        "evidence_sources": request.get("evidence_sources", []),
+        "evidence_sources": retrieval["evidence_sources"],
+        "retrieval_context": {
+            "provider": retrieval["provider"],
+            "query_terms": retrieval["query_terms"],
+            "hits": retrieval["hits"],
+        },
         "instructions": request.get("instructions"),
         "assumptions": request.get("assumptions", []),
         "decision_context": request.get("decision_context"),
@@ -256,7 +296,7 @@ def main() -> int:
         audit_events.extend(emit_response_audit_events(trace_id, review_handoff, review_response))
         steps.append({"handoff": review_handoff, "response": review_response})
 
-    final = build_terminal_state(trace_id, workflow_state, steps, roles_by_slug)
+    final = build_terminal_state(trace_id, workflow_state, steps, roles_by_slug, retrieval)
     audit_events.append(build_audit_event(trace_id, "workflow_terminalized", ROLE_YAYAK, "final", final["status"]))
 
     output = {

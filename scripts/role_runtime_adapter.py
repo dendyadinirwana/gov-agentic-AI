@@ -38,6 +38,32 @@ def index_roles(registry: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return {role["role_slug"]: role for role in registry["roles"]}
 
 
+def _build_evidence_map(evidence_sources: list[str], retrieval_hits: list[dict[str, Any]] | None = None) -> list[dict[str, Any]]:
+    hits = retrieval_hits or []
+    mapped = []
+    matched_titles = set()
+    for hit in hits:
+        title = hit.get("title")
+        if title:
+            matched_titles.add(title)
+        mapped.append({
+            "source": title or hit.get("source_id") or "retrieved source",
+            "use": "retrieved evidence",
+            "source_id": hit.get("source_id"),
+            "owner": hit.get("owner"),
+            "document_type": hit.get("document_type"),
+            "classification": hit.get("classification"),
+            "issue_date": hit.get("issue_date"),
+            "uri": hit.get("uri"),
+            "excerpt": hit.get("excerpt"),
+        })
+    for source in evidence_sources:
+        if source in matched_titles:
+            continue
+        mapped.append({"source": source, "use": "working evidence"})
+    return mapped
+
+
 def _mk_response(
     trace_id: str,
     role_slug: str,
@@ -55,6 +81,7 @@ def _mk_response(
     runtime_behavior: str = "mocked-local-role-execution",
     runtime_details: dict[str, Any] | None = None,
     audit_hints: dict[str, Any] | None = None,
+    retrieval_hits: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     response = {
         "contract_version": CONTRACT_VERSION,
@@ -64,9 +91,7 @@ def _mk_response(
         "status": status,
         "summary": summary,
         "artifact": artifact,
-        "evidence_map": [
-            {"source": source, "use": "working evidence"} for source in evidence_sources
-        ],
+        "evidence_map": _build_evidence_map(evidence_sources, retrieval_hits),
         "assumptions": assumptions,
         "confidence": confidence,
         "red_flags": red_flags,
@@ -108,6 +133,7 @@ def generic_response(handoff: dict[str, Any], role: dict[str, Any], adapter_mode
     evidence_sources = handoff["payload"].get("evidence_sources", [])
     draft_artifact = handoff["payload"].get("draft_artifact")
     governance = handoff["governance"]
+    retrieval_hits = ((handoff["payload"].get("retrieval_context") or {}).get("hits") or [])
     role_name = role.get("role", role_slug)
     role_class = (role.get("authority") or {}).get("role_class", "specialist")
     use_cases = (role.get("orchestration") or {}).get("primary_use_cases", [])
@@ -117,6 +143,8 @@ def generic_response(handoff: dict[str, Any], role: dict[str, Any], adapter_mode
     red_flags = []
     if not evidence_sources:
         red_flags.append("Evidence source belum dilampirkan.")
+    if not retrieval_hits and handoff["payload"].get("retrieval_context", {}).get("provider") not in {None, "disabled"}:
+        red_flags.append("Retrieval context diharapkan tetapi tidak menghasilkan source provenance.")
     if governance.get("human_touchpoint_required"):
         red_flags.append("Output ini tetap memerlukan review atau keputusan manusia sebelum dipakai resmi.")
 
@@ -128,7 +156,7 @@ def generic_response(handoff: dict[str, Any], role: dict[str, Any], adapter_mode
         f"Adapter berjalan dalam mode {adapter_mode}; bila runtime nyata belum siap maka fallback ke mock digunakan."
     ]
 
-    return _mk_response(trace_id, role_slug, status, summary, artifact, evidence_sources, assumptions, "medium", red_flags, governance.get("human_touchpoint_required", False), "Mengikuti governance gate dan status runtime adapter.", next_step, adapter_mode)
+    return _mk_response(trace_id, role_slug, status, summary, artifact, evidence_sources, assumptions, "medium", red_flags, governance.get("human_touchpoint_required", False), "Mengikuti governance gate dan status runtime adapter.", next_step, adapter_mode, retrieval_hits=retrieval_hits)
 
 
 def _runtime_settings(runtime_config: dict[str, Any], adapter_mode: str) -> dict[str, Any]:

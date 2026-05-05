@@ -1,0 +1,57 @@
+[
+  {
+    "source_id": "SRC-BUDGET-001",
+    "title": "Catatan Review Kesesuaian Anggaran Kegiatan Pendampingan Desa",
+    "owner": "Subbag Perencanaan",
+    "document_type": "internal_budget_note",
+    "classification": "internal",
+    "issue_date": "2025-11-18",
+    "uri": "local://budget/review-kesesuaian-anggaran-001",
+    "tags": ["anggaran", "rka", "pagu", "biaya", "pendampingan desa"],
+    "content": "Review awal menunjukkan usulan kegiatan pendampingan desa harus dibandingkan terhadap pagu tersedia, komponen biaya utama, dan catatan deviasi biaya dari baseline internal."
+  },
+  {
+    "source_id": "SRC-PROC-001",
+    "title": "Panduan Netralitas Spesifikasi Pengadaan Internal",
+    "owner": "Unit Pengadaan",
+    "document_type": "procurement_guideline",
+    "classification": "internal",
+    "issue_date": "2025-09-02",
+    "uri": "local://procurement/netralitas-spesifikasi-001",
+    "tags": ["pengadaan", "spesifikasi", "netralitas", "vendor", "brand"],
+    "content": "Spesifikasi harus berbasis fungsi dan kebutuhan layanan, bukan brand preference. Wording yang mengunci vendor harus ditandai untuk review ulang."
+  },
+  {
+    "source_id": "SRC-ARCHIVE-001",
+    "title": "Pedoman Penataan Arsip Digital Monitoring Lapangan",
+    "owner": "Tata Usaha",
+    "document_type": "archive_guideline",
+    "classification": "internal",
+    "issue_date": "2025-08-10",
+    "uri": "local://archive/penataan-monitoring-lapangan-001",
+    "tags": ["arsip", "retensi", "record", "klasifikasi", "monitoring lapangan"],
+    "content": "Penataan arsip digital perlu mencatat klasifikasi, status record, lokasi simpan, dan retensi awal sebelum ada keputusan disposal final."
+  },
+  {
+    "source_id": "SRC-LEGAL-001",
+    "title": "Template Nota Dinas Tindak Lanjut Internal",
+    "owner": "Bagian Umum",
+    "document_type": "official_template",
+    "classification": "internal",
+    "issue_date": "2025-07-01",
+    "uri": "local://templates/nota-dinas-tindak-lanjut-001",
+    "tags": ["nota dinas", "template resmi", "surat internal", "tindak lanjut"],
+    "content": "Template nota dinas internal memuat perihal, dasar singkat, ringkasan tindak lanjut, dan penutup untuk review pejabat terkait."
+  },
+  {
+    "source_id": "SRC-ESC-001",
+    "title": "Catatan Eskalasi Hambatan Persetujuan Level Tinggi",
+    "owner": "Sekretariat Direktorat",
+    "document_type": "escalation_note",
+    "classification": "internal",
+    "issue_date": "2025-10-05",
+    "uri": "local://escalation/hambatan-persetujuan-l4-001",
+    "tags": ["eskalasi", "approval owner", "hambatan", "l4", "keputusan"],
+    "content": "Jika approval owner tidak jelas pada tindakan level L4, kasus harus dinaikkan sebagai blocker dan menunggu penunjukan owner manusia yang akuntabel."
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "request_text": "Tolong review kesesuaian anggaran untuk kegiatan pendampingan desa dan gunakan sumber internal yang paling relevan sebagai dasar analisis awal.",
+  "intent_class": "review-budget-fit",
+  "action_level": "L2",
+  "evidence_complete": true,
+  "approval_owner_known": true,
+  "material_impact": false,
+  "sensitive": false,
+  "retrieval_required": true,
+  "evidence_sources": [],
+  "instructions": "Ground review ke sumber internal yang paling relevan dan pertahankan provenance pada output.",
+  "assumptions": [
+    "Retrieval lokal dipakai sebagai baseline grounding.",
+    "Belum ada komitmen final anggaran."
+  ]
+}

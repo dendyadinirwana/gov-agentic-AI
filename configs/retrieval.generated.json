@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+  "provider": "local-json-corpus",
+  "default_limit": 3,
+  "corpus_path": "examples/retrieval-corpus/government_sources.json",
+  "intent_queries": {
+    "draft-formal-artifact": ["nota dinas", "format resmi", "tindak lanjut"],
+    "review-compliance": ["kepatuhan", "review hukum", "dasar hukum"],
+    "review-budget-fit": ["anggaran", "pagu", "RKA", "biaya"],
+    "review-specification-neutrality": ["spesifikasi", "netralitas", "pengadaan", "vendor"],
+    "prepare-archive-record": ["arsip", "retensi", "klasifikasi record"],
+    "escalate-blocker": ["eskalasi", "approval owner", "hambatan keputusan"]
+  },
+  "provenance_required_fields": [
+    "source_id",
+    "title",
+    "owner",
+    "document_type",
+    "classification",
+    "issue_date",
+    "uri"
+  ]
+}
