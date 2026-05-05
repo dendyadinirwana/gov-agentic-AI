@@ -11,7 +11,10 @@
     "created_at",
     "actor_role",
     "payload_ref",
-    "severity"
+    "severity",
+    "retention_class",
+    "compliance_class",
+    "response_policy"
   ],
   "properties": {
     "contract_version": {
@@ -58,6 +61,33 @@
         "info",
         "warning",
         "critical"
+      ]
+    },
+    "retention_class": {
+      "type": "string",
+      "enum": [
+        "ephemeral",
+        "operational_record",
+        "governance_record",
+        "incident_record"
+      ]
+    },
+    "compliance_class": {
+      "type": "string",
+      "enum": [
+        "standard",
+        "governance_control",
+        "human_approval",
+        "runtime_incident"
+      ]
+    },
+    "response_policy": {
+      "type": "string",
+      "enum": [
+        "log_only",
+        "review_required",
+        "ack_required",
+        "escalate_required"
       ]
     },
     "notes": {

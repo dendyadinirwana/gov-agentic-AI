@@ -34,17 +34,66 @@ AUDIT_TYPES = {
     "review_returned",
 }
 AUDIT_SEVERITIES = {"info", "warning", "critical"}
-AUDIT_SEVERITY_BY_TYPE = {
-    "handoff_created": "info",
-    "role_response_recorded": "info",
-    "workflow_terminalized": "info",
-    "governance_gate_triggered": "warning",
-    "human_touchpoint_required": "warning",
-    "fallback_used": "warning",
-    "review_returned": "warning",
-    "runtime_failed": "critical",
-    "runtime_timeout": "critical",
+AUDIT_RETENTION_CLASSES = {"ephemeral", "operational_record", "governance_record", "incident_record"}
+AUDIT_COMPLIANCE_CLASSES = {"standard", "governance_control", "human_approval", "runtime_incident"}
+AUDIT_RESPONSE_POLICIES = {"log_only", "review_required", "ack_required", "escalate_required"}
+AUDIT_POLICY_BY_TYPE = {
+    "handoff_created": {
+        "severity": "info",
+        "retention_class": "operational_record",
+        "compliance_class": "standard",
+        "response_policy": "log_only",
+    },
+    "role_response_recorded": {
+        "severity": "info",
+        "retention_class": "operational_record",
+        "compliance_class": "standard",
+        "response_policy": "log_only",
+    },
+    "workflow_terminalized": {
+        "severity": "info",
+        "retention_class": "governance_record",
+        "compliance_class": "standard",
+        "response_policy": "log_only",
+    },
+    "governance_gate_triggered": {
+        "severity": "warning",
+        "retention_class": "governance_record",
+        "compliance_class": "governance_control",
+        "response_policy": "review_required",
+    },
+    "human_touchpoint_required": {
+        "severity": "warning",
+        "retention_class": "governance_record",
+        "compliance_class": "human_approval",
+        "response_policy": "ack_required",
+    },
+    "fallback_used": {
+        "severity": "warning",
+        "retention_class": "governance_record",
+        "compliance_class": "governance_control",
+        "response_policy": "review_required",
+    },
+    "review_returned": {
+        "severity": "warning",
+        "retention_class": "governance_record",
+        "compliance_class": "human_approval",
+        "response_policy": "review_required",
+    },
+    "runtime_failed": {
+        "severity": "critical",
+        "retention_class": "incident_record",
+        "compliance_class": "runtime_incident",
+        "response_policy": "escalate_required",
+    },
+    "runtime_timeout": {
+        "severity": "critical",
+        "retention_class": "incident_record",
+        "compliance_class": "runtime_incident",
+        "response_policy": "escalate_required",
+    },
 }
+AUDIT_SEVERITY_BY_TYPE = {event_type: policy["severity"] for event_type, policy in AUDIT_POLICY_BY_TYPE.items()}
 
 
 def load_json(path: Path) -> Any:
@@ -178,7 +227,7 @@ def validate_terminal_state(terminal: dict[str, Any], trace_id: str | None = Non
 
 def validate_audit_event(event: dict[str, Any], trace_id: str | None = None) -> list[str]:
     errors: list[str] = []
-    for key in ["contract_version","trace_id","event_id","event_type","created_at","actor_role","payload_ref","severity"]:
+    for key in ["contract_version","trace_id","event_id","event_type","created_at","actor_role","payload_ref","severity","retention_class","compliance_class","response_policy"]:
         if key not in event:
             errors.append(f"audit_event missing key: {key}")
     if event.get("contract_version") != CONTRACT_VERSION:
@@ -187,9 +236,22 @@ def validate_audit_event(event: dict[str, Any], trace_id: str | None = None) -> 
         errors.append(f"invalid audit_event.event_type: {event.get('event_type')}")
     if event.get("severity") not in AUDIT_SEVERITIES:
         errors.append(f"invalid audit_event.severity: {event.get('severity')}")
-    expected_severity = AUDIT_SEVERITY_BY_TYPE.get(event.get("event_type"))
-    if expected_severity and event.get("severity") != expected_severity:
-        errors.append(f"audit_event.severity must be {expected_severity} for event_type {event.get('event_type')}")
+    if event.get("retention_class") not in AUDIT_RETENTION_CLASSES:
+        errors.append(f"invalid audit_event.retention_class: {event.get('retention_class')}")
+    if event.get("compliance_class") not in AUDIT_COMPLIANCE_CLASSES:
+        errors.append(f"invalid audit_event.compliance_class: {event.get('compliance_class')}")
+    if event.get("response_policy") not in AUDIT_RESPONSE_POLICIES:
+        errors.append(f"invalid audit_event.response_policy: {event.get('response_policy')}")
+    expected_policy = AUDIT_POLICY_BY_TYPE.get(event.get("event_type"))
+    if expected_policy:
+        if event.get("severity") != expected_policy["severity"]:
+            errors.append(f"audit_event.severity must be {expected_policy['severity']} for event_type {event.get('event_type')}")
+        if event.get("retention_class") != expected_policy["retention_class"]:
+            errors.append(f"audit_event.retention_class must be {expected_policy['retention_class']} for event_type {event.get('event_type')}")
+        if event.get("compliance_class") != expected_policy["compliance_class"]:
+            errors.append(f"audit_event.compliance_class must be {expected_policy['compliance_class']} for event_type {event.get('event_type')}")
+        if event.get("response_policy") != expected_policy["response_policy"]:
+            errors.append(f"audit_event.response_policy must be {expected_policy['response_policy']} for event_type {event.get('event_type')}")
     if not _is_iso(str(event.get("created_at", ""))):
         errors.append("audit_event.created_at must be ISO timestamp")
     if trace_id and event.get("trace_id") != trace_id:

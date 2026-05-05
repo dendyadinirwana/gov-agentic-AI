@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from a2a_contracts import AUDIT_SEVERITY_BY_TYPE, validate_audit_event, validate_handoff, validate_response, validate_terminal_state
+from a2a_contracts import AUDIT_POLICY_BY_TYPE, validate_audit_event, validate_handoff, validate_response, validate_terminal_state
 from government_decision_engine import build_decision
 from role_runner import build_role_runner
 
@@ -38,6 +38,7 @@ def load_routing_policy(registry: dict[str, Any]) -> dict[str, Any]:
 
 
 def build_audit_event(trace_id: str, event_type: str, actor_role: str, payload_ref: str, notes: str | None = None) -> dict[str, Any]:
+    policy = AUDIT_POLICY_BY_TYPE[event_type]
     event = {
         "contract_version": CONTRACT_VERSION,
         "trace_id": trace_id,
@@ -46,7 +47,10 @@ def build_audit_event(trace_id: str, event_type: str, actor_role: str, payload_r
         "created_at": datetime.now(timezone.utc).isoformat(),
         "actor_role": actor_role,
         "payload_ref": payload_ref,
-        "severity": AUDIT_SEVERITY_BY_TYPE[event_type],
+        "severity": policy["severity"],
+        "retention_class": policy["retention_class"],
+        "compliance_class": policy["compliance_class"],
+        "response_policy": policy["response_policy"],
         "notes": notes,
     }
     errors = validate_audit_event(event, trace_id)

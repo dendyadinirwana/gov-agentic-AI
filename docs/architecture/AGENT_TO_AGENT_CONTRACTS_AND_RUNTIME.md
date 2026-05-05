@@ -114,15 +114,15 @@ Field penting:
 Audit event mencatat event lifecycle penting.
 
 Event type saat ini:
-- `handoff_created` → `info`
-- `role_response_recorded` → `info`
-- `workflow_terminalized` → `info`
-- `governance_gate_triggered` → `warning`
-- `human_touchpoint_required` → `warning`
-- `fallback_used` → `warning`
-- `review_returned` → `warning`
-- `runtime_failed` → `critical`
-- `runtime_timeout` → `critical`
+- `handoff_created` → `info` / `operational_record` / `standard` / `log_only`
+- `role_response_recorded` → `info` / `operational_record` / `standard` / `log_only`
+- `workflow_terminalized` → `info` / `governance_record` / `standard` / `log_only`
+- `governance_gate_triggered` → `warning` / `governance_record` / `governance_control` / `review_required`
+- `human_touchpoint_required` → `warning` / `governance_record` / `human_approval` / `ack_required`
+- `fallback_used` → `warning` / `governance_record` / `governance_control` / `review_required`
+- `review_returned` → `warning` / `governance_record` / `human_approval` / `review_required`
+- `runtime_failed` → `critical` / `incident_record` / `runtime_incident` / `escalate_required`
+- `runtime_timeout` → `critical` / `incident_record` / `runtime_incident` / `escalate_required`
 
 ### 4) Terminal state
 Terminal state adalah ringkasan final workflow.
@@ -276,7 +276,7 @@ Hal berikut masih sengaja sederhana:
 - real adapter belum melakukan deep native integration per runtime
 - Hermes/OpenClaw command invocation masih shell-based, bukan SDK-native
 - task summary templates masih code-level
-- audit event taxonomy sudah punya severity awal, tetapi belum dipetakan ke retention/compliance classes atau automated response policy
+- audit event taxonomy sekarang punya severity, retention class, compliance class, dan response policy awal, tetapi belum dipetakan ke SLA operasional atau backend retention enforcement
 
 ## Recommended next evolution
 Tahap selanjutnya yang paling masuk akal:

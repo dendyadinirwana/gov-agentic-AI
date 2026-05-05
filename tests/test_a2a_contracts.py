@@ -40,10 +40,17 @@ class A2AContractTests(unittest.TestCase):
         self.assertIn('governance_gate_triggered', event_types)
         self.assertIn('human_touchpoint_required', event_types)
         self.assertIn('review_returned', event_types)
-        severities = {event['event_type']: event['severity'] for event in payload['audit_events']}
-        self.assertEqual(severities['handoff_created'], 'info')
-        self.assertEqual(severities['governance_gate_triggered'], 'warning')
-        self.assertEqual(severities['review_returned'], 'warning')
+        event_policies = {event['event_type']: event for event in payload['audit_events']}
+        self.assertEqual(event_policies['handoff_created']['severity'], 'info')
+        self.assertEqual(event_policies['handoff_created']['retention_class'], 'operational_record')
+        self.assertEqual(event_policies['handoff_created']['compliance_class'], 'standard')
+        self.assertEqual(event_policies['handoff_created']['response_policy'], 'log_only')
+        self.assertEqual(event_policies['governance_gate_triggered']['severity'], 'warning')
+        self.assertEqual(event_policies['governance_gate_triggered']['retention_class'], 'governance_record')
+        self.assertEqual(event_policies['governance_gate_triggered']['compliance_class'], 'governance_control')
+        self.assertEqual(event_policies['governance_gate_triggered']['response_policy'], 'review_required')
+        self.assertEqual(event_policies['review_returned']['compliance_class'], 'human_approval')
+        self.assertEqual(event_policies['review_returned']['response_policy'], 'review_required')
         for event in payload['audit_events']:
             self.assertFalse(validate_audit_event(event, payload['trace_id']))
 
