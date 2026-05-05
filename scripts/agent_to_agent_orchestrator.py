@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from a2a_contracts import validate_audit_event, validate_handoff, validate_response, validate_terminal_state
+from a2a_contracts import AUDIT_SEVERITY_BY_TYPE, validate_audit_event, validate_handoff, validate_response, validate_terminal_state
 from government_decision_engine import build_decision
 from role_runner import build_role_runner
 
@@ -46,6 +46,7 @@ def build_audit_event(trace_id: str, event_type: str, actor_role: str, payload_r
         "created_at": datetime.now(timezone.utc).isoformat(),
         "actor_role": actor_role,
         "payload_ref": payload_ref,
+        "severity": AUDIT_SEVERITY_BY_TYPE[event_type],
         "notes": notes,
     }
     errors = validate_audit_event(event, trace_id)

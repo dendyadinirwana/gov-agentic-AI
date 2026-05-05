@@ -114,15 +114,15 @@ Field penting:
 Audit event mencatat event lifecycle penting.
 
 Event type saat ini:
-- `handoff_created`
-- `role_response_recorded`
-- `workflow_terminalized`
-- `governance_gate_triggered`
-- `human_touchpoint_required`
-- `fallback_used`
-- `runtime_failed`
-- `runtime_timeout`
-- `review_returned`
+- `handoff_created` → `info`
+- `role_response_recorded` → `info`
+- `workflow_terminalized` → `info`
+- `governance_gate_triggered` → `warning`
+- `human_touchpoint_required` → `warning`
+- `fallback_used` → `warning`
+- `review_returned` → `warning`
+- `runtime_failed` → `critical`
+- `runtime_timeout` → `critical`
 
 ### 4) Terminal state
 Terminal state adalah ringkasan final workflow.
@@ -276,7 +276,7 @@ Hal berikut masih sengaja sederhana:
 - real adapter belum melakukan deep native integration per runtime
 - Hermes/OpenClaw command invocation masih shell-based, bukan SDK-native
 - task summary templates masih code-level
-- audit event taxonomy sudah lebih kaya, tetapi belum dipetakan ke severity/retention/compliance classes
+- audit event taxonomy sudah punya severity awal, tetapi belum dipetakan ke retention/compliance classes atau automated response policy
 
 ## Recommended next evolution
 Tahap selanjutnya yang paling masuk akal:

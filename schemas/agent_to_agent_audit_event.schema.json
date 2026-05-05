@@ -10,7 +10,8 @@
     "event_type",
     "created_at",
     "actor_role",
-    "payload_ref"
+    "payload_ref",
+    "severity"
   ],
   "properties": {
     "contract_version": {
@@ -50,6 +51,14 @@
     "payload_ref": {
       "type": "string",
       "minLength": 1
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "critical"
+      ]
     },
     "notes": {
       "type": [

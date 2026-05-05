@@ -40,6 +40,10 @@ class A2AContractTests(unittest.TestCase):
         self.assertIn('governance_gate_triggered', event_types)
         self.assertIn('human_touchpoint_required', event_types)
         self.assertIn('review_returned', event_types)
+        severities = {event['event_type']: event['severity'] for event in payload['audit_events']}
+        self.assertEqual(severities['handoff_created'], 'info')
+        self.assertEqual(severities['governance_gate_triggered'], 'warning')
+        self.assertEqual(severities['review_returned'], 'warning')
         for event in payload['audit_events']:
             self.assertFalse(validate_audit_event(event, payload['trace_id']))
 

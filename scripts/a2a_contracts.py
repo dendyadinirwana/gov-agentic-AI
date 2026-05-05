@@ -33,6 +33,18 @@ AUDIT_TYPES = {
     "runtime_timeout",
     "review_returned",
 }
+AUDIT_SEVERITIES = {"info", "warning", "critical"}
+AUDIT_SEVERITY_BY_TYPE = {
+    "handoff_created": "info",
+    "role_response_recorded": "info",
+    "workflow_terminalized": "info",
+    "governance_gate_triggered": "warning",
+    "human_touchpoint_required": "warning",
+    "fallback_used": "warning",
+    "review_returned": "warning",
+    "runtime_failed": "critical",
+    "runtime_timeout": "critical",
+}
 
 
 def load_json(path: Path) -> Any:
@@ -166,13 +178,18 @@ def validate_terminal_state(terminal: dict[str, Any], trace_id: str | None = Non
 
 def validate_audit_event(event: dict[str, Any], trace_id: str | None = None) -> list[str]:
     errors: list[str] = []
-    for key in ["contract_version","trace_id","event_id","event_type","created_at","actor_role","payload_ref"]:
+    for key in ["contract_version","trace_id","event_id","event_type","created_at","actor_role","payload_ref","severity"]:
         if key not in event:
             errors.append(f"audit_event missing key: {key}")
     if event.get("contract_version") != CONTRACT_VERSION:
         errors.append("audit_event.contract_version must be a2a.v1")
     if event.get("event_type") not in AUDIT_TYPES:
         errors.append(f"invalid audit_event.event_type: {event.get('event_type')}")
+    if event.get("severity") not in AUDIT_SEVERITIES:
+        errors.append(f"invalid audit_event.severity: {event.get('severity')}")
+    expected_severity = AUDIT_SEVERITY_BY_TYPE.get(event.get("event_type"))
+    if expected_severity and event.get("severity") != expected_severity:
+        errors.append(f"audit_event.severity must be {expected_severity} for event_type {event.get('event_type')}")
     if not _is_iso(str(event.get("created_at", ""))):
         errors.append("audit_event.created_at must be ISO timestamp")
     if trace_id and event.get("trace_id") != trace_id:
