@@ -2,16 +2,21 @@
 
 Governed **agent-to-agent (A2A) orchestration** baseline for public-sector workflows.
 
-Gov-Agentic AI adalah repo MVP untuk membangun workflow AI yang:
+Gov-Agentic AI is an MVP repository for building AI workflows that are:
 - **role-aware**
 - **audit-aware**
 - **retrieval-grounded**
 - **human-reviewable**
-- siap diintegrasikan ke runtime seperti **Hermes** dan **OpenClaw**
+- ready for integration with runtimes such as **Hermes** and **OpenClaw**
 
-Ini **bukan** chatbot wrapper generik. Ini fondasi workflow AI yang cocok untuk kerja pengetahuan pemerintahan: drafting, review, routing, compliance, retrieval, dan human approval.
+This is **not** a generic chatbot wrapper. It is a practical orchestration foundation for government knowledge work: drafting, review, routing, compliance, retrieval, and human approval.
 
-> **Status:** MVP backbone aktif dan runnable secara lokal.
+> **Status:** MVP backbone active and runnable locally.
+
+## Start here
+- Read the architecture overview below
+- Run `python3 scripts/verify_repo.py`
+- Use `docs/integrations/AI_SETUP_PROMPTS.md` if you want an AI agent to clone, set up, or validate this repo from GitHub
 
 ---
 
