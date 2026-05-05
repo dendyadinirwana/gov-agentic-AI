@@ -9,70 +9,58 @@ Gov-Agentic AI is an MVP repository for building AI workflows that are:
 - **human-reviewable**
 - ready for integration with runtimes such as **Hermes** and **OpenClaw**
 
-This is **not** a generic chatbot wrapper. It is a practical orchestration foundation for government knowledge work: drafting, review, routing, compliance, retrieval, and human approval.
+This is **not** a generic chatbot wrapper. It is a practical orchestration foundation for government knowledge work, including routing, review, compliance, retrieval, and human approval.
 
 > **Status:** MVP backbone active and runnable locally.
 
 ## Start here
 - Read the architecture overview below
 - Run `python3 scripts/verify_repo.py`
-- Use `docs/integrations/AI_SETUP_PROMPTS.md` if you want an AI agent to clone, set up, or validate this repo from GitHub
+- Use `docs/integrations/AI_SETUP_PROMPTS.md` if you want an AI agent to clone, set up, or validate this repository from GitHub
 
 ---
 
-## What this repo does
+## What this repository does
 
-Repo ini memodelkan workflow multi-role yang punya:
-- role registry sebagai source of truth
-- decision engine untuk routing dan governance gating
+This repository models governed multi-role AI workflows with:
+- a canonical role registry
+- a decision engine for routing and governance gating
 - formal A2A contracts
 - retrieval-backed evidence flow
-- HITL review packet / decision / resume path
-- smoke tests dan unit tests untuk validasi perilaku inti
-
-Contoh workflow yang dicakup:
-- drafting memo / naskah internal
-- compliance dan legal review
-- budget review
-- procurement neutrality check
-- archive / administrative routing
-- escalation handling
-- consequential actions dengan human approval
+- a human-in-the-loop review packet / decision / resume path
+- smoke tests and unit tests for core behavior validation
 
 ---
 
 ## What works today
 
-MVP saat ini sudah punya:
-- **canonical role registry** di `configs/role_registry.json`
-- **decision engine** di `scripts/government_decision_engine.py`
-- **A2A orchestrator** di `scripts/agent_to_agent_orchestrator.py`
-- **contract validation** di `scripts/a2a_contracts.py`
+The current MVP includes:
+- **canonical role registry** in `configs/role_registry.json`
+- **decision engine** in `scripts/government_decision_engine.py`
+- **A2A orchestrator** in `scripts/agent_to_agent_orchestrator.py`
+- **contract validation** in `scripts/a2a_contracts.py`
 - **retrieval grounding** via `scripts/local_retriever.py`
 - **HITL review console** via `scripts/hitl_review_console.py`
-- **regression fixtures** di `examples/agent-to-agent/`
-- **smoke + unit tests** untuk jaga behavior inti
-
-Representative governed path:
-- **Yayak -> Alfian -> Edi -> human review -> final state**
+- **regression fixtures** under `examples/agent-to-agent/`
+- **smoke and unit tests** for core workflow validation
 
 ---
 
 ## What this MVP proves
 
-Repo ini sudah membuktikan arsitektur praktis untuk:
+This repository demonstrates a practical baseline for:
 - **multi-role orchestration**
 - **review-aware terminal states**
 - **retrieval provenance preservation**
 - **auditable human review decisions**
 - **runtime-portable integration patterns**
 
-Belum production platform penuh, tapi sudah cukup kuat untuk:
-- technical demo
-- architecture review
+It is not yet a full production platform, but it is strong enough for:
+- technical demos
+- architecture reviews
 - integration planning
-- controlled pilot
-- GitHub publication sebagai serious MVP
+- controlled pilots
+- GitHub publication as a serious MVP
 
 ---
 
@@ -89,21 +77,18 @@ flowchart LR
     F --> G
 ```
 
-Representative path:
-- **Yayak** classifies and routes
-- **Alfian** drafts or structures the artifact
-- **Edi** reviews for compliance / governance fit
-- workflow pauses for **human approval** when required
-- final output preserves **evidence, review state, and audit events**
+The workflow classifies requests, routes them across governed roles, grounds outputs with evidence when needed, pauses for human review when required, and produces auditable final states.
+
+---
 
 ## Quickstart
 
-### Verify repo
+### Verify repository integrity
 ```bash
 python3 scripts/verify_repo.py
 ```
 
-### Run orchestrator example
+### Run the orchestrator example
 ```bash
 python3 scripts/agent_to_agent_orchestrator.py \
   --input-json examples/agent-to-agent/yayak-alfian-edi.request.json \
@@ -121,14 +106,14 @@ python3 scripts/smoke_test_agent_to_agent_matrix.py
 python3 -m unittest discover -s tests -v
 ```
 
-### Run retrieval-backed example
+### Run a retrieval-backed example
 ```bash
 python3 scripts/agent_to_agent_orchestrator.py \
   --input-json examples/agent-to-agent/retrieval-budget-review.request.json \
   --pretty
 ```
 
-### Run HITL example
+### Run a HITL example
 ```bash
 python3 scripts/agent_to_agent_orchestrator.py \
   --input-json examples/agent-to-agent/hitl-review.request.json \
@@ -153,7 +138,7 @@ python3 scripts/agent_to_agent_orchestrator.py \
 - `schemas/hitl_review_decision.schema.json`
 - `scripts/a2a_contracts.py`
 
-### Retrieval + HITL
+### Retrieval and HITL
 - `scripts/local_retriever.py`
 - `configs/retrieval.generated.json`
 - `examples/retrieval-corpus/government_sources.json`
@@ -161,20 +146,7 @@ python3 scripts/agent_to_agent_orchestrator.py \
 
 ---
 
-## Example fixtures
-
-Regression fixtures di `examples/agent-to-agent/` saat ini meliputi:
-- `yayak-alfian-edi.request.json` — drafting + compliance review
-- `budget-review.request.json` — budget review via **Anastasia**
-- `procurement-neutrality.request.json` — procurement neutrality via **Hafidus**
-- `archive-record.request.json` — archive routing via **Sovia -> Izza**
-- `escalation-blocker.request.json` — escalation path dengan terminal `needs_review`
-- `retrieval-budget-review.request.json` — retrieval-backed budget review
-- `hitl-review.request.json` — HITL path dengan review packet, decision, dan resume flow
-
----
-
-## Docs worth reading
+## Documentation
 
 ### Architecture
 - `docs/architecture/AGENT_TO_AGENT_CONTRACTS_AND_RUNTIME.md`
@@ -184,35 +156,16 @@ Regression fixtures di `examples/agent-to-agent/` saat ini meliputi:
 - `docs/architecture/GOVERNMENT_WORK_LOGIC.md`
 - `docs/architecture/REPO_CONTRACT.md`
 
-### Setup prompts for AI agents
+### AI setup prompts
 - `docs/integrations/AI_SETUP_PROMPTS.md`
 
 ---
 
-## Hermes / OpenClaw note
+## Runtime integration note
 
-Repo ini belum memberi native SDK integration penuh, tapi sudah punya pola yang cukup bersih untuk:
+The repository does not yet provide full native SDK integration for Hermes or OpenClaw, but it already establishes a clean baseline for:
 - command-bridge runtime execution
-- local validation
+- local validation workflows
 - retrieval-backed orchestration
-- human approval flow
-- future integration ke Hermes/OpenClaw runtime surface
-
----
-
-## Legacy materials
-
-Material installer/runtime-packaging lama yang bukan bagian dari MVP aktif sudah dipindahkan ke:
-- `APUS DONG/`
-
-Tujuannya supaya surface repo utama tetap fokus ke orchestration backbone yang aktif.
-
----
-
-## Next recommended steps
-
-Kalau mau lanjut setelah repo ini:
-1. tambahin connector retrieval nyata
-2. bikin governance/review UI
-3. tambah persistent audit storage
-4. bangun runtime integration yang lebih native untuk Hermes/OpenClaw
+- human approval paths
+- future runtime-native integration work
