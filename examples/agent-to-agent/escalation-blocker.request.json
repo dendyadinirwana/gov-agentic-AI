@@ -1,0 +1,18 @@
+{
+  "request_text": "Permintaan ini perlu dinaikkan karena approval owner belum jelas untuk tindakan level L4 yang berdampak material pada keputusan lintas unit.",
+  "intent_class": "escalate-blocker",
+  "action_level": "L4",
+  "evidence_complete": true,
+  "approval_owner_known": false,
+  "material_impact": true,
+  "sensitive": false,
+  "evidence_sources": [
+    "ringkasan kasus",
+    "catatan hambatan approval"
+  ],
+  "instructions": "Naikkan blocker secara eksplisit agar ada owner manusia yang mengambil alih.",
+  "assumptions": [
+    "Kebutuhan eskalasi sudah jelas.",
+    "Tidak ada approval owner yang bisa dipastikan saat ini."
+  ]
+}

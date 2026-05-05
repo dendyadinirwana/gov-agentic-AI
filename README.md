@@ -232,6 +232,18 @@ This is intentional for the MVP phase:
 - `docs/architecture/GOVERNMENT_WORK_LOGIC.md`
 - `docs/architecture/REPO_CONTRACT.md`
 
+## Baseline A2A fixtures
+Current regression fixtures under `examples/agent-to-agent/`:
+- `yayak-alfian-edi.request.json` — formal draft + legal/compliance review path
+- `budget-review.request.json` — budget review path (`Anastasia`) sebagai direct review-intent execution
+- `procurement-neutrality.request.json` — procurement neutrality path (`Hafidus`) sebagai direct review-intent execution
+- `archive-record.request.json` — archive preparation path (`Sovia -> Izza`)
+- `escalation-blocker.request.json` — escalation blocker path (`Winda`) dengan terminal `needs_review` untuk human takeover
+
+Validation helpers:
+- `python3 scripts/smoke_test_agent_to_agent.py`
+- `python3 scripts/smoke_test_agent_to_agent_matrix.py`
+
 ## Recommended next steps after MVP
 The most natural next milestones are:
 1. native runtime hardening for Hermes/OpenClaw

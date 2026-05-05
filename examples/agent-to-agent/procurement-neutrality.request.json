@@ -1,0 +1,19 @@
+{
+  "request_text": "Tolong review netralitas spesifikasi untuk pengadaan perangkat kerja lapangan agar tidak mengarah ke vendor tertentu.",
+  "intent_class": "review-specification-neutrality",
+  "action_level": "L2",
+  "evidence_complete": true,
+  "approval_owner_known": true,
+  "material_impact": false,
+  "sensitive": false,
+  "evidence_sources": [
+    "draft spesifikasi teknis",
+    "TOR kegiatan",
+    "catatan kebutuhan pengguna"
+  ],
+  "instructions": "Cari wording yang terlalu brand-leaning dan pastikan posisi review tetap netral.",
+  "assumptions": [
+    "Belum ada penetapan pemenang atau vendor.",
+    "Review masih di tahap awal sebelum tender."
+  ]
+}

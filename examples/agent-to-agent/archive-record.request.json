@@ -1,0 +1,19 @@
+{
+  "request_text": "Siapkan penataan arsip digital untuk paket dokumen monitoring lapangan beserta catatan klasifikasi dan status record-nya.",
+  "intent_class": "prepare-archive-record",
+  "action_level": "L1",
+  "evidence_complete": true,
+  "approval_owner_known": true,
+  "material_impact": false,
+  "sensitive": false,
+  "evidence_sources": [
+    "berkas monitoring lapangan",
+    "indeks arsip unit",
+    "catatan retensi internal"
+  ],
+  "instructions": "Susun sebagai preparation path, bukan pemusnahan atau keputusan final retensi.",
+  "assumptions": [
+    "Dokumen sudah lengkap untuk penataan awal.",
+    "Belum ada disposal action."
+  ]
+}

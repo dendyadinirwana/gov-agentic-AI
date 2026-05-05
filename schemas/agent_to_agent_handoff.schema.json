@@ -116,7 +116,8 @@
           "enum": [
             "PROCEED",
             "REVIEW_NEEDED",
-            "HOLD"
+            "HOLD",
+            "ESCALATE_TO"
           ]
         },
         "decision_reason": {

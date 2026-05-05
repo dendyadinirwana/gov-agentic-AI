@@ -1,0 +1,19 @@
+{
+  "request_text": "Tolong review kesesuaian anggaran untuk usulan kegiatan pendampingan desa dan cek kecukupan biaya terhadap ruang belanja yang tersedia.",
+  "intent_class": "review-budget-fit",
+  "action_level": "L2",
+  "evidence_complete": true,
+  "approval_owner_known": true,
+  "material_impact": false,
+  "sensitive": false,
+  "evidence_sources": [
+    "RKA unit kerja",
+    "catatan pagu internal",
+    "estimasi biaya kegiatan"
+  ],
+  "instructions": "Fokus pada kesesuaian ruang anggaran dan catat gap yang perlu dipantau.",
+  "assumptions": [
+    "Belum ada komitmen final anggaran.",
+    "Analisis masih bersifat review internal."
+  ]
+}

@@ -17,43 +17,84 @@ from a2a_contracts import validate_handoff, validate_response, validate_terminal
 
 ORCHESTRATOR = ROOT / 'scripts' / 'agent_to_agent_orchestrator.py'
 ADAPTER = ROOT / 'scripts' / 'role_runtime_adapter.py'
-EXAMPLE = ROOT / 'examples' / 'agent-to-agent' / 'yayak-alfian-edi.request.json'
+EXAMPLES = ROOT / 'examples' / 'agent-to-agent'
+EXAMPLE = EXAMPLES / 'yayak-alfian-edi.request.json'
+FIXTURE_CASES = [
+    {
+        'file': 'yayak-alfian-edi.request.json',
+        'expected_steps': 2,
+        'expected_path': ['Alfian', 'Edi'],
+        'expected_status': 'needs_review',
+        'expected_event_types': {'governance_gate_triggered', 'human_touchpoint_required', 'review_returned'},
+    },
+    {
+        'file': 'budget-review.request.json',
+        'expected_steps': 1,
+        'expected_path': ['Anastasia'],
+        'expected_status': 'completed',
+        'expected_event_types': {'handoff_created', 'role_response_recorded', 'workflow_terminalized'},
+    },
+    {
+        'file': 'procurement-neutrality.request.json',
+        'expected_steps': 1,
+        'expected_path': ['Hafidus'],
+        'expected_status': 'completed',
+        'expected_event_types': {'handoff_created', 'role_response_recorded', 'workflow_terminalized'},
+    },
+    {
+        'file': 'archive-record.request.json',
+        'expected_steps': 2,
+        'expected_path': ['Sovia', 'Izza'],
+        'expected_status': 'completed',
+        'expected_event_types': {'handoff_created', 'role_response_recorded', 'workflow_terminalized'},
+    },
+    {
+        'file': 'escalation-blocker.request.json',
+        'expected_steps': 1,
+        'expected_path': ['Winda'],
+        'expected_status': 'needs_review',
+        'expected_event_types': {'handoff_created', 'role_response_recorded', 'human_touchpoint_required', 'workflow_terminalized'},
+    },
+]
 
 
 class A2AContractTests(unittest.TestCase):
-    def test_orchestrator_output_matches_contract_shape(self) -> None:
-        result = subprocess.run(
-            [sys.executable, str(ORCHESTRATOR), '--input-json', str(EXAMPLE)],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        payload = json.loads(result.stdout)
-        self.assertEqual(payload['contract_version'], 'a2a.v1')
-        self.assertEqual(payload['workflow_state']['current_owner_role'], 'top-layer__gov-ai_yayak')
-        self.assertEqual(len(payload['steps']), 2)
-        self.assertEqual(payload['steps'][0]['handoff']['to_role'], 'komunikasi-dan-dokumen__penulis-naskah_alfian')
-        self.assertEqual(payload['steps'][1]['handoff']['to_role'], 'kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi')
-        self.assertFalse(validate_handoff(payload['steps'][0]['handoff']))
-        self.assertFalse(validate_response(payload['steps'][0]['response'], payload['steps'][0]['handoff']))
-        self.assertFalse(validate_terminal_state(payload['final'], payload['trace_id']))
-        event_types = {event['event_type'] for event in payload['audit_events']}
-        self.assertIn('governance_gate_triggered', event_types)
-        self.assertIn('human_touchpoint_required', event_types)
-        self.assertIn('review_returned', event_types)
-        event_policies = {event['event_type']: event for event in payload['audit_events']}
-        self.assertEqual(event_policies['handoff_created']['severity'], 'info')
-        self.assertEqual(event_policies['handoff_created']['retention_class'], 'operational_record')
-        self.assertEqual(event_policies['handoff_created']['compliance_class'], 'standard')
-        self.assertEqual(event_policies['handoff_created']['response_policy'], 'log_only')
-        self.assertEqual(event_policies['governance_gate_triggered']['severity'], 'warning')
-        self.assertEqual(event_policies['governance_gate_triggered']['retention_class'], 'governance_record')
-        self.assertEqual(event_policies['governance_gate_triggered']['compliance_class'], 'governance_control')
-        self.assertEqual(event_policies['governance_gate_triggered']['response_policy'], 'review_required')
-        self.assertEqual(event_policies['review_returned']['compliance_class'], 'human_approval')
-        self.assertEqual(event_policies['review_returned']['response_policy'], 'review_required')
-        for event in payload['audit_events']:
-            self.assertFalse(validate_audit_event(event, payload['trace_id']))
+    def test_orchestrator_fixture_matrix_matches_contract_shape(self) -> None:
+        for case in FIXTURE_CASES:
+            with self.subTest(case=case['file']):
+                result = subprocess.run(
+                    [sys.executable, str(ORCHESTRATOR), '--input-json', str(EXAMPLES / case['file'])],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                )
+                payload = json.loads(result.stdout)
+                self.assertEqual(payload['contract_version'], 'a2a.v1')
+                self.assertEqual(payload['workflow_state']['current_owner_role'], 'top-layer__gov-ai_yayak')
+                self.assertEqual(len(payload['steps']), case['expected_steps'])
+                self.assertEqual(payload['final']['execution_path'], case['expected_path'])
+                self.assertEqual(payload['final']['final_status'], case['expected_status'])
+                if payload['steps']:
+                    self.assertFalse(validate_handoff(payload['steps'][0]['handoff']))
+                    self.assertFalse(validate_response(payload['steps'][0]['response'], payload['steps'][0]['handoff']))
+                self.assertFalse(validate_terminal_state(payload['final'], payload['trace_id']))
+                event_types = {event['event_type'] for event in payload['audit_events']}
+                self.assertTrue(case['expected_event_types'].issubset(event_types))
+                event_policies = {event['event_type']: event for event in payload['audit_events']}
+                self.assertEqual(event_policies['handoff_created']['severity'], 'info')
+                self.assertEqual(event_policies['handoff_created']['retention_class'], 'operational_record')
+                self.assertEqual(event_policies['handoff_created']['compliance_class'], 'standard')
+                self.assertEqual(event_policies['handoff_created']['response_policy'], 'log_only')
+                if 'governance_gate_triggered' in event_policies:
+                    self.assertEqual(event_policies['governance_gate_triggered']['severity'], 'warning')
+                    self.assertEqual(event_policies['governance_gate_triggered']['retention_class'], 'governance_record')
+                    self.assertEqual(event_policies['governance_gate_triggered']['compliance_class'], 'governance_control')
+                    self.assertEqual(event_policies['governance_gate_triggered']['response_policy'], 'review_required')
+                if 'review_returned' in event_policies:
+                    self.assertEqual(event_policies['review_returned']['compliance_class'], 'human_approval')
+                    self.assertEqual(event_policies['review_returned']['response_policy'], 'review_required')
+                for event in payload['audit_events']:
+                    self.assertFalse(validate_audit_event(event, payload['trace_id']))
 
     def _sample_handoff(self, trace_id: str = 'trace-test-fallback') -> dict:
         return {
