@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yayak Orchestration Architecture — Gov-Agentic AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f8fafc;
+      --ink: #0f172a;
+      --text: #334155;
+      --muted: #64748b;
+      --line: rgba(148, 163, 184, 0.22);
+      --line-strong: rgba(148, 163, 184, 0.34);
+      --blue: #3b67f5;
+      --blue-soft: rgba(59, 103, 245, 0.08);
+      --violet-soft: rgba(139, 92, 246, 0.08);
+      --green-soft: rgba(16, 185, 129, 0.10);
+      --amber-soft: rgba(245, 158, 11, 0.12);
+      --red-soft: rgba(239, 68, 68, 0.10);
+      --card: rgba(255,255,255,0.88);
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+      --shadow-lg: 0 18px 60px rgba(15, 23, 42, 0.08);
+      --radius: 22px;
+      --radius-sm: 16px;
+      --wrap: min(860px, 92vw);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: auto; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      color: var(--ink);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      text-wrap: pretty;
+    }
+
+    p, li { text-wrap: pretty; }
+    p { margin: 0; }
+    a { color: inherit; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      color: #1e3a8a;
+      background: rgba(59, 103, 245, 0.08);
+      border-radius: 8px;
+      padding: 2px 6px;
+    }
+
+    ::selection {
+      background: #e2e8f0;
+      color: var(--ink);
+    }
+
+    .page {
+      position: relative;
+      min-height: 100vh;
+      background:
+        radial-gradient(at 0% 0%, rgba(59,103,245,0.11) 0, transparent 38%),
+        radial-gradient(at 100% 0%, rgba(139,92,246,0.08) 0, transparent 34%),
+        radial-gradient(at 100% 100%, rgba(59,103,245,0.05) 0, transparent 38%),
+        linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .page::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at center, rgba(59,103,245,0.04) 0%, transparent 64%);
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: var(--wrap);
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(255,255,255,0.82);
+      border-bottom: 1px solid rgba(226,232,240,0.92);
+    }
+
+    .site-header__inner {
+      width: var(--wrap);
+      margin: 0 auto;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      font-size: 1.02rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .brand-note {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .hero {
+      padding: 78px 0 34px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.78);
+      box-shadow: var(--shadow);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin-top: 18px;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      line-height: 1.02;
+      max-width: 9ch;
+    }
+
+    .hero-intro {
+      margin-top: 18px;
+      max-width: 66ch;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.9;
+    }
+
+    .hero-summary {
+      margin-top: 26px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.78);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-summary h3 {
+      font-size: 1.34rem;
+      margin-bottom: 10px;
+    }
+
+    .hero-summary p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 0.96rem;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(226,232,240,0.9);
+      font-size: 14px;
+    }
+
+    .summary-item span:first-child { color: var(--muted); }
+    .summary-item span:last-child { color: var(--ink); font-weight: 500; text-align: right; }
+
+    .section {
+      padding: 26px 0 0;
+    }
+
+    .section + .section {
+      padding-top: 34px;
+    }
+
+    .section-heading {
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(2rem, 4.4vw, 3.2rem);
+      line-height: 1.06;
+      max-width: 11ch;
+    }
+
+    .section-heading p {
+      margin-top: 12px;
+      max-width: 62ch;
+      color: var(--muted);
+      line-height: 1.85;
+      font-size: 0.98rem;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .flow {
+      padding: 22px;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .step-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.92);
+      padding: 18px 18px 16px;
+    }
+
+    .step-card--yayak { background: linear-gradient(180deg, rgba(139,92,246,0.07), rgba(255,255,255,0.94)); }
+    .step-card--engine { background: linear-gradient(180deg, rgba(59,103,245,0.08), rgba(255,255,255,0.94)); }
+    .step-card--output { background: linear-gradient(180deg, rgba(59,103,245,0.05), rgba(255,255,255,0.94)); }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      height: 32px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .step-card h3 {
+      font-size: 1.34rem;
+      margin-bottom: 8px;
+    }
+
+    .step-card p,
+    .step-card li {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.78;
+    }
+
+    .step-card ul,
+    .mini-list,
+    .code-list {
+      margin: 10px 0 0 18px;
+      padding: 0;
+    }
+
+    .connector {
+      position: relative;
+      height: 20px;
+      margin-left: 18px;
+    }
+
+    .connector::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 1px;
+      width: 1.5px;
+      background: linear-gradient(180deg, rgba(148,163,184,0.18), rgba(59,103,245,0.7));
+    }
+
+    .connector::after {
+      content: "";
+      position: absolute;
+      left: -4px;
+      bottom: -1px;
+      width: 11px;
+      height: 11px;
+      border-right: 1.5px solid var(--blue);
+      border-bottom: 1.5px solid var(--blue);
+      transform: rotate(45deg);
+    }
+
+    .branches {
+      padding: 18px;
+      border: 1px dashed var(--line-strong);
+      border-radius: 20px;
+      background: rgba(248,250,252,0.8);
+    }
+
+    .branches h4 {
+      font-size: 1.16rem;
+      margin-bottom: 14px;
+    }
+
+    .branch-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .branch {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.92);
+      padding: 16px;
+    }
+
+    .branch-tag {
+      display: inline-flex;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .branch--proceed .branch-tag { background: var(--green-soft); color: #047857; }
+    .branch--review .branch-tag { background: var(--amber-soft); color: #b45309; }
+    .branch--hold .branch-tag { background: var(--red-soft); color: #b91c1c; }
+
+    .branch p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.78;
+    }
+
+    .insight-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .insight {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.92);
+    }
+
+    .insight strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .insight p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.76;
+    }
+
+    .route-block {
+      padding: 22px;
+    }
+
+    .route-rail {
+      display: grid;
+      gap: 12px;
+    }
+
+    .route-node {
+      border-left: 2px solid rgba(59,103,245,0.18);
+      padding-left: 16px;
+    }
+
+    .route-node strong {
+      display: block;
+      font-size: 15px;
+      color: var(--ink);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .route-node p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.76;
+    }
+
+    .contract {
+      padding: 22px;
+    }
+
+    .subsection-title {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.78;
+    }
+
+    .payload-box {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.92);
+      overflow: hidden;
+    }
+
+    .payload-box pre {
+      margin: 0;
+      padding: 18px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      line-height: 1.75;
+      font-size: 13px;
+      color: #1e293b;
+    }
+
+    .grid-note {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .note {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.9);
+      padding: 14px 15px;
+    }
+
+    .note strong {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .note p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.72;
+    }
+
+    .example {
+      padding: 22px;
+    }
+
+    .example-block + .example-block {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(226,232,240,0.9);
+    }
+
+    .example-block h3 {
+      font-size: 1.34rem;
+      margin-bottom: 8px;
+    }
+
+    .example-block p,
+    .example-block li {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .footer {
+      padding: 42px 0 56px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 740px) {
+      .site-header__inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .brand-note {
+        text-align: left;
+      }
+
+      .hero {
+        padding-top: 56px;
+      }
+
+      .summary-item {
+        flex-direction: column;
+      }
+
+      .summary-item span:last-child {
+        text-align: left;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="site-header__inner">
+        <div class="brand">Gov-Agentic AI</div>
+        <div class="brand-note">Single-column architecture note<br>Yayak orchestration baseline</div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="hero">
+        <div class="eyebrow">Orchestration • Governance • Handoff</div>
+        <h1>Yayak Bukan Worker Utama. Yayak adalah Pengendali Alur.</h1>
+        <p class="hero-intro">
+          Dalam desain Gov-Agentic AI, Yayak menerima request paling awal lalu memutuskan jalur kerja yang tepat.
+          Dia membaca intent, memeriksa dampak dan kecukupan evidence, melihat apakah approval manusia dibutuhkan,
+          lalu menentukan siapa role berikutnya yang berwenang menangani task tersebut. Jadi delegasi bukan aksi spontan,
+          tapi hasil dari triage, governance gating, dan role matching.
+        </p>
+
+        <div class="hero-summary">
+          <h3>Prinsip Dasar</h3>
+          <p>
+            Kalau agent-to-agent mau dipakai untuk konteks pemerintahan, sistem harus tahu dulu siapa yang sedang memegang mandat,
+            siapa yang berhak menerima handoff berikutnya, dan kapan proses harus berhenti untuk review atau approval. Tanpa itu,
+            arsitektur cuma berubah jadi rantai prompt yang susah diaudit.
+          </p>
+          <div class="summary-list">
+            <div class="summary-item"><span>Current owner</span><span>Role yang sedang memegang task saat ini</span></div>
+            <div class="summary-item"><span>Next owner</span><span>Role penerima handoff berikutnya</span></div>
+            <div class="summary-item"><span>Decision gate</span><span>Status kontrol: proceed, review, hold, atau escalate</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <h2>Flow Yayak as Orchestrator</h2>
+          <p>
+            Alur berikut menunjukkan urutan pikir sistem. Yayak tidak mulai dari pengerjaan substansi, tetapi dari identifikasi kerja,
+            penetapan batas kewenangan, dan penentuan jalur tindak lanjut yang aman.
+          </p>
+        </div>
+
+        <div class="card flow">
+          <div class="stack">
+            <article class="step-card">
+              <div class="step-number">01</div>
+              <h3>User / Incoming Request</h3>
+              <p>Request masuk ke sistem: drafting, analisis, routing, legal review, compliance check, atau eskalasi keputusan.</p>
+            </article>
+
+            <div class="connector" aria-hidden="true"></div>
+
+            <article class="step-card step-card--yayak">
+              <div class="step-number">02</div>
+              <h3>Yayak Melakukan Triage Awal</h3>
+              <p>Yayak membaca konteks dan menilai apakah task ini bisa langsung diteruskan atau harus ditahan dulu.</p>
+              <ul>
+                <li>Identifikasi <code>intent_class</code></li>
+                <li>Tentukan <code>action_level</code> dan tingkat dampak kerja</li>
+                <li>Cek apakah evidence sudah cukup</li>
+                <li>Cek apakah butuh review atau approval manusia</li>
+                <li>Tentukan role yang paling tepat sebagai owner berikutnya</li>
+              </ul>
+            </article>
+
+            <div class="connector" aria-hidden="true"></div>
+
+            <article class="step-card step-card--engine">
+              <div class="step-number">03</div>
+              <h3>Decision Engine Menghasilkan Gate</h3>
+              <p>Di tahap ini, sistem membentuk keputusan alur sebelum handoff benar-benar dilakukan.</p>
+              <ul>
+                <li><code>current_owner_role</code> = siapa yang memegang task sekarang</li>
+                <li><code>next_owner_role</code> = siapa yang harus menerima task berikutnya</li>
+                <li><code>decision_gate</code> = PROCEED / REVIEW_NEEDED / HOLD / ESCALATE_TO</li>
+                <li><code>human_touchpoint_required</code> = apakah intervensi manusia wajib terjadi</li>
+              </ul>
+            </article>
+
+            <div class="connector" aria-hidden="true"></div>
+
+            <section class="branches">
+              <h4>04. Jalur Keputusan</h4>
+              <div class="branch-stack">
+                <article class="branch branch--proceed">
+                  <div class="branch-tag">Proceed</div>
+                  <p><strong>Lanjut ke specialist role utama.</strong> Contohnya Alfian untuk drafting, Faris untuk perencanaan, atau Audy untuk legal review awal.</p>
+                </article>
+                <article class="branch branch--review">
+                  <div class="branch-tag">Review Needed</div>
+                  <p><strong>Masuk jalur monitor, compliance, atau reviewer manusia.</strong> Contohnya Edi atau Nanang untuk challenge, verifikasi, atau legal/compliance pressure test.</p>
+                </article>
+                <article class="branch branch--hold">
+                  <div class="branch-tag">Hold / Escalate</div>
+                  <p><strong>Task belum boleh lanjut.</strong> Naik ke Winda atau human owner jika evidence belum cukup, jalur approval belum jelas, atau ada blocker governance.</p>
+                </article>
+              </div>
+            </section>
+
+            <div class="connector" aria-hidden="true"></div>
+
+            <article class="step-card step-card--output">
+              <div class="step-number">05</div>
+              <h3>Role Penerima Menghasilkan Output</h3>
+              <p>Specialist, monitor, atau approver mengerjakan mandatnya lalu mengembalikan hasil, temuan, red flag, atau rekomendasi keputusan.</p>
+            </article>
+
+            <div class="connector" aria-hidden="true"></div>
+
+            <article class="step-card step-card--yayak">
+              <div class="step-number">06</div>
+              <h3>Yayak Menutup atau Meneruskan Rantai</h3>
+              <p>Yayak menjaga <code>trace_id</code>, merangkum hasil, menentukan next step, dan memastikan seluruh handoff tetap mengikuti governance dan auditability.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <h2>Makna Peran Yayak</h2>
+          <p>
+            Posisi Yayak perlu dibedakan dengan specialist agent. Yayak mengontrol arah, bukan mengambil seluruh substansi domain ke dirinya.
+          </p>
+        </div>
+
+        <div class="insight-grid">
+          <div class="insight">
+            <strong>Yayak = router + gatekeeper</strong>
+            <p>Fungsi utamanya adalah routing, governance control, traceability, dan handoff coordination.</p>
+          </div>
+          <div class="insight">
+            <strong>Bukan super-agent tunggal</strong>
+            <p>Yayak tidak ideal jika memegang semua kerja substansi. Specialist tetap harus mengerjakan domain sesuai kewenangannya.</p>
+          </div>
+          <div class="insight">
+            <strong>Current owner vs next owner</strong>
+            <p><code>current_owner_role</code> berarti siapa yang memegang task sekarang. <code>next_owner_role</code> berarti siapa penerima handoff berikutnya.</p>
+          </div>
+          <div class="insight">
+            <strong>Governance didahulukan</strong>
+            <p>Delegasi baru boleh terjadi setelah intent, impact, evidence, approval path, dan gate status diputuskan terlebih dahulu.</p>
+          </div>
+          <div class="insight">
+            <strong>Escalation adalah sinyal kontrol</strong>
+            <p><code>REVIEW_NEEDED</code>, <code>HOLD</code>, dan <code>ESCALATE_TO</code> bukan saran informal, tapi status alur yang wajib dipatuhi.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <h2>Route Thinking</h2>
+          <p>
+            Kalau lo mau agent-to-agent yang kebaca serius, sistem harus punya jalur yang eksplisit. Bukan cuma “siapa yang pintar”, tapi “siapa yang sah dan relevan menerima kerja berikutnya”.
+          </p>
+        </div>
+
+        <div class="card route-block">
+          <div class="route-rail">
+            <div class="route-node">
+              <strong>Route 1 — Intake</strong>
+              <p>User request masuk ke Yayak. Di sini belum ada specialist yang ditetapkan. Status awal biasanya masih di tangan orchestrator.</p>
+            </div>
+            <div class="route-node">
+              <strong>Route 2 — Functional owner selection</strong>
+              <p>Setelah klasifikasi intent dan penilaian dampak, Yayak memilih role yang paling masuk akal dan paling sah untuk memegang task substansi.</p>
+            </div>
+            <div class="route-node">
+              <strong>Route 3 — Review lane</strong>
+              <p>Kalau task menyentuh aspek legal, compliance, anggaran, atau high-impact action, hasil specialist dialihkan dulu ke lane review sebelum dianggap final.</p>
+            </div>
+            <div class="route-node">
+              <strong>Route 4 — Human touchpoint</strong>
+              <p>Jika ada keputusan yang tidak boleh diputuskan agent, sistem harus berhenti di titik yang jelas dan menyerahkannya ke approver manusia yang tepat.</p>
+            </div>
+            <div class="route-node">
+              <strong>Route 5 — Closure or next handoff</strong>
+              <p>Setelah hasil kembali, Yayak menilai apakah workflow selesai, perlu handoff tambahan, atau harus masuk eskalasi formal.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <h2>Technical A2A Contract</h2>
+          <p>
+            Supaya desain ini tidak berhenti jadi narasi, tiap hop agent-to-agent perlu payload yang jelas. Ini yang membedakan arsitektur dari prompt chaining biasa.
+          </p>
+        </div>
+
+        <div class="card contract">
+          <h3 class="subsection-title">Minimal Handoff Payload</h3>
+          <p class="subtle">Payload ini cukup kecil untuk implementasi awal, tapi sudah cukup kuat untuk routing, audit trail, dan review lane.</p>
+
+          <div class="payload-box">
+            <pre>{
+  "trace_id": "trace-2026-05-04-001",
+  "session_id": "session-abc123",
+  "source_role": "top-layer__gov-ai_yayak",
+  "target_role": "komunikasi-dan-dokumen__penulis-naskah_alfian",
+  "intent_class": "draft-formal-artifact",
+  "action_level": "L3",
+  "decision_gate": "REVIEW_NEEDED",
+  "human_touchpoint_required": true,
+  "request_summary": "Susun draft nota dinas dan identifikasi risiko utama.",
+  "evidence_map": [
+    "draft brief dari user",
+    "konteks program",
+    "aturan/rujukan yang tersedia"
+  ],
+  "constraints": [
+    "jangan final tanpa review",
+    "jaga bahasa formal",
+    "catat red flag"
+  ],
+  "upstream_artifacts": [],
+  "requested_output_contract": "draft-plus-risk-note"
+}</pre>
+          </div>
+
+          <div class="grid-note">
+            <div class="note">
+              <strong><code>trace_id</code> harus stabil lintas hop</strong>
+              <p>Kalau trace putus, audit trail dan penelusuran keputusan ikut putus. Ini salah satu field paling penting.</p>
+            </div>
+            <div class="note">
+              <strong><code>decision_gate</code> tidak boleh dianggap dekoratif</strong>
+              <p>Kalau gate bilang hold atau review, downstream role tidak boleh pura-pura final. Status ini harus mengubah perilaku eksekusi.</p>
+            </div>
+            <div class="note">
+              <strong><code>requested_output_contract</code> mengurangi ambiguitas</strong>
+              <p>Role penerima jadi tahu apakah dia diminta membuat draft, analisis, red flag note, review opinion, atau escalation memo.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <h2>Response Contract & Review Lane</h2>
+          <p>
+            Selain payload masuk, tiap role juga perlu format keluar yang konsisten. Dengan begitu Yayak bisa memutuskan langkah berikutnya tanpa menebak-nebak isi output bebas.
+          </p>
+        </div>
+
+        <div class="card contract">
+          <h3 class="subsection-title">Minimal Response Shape</h3>
+          <div class="payload-box">
+            <pre>{
+  "trace_id": "trace-2026-05-04-001",
+  "executing_role": "komunikasi-dan-dokumen__penulis-naskah_alfian",
+  "status": "completed-with-review-needed",
+  "summary": "Draft nota dinas selesai dan ada 3 risiko yang perlu ditinjau.",
+  "artifacts": [
+    "draft_nota_dinas_v1",
+    "risk_note_v1"
+  ],
+  "red_flags": [
+    "dasar hukum belum eksplisit",
+    "approval path belum tertulis"
+  ],
+  "recommended_next_role": "monitor-kepatuhan__edi",
+  "human_touchpoint_required": true
+}</pre>
+          </div>
+
+          <ul class="code-list">
+            <li>Kalau <code>status</code> masih minta review, Yayak tidak boleh langsung menganggap task final.</li>
+            <li>Kalau <code>recommended_next_role</code> terisi, orchestrator bisa mengecek apakah saran itu valid terhadap authority map.</li>
+            <li>Kalau <code>human_touchpoint_required</code> bernilai <code>true</code>, sistem harus mempertahankan titik berhenti yang eksplisit.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <h2>Sample Use Case</h2>
+          <p>
+            Ini contoh kecil yang paling gampang dipakai sebagai vertical slice implementasi awal.
+          </p>
+        </div>
+
+        <div class="card example">
+          <div class="example-block">
+            <h3>Kasus: draft nota dinas + cek risiko</h3>
+            <p>Permintaan user: “Tolong buat draft nota dinas untuk permohonan dukungan kegiatan, lalu cek risikonya.”</p>
+            <ul class="mini-list">
+              <li>Yayak mengidentifikasi ini sebagai drafting formal dengan dampak governance tertentu.</li>
+              <li>Decision engine memilih specialist awal: <strong>Alfian</strong>.</li>
+              <li>Output Alfian tidak langsung dianggap final jika ada sinyal review.</li>
+              <li>Hasil diteruskan ke <strong>Edi</strong> atau reviewer lain untuk challenge / compliance check.</li>
+              <li>Yayak merangkum hasil dan menentukan langkah final atau approval yang dibutuhkan.</li>
+            </ul>
+          </div>
+
+          <div class="example-block">
+            <h3>Kenapa slice ini cocok buat build pertama</h3>
+            <ul class="mini-list">
+              <li>Ada alur nyata dari intake → specialist → review → closure.</li>
+              <li>Cukup sederhana untuk diimplementasikan cepat, tapi sudah menunjukkan nilai governance.</li>
+              <li>Mudah dibuat menjadi smoke test karena field kontraknya jelas.</li>
+              <li>Stakeholder juga gampang paham kenapa agent-to-agent di sini beda dari chatbot biasa.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        Single-file HTML • Editorial / cinematic guardrail • Architecture baseline for Yayak orchestration and agent-to-agent routing
+      </div>
+    </main>
+  </div>
+</body>
+</html>

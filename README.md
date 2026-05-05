@@ -1,37 +1,137 @@
 # Gov-Agentic AI
 
-**Production-ready repository baseline for building a government-grade agentic AI ecosystem with role orchestration, shared knowledge, auditability, Human-in-the-Loop control, and portable agent skills.**
+Government-oriented multi-role agent orchestration baseline with registry-driven routing, formal A2A contracts, governance gates, audit trails, and portable role skills.
 
-This repository is designed as a **GitHub-first adoption package** for government digital transformation teams, AI engineers, solution architects, compliance reviewers, and agent-runtime implementers who need a reusable foundation for deploying **Gov-Agentic AI** safely and systematically.
+> Current status: **MVP orchestration backbone is working**.
 
-> AI agents and runtimes should start at `AGENT_README.md` before loading runtime-specific adapter docs.
+Gov-Agentic AI is not positioned as a generic chatbot wrapper. This repository is a structured foundation for building **governed agent-to-agent workflows** for public-sector work such as official drafting, compliance review, approval routing, escalation handling, and knowledge-assisted internal operations.
 
-## Executive Overview
+## Why this repo exists
 
-Gov-Agentic AI is a structured multi-role agent ecosystem for public-sector work. It is not a generic chatbot wrapper. It is a **governed operating model** for AI-assisted government workflows such as drafting official documents, routing dispositions, reviewing legal and budget compliance, handling procurement-related checks, supporting data analysis, and escalating sensitive or high-impact tasks through formal human authority.
+Most AI prototypes for government fail for predictable reasons:
+- routing logic is hardcoded and fragile
+- role responsibilities drift across prompts, code, and docs
+- human approval is treated as an afterthought
+- auditability is too weak for real operational use
+- runtime packaging differs from repo-local behavior
 
-The design assumption is simple:
+This repo tries to fix that by giving one reusable baseline with:
+- canonical role registry
+- declarative routing policy
+- formal agent-to-agent contracts
+- governance-aware decision engine
+- runtime adapter layer
+- validation and smoke tests
 
-- AI may assist analysis, drafting, retrieval, and coordination.
-- Humans retain formal authority, approval power, and accountability.
-- Every important output should be traceable, reviewable, and auditable.
-- Sensitive or high-impact actions must go through **Human-in-the-Loop (HITL)** gates.
+## Current MVP status
 
-This repo packages that model into reusable assets:
+The current MVP is the **orchestration backbone**, not a full production deployment.
 
-- a **role-based knowledge base**
-- a **29-role skill ecosystem**
-- prompts for orchestration and role execution
-- audit schemas and acceptance tests
-- governance and adoption documentation
-- repo contracts for safe replication across runtimes
+### What is working now
+- canonical role metadata and routing backbone in `configs/role_registry.json`
+- registry-driven orchestration through `scripts/agent_to_agent_orchestrator.py`
+- registry-driven decision engine through `scripts/government_decision_engine.py`
+- formal A2A contracts for:
+  - handoff
+  - response
+  - audit event
+  - terminal state
+- role runner abstraction via `scripts/role_runner.py`
+- runtime adapter layer via `scripts/role_runtime_adapter.py`
+- safe mock execution path for local validation
+- command-bridge real runtime path for Hermes/OpenClaw-style integration
+- installer/runtime packaging alignment for canonical registry artifacts
+- audit taxonomy for governance, review, fallback, and runtime issues
+- unit tests and smoke validation
 
-## What This Repository Provides
+### What this MVP proves
+This MVP proves that the repo can already support a governed flow like:
+- intake by Yayak
+- specialist drafting by Alfian
+- compliance review by Edi
+- terminal state with governance-aware review outcome
+- audit event emission across the lifecycle
 
-### 1. Government Role Orchestration
+### What is not finished yet
+This is **not yet** a full production system with:
+- native Hermes runtime integration
+- native OpenClaw runtime integration
+- real retrieval / RAG layer over agency documents
+- persistent audit storage backend
+- approval UI / human review console
+- policy-based alerting and escalation automation
+- severity / retention classes for audit events
 
-The repository models a **29-role Gov-Agentic AI ecosystem** across multiple government work clusters, including:
+## Architecture at a glance
 
+### 1. Canonical registry
+Primary backbone:
+- `configs/role_registry.json`
+
+This file now acts as the main source of truth for:
+- role metadata
+- routing policy
+- intent detection
+- review routing
+- action level, sensitivity, impact, and work-state policies
+
+### 2. Decision engine
+- `scripts/government_decision_engine.py`
+
+This script reads registry-backed policy and computes:
+- `intent_class`
+- `action_level`
+- `work_state`
+- `decision_gate`
+- `human_touchpoint_required`
+- ownership and next-step context
+
+### 3. Orchestrator
+- `scripts/agent_to_agent_orchestrator.py`
+
+This script coordinates:
+- request intake
+- role handoff creation
+- role execution
+- review routing
+- terminal state generation
+- audit event emission
+
+### 4. A2A contract layer
+Schemas:
+- `schemas/agent_to_agent_handoff.schema.json`
+- `schemas/agent_to_agent_response.schema.json`
+- `schemas/agent_to_agent_audit_event.schema.json`
+- `schemas/agent_to_agent_terminal_state.schema.json`
+
+Validator:
+- `scripts/a2a_contracts.py`
+
+### 5. Runtime execution layer
+- `scripts/role_runner.py`
+- `scripts/role_runtime_adapter.py`
+
+Supported runtime execution families:
+- mock modes
+  - `local-mock`
+  - `hermes-mock`
+  - `openclaw-mock`
+- real command-bridge modes
+  - `hermes-real`
+  - `openclaw-real`
+
+### 6. Validation layer
+- `scripts/smoke_test_agent_to_agent.py`
+- `scripts/verify_repo.py`
+- `scripts/verify_runtime_config.py`
+- `scripts/verify_runtime_pack.py`
+- `scripts/verify_runtime_attach.py`
+- `tests/`
+
+## Repository highlights
+
+### Role ecosystem
+The repository models a 29-role government-oriented role ecosystem across multiple clusters, including:
 - policy and legal
 - planning and budget
 - procurement
@@ -39,400 +139,121 @@ The repository models a **29-role Gov-Agentic AI ecosystem** across multiple gov
 - communications and documents
 - HR and performance
 - field/public coordination
-- administrative operations (*tata usaha*)
+- administrative operations
 - escalation and conflict handling
 
-At the top layer, **Yayak** acts as the orchestrator for intent classification, routing, action-level checks, and conflict-aware handoff.
+Top orchestration role:
+- **Yayak**
 
-### 2. Knowledge Base by Role
+Current MVP baseline execution path:
+- **Yayak → Alfian → Edi**
 
-The repository includes a structured `knowledge-base/` designed for retrieval, ingestion, and long-term operational maintenance.
+### Knowledge and skill packaging
+The repo still includes the broader portable agent package structure:
+- `skills/`
+- `knowledge-base/`
+- `prompts/`
+- `schemas/`
+- `configs/`
 
-- `knowledge-base/_shared` holds cross-role canonical knowledge
-- `knowledge-base/<cluster>/<role>` holds role-specific knowledge
-- each role folder has `_shared-links` symlinks to avoid duplicating shared sources
-- each role folder contains structured ingestion-ready metadata templates
+This means the MVP orchestration backbone sits inside a larger adoption kit for future runtime integration.
 
-### 3. Universal Agent Skills
+## Quickstart
 
-The repository includes a portable `skills/` ecosystem using `SKILL.md`-style packaging compatible with:
-
-- Claude
-- Codex
-- OpenClaw
-- Hermes Agent
-- Antigravity
-
-There are:
-
-- **29 role skills**
-- **1 shared guardrail skill**
-- a machine-readable `skills/skill_manifest.json`
-- generator and validator scripts for deterministic skill management
-
-### 4. Governance, Safety, and Auditability
-
-The repository includes contracts and templates for:
-
-- action-level control (`L0` to `L4`)
-- data classification handling
-- audit logging
-- role conflict handling
-- human review and approval
-- acceptance tests and validation prompts
-
-## Production Adoption Model
-
-This repository is intended to be used as a **baseline implementation kit**.
-
-A production adopter is expected to:
-
-1. preserve the repo contracts
-2. replace example or starter content with agency-specific sources
-3. populate the knowledge base with official documents
-4. connect a real retrieval and audit layer
-5. enforce data classification and HITL rules in runtime
-6. validate behavior with the provided test suite
-
-This repo is therefore both:
-
-- a **reference architecture**, and
-- a **working starter system** for real implementation.
-
-## Architecture Map
-
-### Core Layers
-
-- **Orchestration Layer**
-  - Yayak routes requests, classifies intent, determines action level, detects risk, and preserves `trace_id`.
-- **Role Execution Layer**
-  - specialist skills handle domain-specific drafting, review, analysis, and challenge functions.
-- **Knowledge Layer**
-  - role knowledge and shared knowledge support grounded outputs and reusable retrieval.
-- **Governance Layer**
-  - HITL, audit, compliance, and escalation policies ensure the system behaves within public-sector boundaries.
-- **Validation Layer**
-  - acceptance tests, repo verification, and skill verification ensure portability and consistency.
-
-### Minimum Production Components
-
-A real deployment based on this repo should provide:
-
-- identity and access control
-- orchestration runtime
-- retrieval layer over knowledge-base content
-- audit log storage
-- human approval interface or workflow
-- observability for routing, evidence, and escalation events
-
-## Agent Role Ecosystem Summary
-
-The current role inventory is tracked in:
-
-- `knowledge-base/kb_manifest.json`
-- `skills/skill_manifest.json`
-
-Current inventory:
-
-- **29 roles**
-- **10 clusters**
-- **1 shared guardrail skill**
-
-Role patterns:
-
-- **Orchestrator**: Yayak
-- **Specialist Roles**: domain drafting, analysis, and workflow execution
-- **Monitor / Compliance Roles**: challenge, evidence review, audit readiness, block/hold recommendations
-- **Escalation Role**: Winda for unresolved conflicts and human takeover paths
-
-## Knowledge Base Structure
-
-The knowledge layer is designed for long-term operational use, not just demo retrieval.
-
-### Shared Knowledge
-
-`knowledge-base/_shared`
-
-Use this for knowledge reused by many roles, such as:
-
-- general regulations
-- global SOPs
-- organization-wide templates
-- data dictionaries
-- audit and compliance references
-- golden output examples
-
-### Role Knowledge
-
-`knowledge-base/<cluster>/<role>`
-
-Use this for:
-
-- role-specific source documents
-- role-specific examples
-- role-specific reference data
-- role-specific review notes
-- ingestion-ready curated files
-
-### Standard Subdirectories Per Role
-
-Each role folder follows the same structure:
-
-- `00-readme`
-- `01-source-documents`
-- `02-regulations-and-policies`
-- `03-templates-and-examples`
-- `04-sop-and-workflows`
-- `05-reference-data`
-- `06-output-samples`
-- `07-review-notes`
-- `08-ingestion-ready`
-- `09-archive`
-
-## Skill Ecosystem Structure
-
-The skill layer is designed as a **portable agent capability package** rather than a runtime-specific hack.
-
-### Layout
-
-- `skills/roles/` contains the 29 role skills
-- `skills/_shared/gov-agentic-common/` contains shared guardrails
-- `skills/skill_manifest.json` contains the machine-readable skill registry
-- `scripts/generate_role_skills.py` generates deterministic role skills
-- `scripts/verify_skills.py` validates skill integrity
-
-### Skill Contract
-
-Each role skill includes:
-
-- `SKILL.md`
-- `references/role-profile.md`
-- `references/output-contract.md`
-- `references/knowledge-map.md`
-- `assets/.gitkeep`
-- `scripts/.gitkeep`
-
-Each skill is intentionally lightweight and references:
-
-- the role prompt under `prompts/roles/`
-- the role knowledge folder under `knowledge-base/`
-- the shared guardrail skill under `skills/_shared/`
-
-## Governance, HITL, Audit, and Data Classification
-
-This repository assumes that **governance is part of the system**, not a separate policy document nobody uses.
-
-### Human-in-the-Loop
-
-HITL is required for:
-
-- `L3` formal artifact preparation
-- `L4` external or impactful execution
-- sensitive data
-- low-confidence evidence
-- unresolved cross-role conflict
-- legal, fiscal, procurement, or public-impact situations
-
-### Audit Contract
-
-The canonical audit schema lives in:
-
-- `schemas/audit_log_template_v3.0.json`
-
-This is the minimum contract for:
-
-- traceability
-- role chain logging
-- conflict logging
-- human approval state
-- artifact versioning
-- final status capture
-
-### Data Classification
-
-The repository assumes at least four classes:
-
-- `public`
-- `internal`
-- `restricted`
-- `sensitive`
-
-Handling expectations are documented in:
-
-- `docs/security/DATA_CLASSIFICATION_AND_HANDLING.md`
-
-## 30/60/90-Day Pilot Roadmap
-
-### Day 0-30: Foundation
-
-- appoint sponsor, product owner, data owners, reviewers
-- choose the initial workflow subset
-- stand up the knowledge and audit foundations
-- ingest initial official sources
-- validate repo, skill, and contract integrity
-
-### Day 31-60: Controlled Pilot
-
-- run with limited users and strict HITL
-- measure routing accuracy, evidence quality, and review burden
-- exercise red-team and prompt-injection scenarios
-- refine prompts, knowledge, and escalation rules
-
-### Day 61-90: Limited Production Decision
-
-- expand only if governance and incident review support it
-- validate operational readiness across workflow, risk, and audit dimensions
-- decide: continue, hold, redesign, or scale
-
-## Install from Terminal
-
-This repository is public, so the preferred bootstrap path is direct terminal install. See [`INSTALL.md`](./INSTALL.md) and [`docs/operations/UNINSTALL_GUIDE.md`](./docs/operations/UNINSTALL_GUIDE.md). Runtime implementers should also read `runtime-bootstrap.generated.json`, `runtime-adapters/universal/RUNTIME_HANDSHAKE.md`, and `runtime-link.json` when consuming installed shims.
-
-macOS / Linux:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh
-```
-
-macOS / Linux defaults:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh -s -- --defaults
-```
-
-macOS / Linux doctor:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/doctor.sh | sh
-```
-
-macOS / Linux update:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.sh | sh -s -- --update
-```
-
-Windows PowerShell:
-
-```powershell
-irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
-```
-
-Windows PowerShell doctor:
-
-```powershell
-irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/doctor.ps1 | iex
-```
-
-Windows PowerShell update:
-
-```powershell
-$env:GOV_AGENTIC_INSTALL_ARGS='-Update'; irm https://raw.githubusercontent.com/dendyadinirwana/gov-agentic-AI/main/install.ps1 | iex
-```
-
-MCP defaults are local-first: generated local MCP config does not emit `Authorization` headers. API key prompts only appear when you explicitly choose a remote/authenticated MCP endpoint during install.
-
-## Quick Start for Adopters
-
-### 1. Review the implementation baseline
-
-Start with:
-
-- `docs/governance/Gov_Agentic_AI_v3.1_Implementation_Pack.md`
-- `docs/operations/REPLICATION_GUIDE.md`
-- `docs/operations/SKILL_ADOPTION_GUIDE.md`
-
-### 2. Review the repository contract
-
-Critical files:
-
-- `knowledge-base/kb_manifest.json` — role inventory
-- `skills/skill_manifest.json` — skill inventory
-- `schemas/audit_log_template_v3.0.json` — audit contract
-- `prompts/system/YayakAI_Master_System_Prompt_v3.0.md` — orchestration prompt
-
-### 3. Populate knowledge
-
-Populate:
-
-- `knowledge-base/_shared`
-- role-specific folders under `knowledge-base/<cluster>/<role>`
-
-### 4. Connect runtime behavior
-
-Wire the runtime to:
-
-- system prompt
-- role prompts
-- role skills
-- role knowledge
-- audit log schema
-- human approval flow
-
-### 5. Validate before adoption
-
-Run:
-
+### 1. Verify repo integrity
 ```bash
 python3 scripts/verify_repo.py
-python3 scripts/verify_skills.py
-python3 scripts/generate_role_skills.py --check
 ```
 
-## Validation Commands
-
-Use these commands as the minimum repository health check:
-
+### 2. Run the sample decision engine
 ```bash
-python3 scripts/verify_repo.py
-python3 scripts/verify_skills.py
-python3 scripts/generate_role_skills.py --check
+python3 scripts/government_decision_engine.py \
+  --input-json examples/agent-to-agent/yayak-alfian-edi.request.json \
+  --pretty
 ```
 
-Expected outcomes:
+### 3. Run the sample orchestrator
+```bash
+python3 scripts/agent_to_agent_orchestrator.py \
+  --input-json examples/agent-to-agent/yayak-alfian-edi.request.json \
+  --pretty
+```
 
-- repo contracts present
-- no broken symlinks
-- role count and skill count aligned
-- skill frontmatter valid
-- prompt and knowledge paths intact
+### 4. Run the smoke test
+```bash
+python3 scripts/smoke_test_agent_to_agent.py
+```
 
-## Repository Map
+### 5. Run the unit tests
+```bash
+python3 -m unittest discover -s tests -v
+```
 
-- `docs/` — architecture, governance, operations, security, knowledge-model references
-- `prompts/` — orchestration and role prompts
-- `schemas/` — audit and acceptance-test schemas
-- `knowledge-base/` — role and shared knowledge layout
-- `skills/` — universal role skills and shared guardrails
-- `operations/` — bootstrap, ingestion, and review templates
-- `examples/` — sample requests and output contracts
-- `configs/` — deployment template
-- `scripts/` — generators and validators
+## Example MVP output behavior
+For the first-slice sample flow, the expected behavior is currently:
+- owner starts at `top-layer__gov-ai_yayak`
+- intent resolves to `draft-formal-artifact`
+- execution path is `Alfian -> Edi`
+- final state is `needs_review`
+- audit events include governance and human-touchpoint signals
 
-## Document Deliverables
+## Audit and governance model
+The current A2A audit taxonomy includes:
+- `handoff_created`
+- `role_response_recorded`
+- `workflow_terminalized`
+- `governance_gate_triggered`
+- `human_touchpoint_required`
+- `fallback_used`
+- `runtime_failed`
+- `runtime_timeout`
+- `review_returned`
 
-Versioned DOCX artifacts are grouped under `docs/deliverables/`:
+This improves traceability for:
+- normal role execution
+- governance review gates
+- fallback behavior
+- runtime failures
+- review loops back to orchestrator
 
-- [`Gov_Agentic_AI_v3.1_Implementation_Pack.docx`](./docs/deliverables/Gov_Agentic_AI_v3.1_Implementation_Pack.docx)
-- [`Gov_Agentic_AI_v3.0_Master_Full.docx`](./docs/deliverables/Gov_Agentic_AI_v3.0_Master_Full.docx)
-- [`Gov_Agentic_AI_v3.0_Knowledge_UseCases.docx`](./docs/deliverables/Gov_Agentic_AI_v3.0_Knowledge_UseCases.docx)
-- [`docs/deliverables/README.md`](./docs/deliverables/README.md)
+## Runtime notes
+The real runtime path is currently **command-bridge based**.
 
-Additional canonical Markdown references:
+That means this repo can already integrate with Hermes/OpenClaw-style runtimes if you provide runtime commands through config or environment variables, but it is **not yet a native SDK-level integration**.
 
-- [`docs/governance/Gov_Agentic_AI_v3.1_Implementation_Pack.md`](./docs/governance/Gov_Agentic_AI_v3.1_Implementation_Pack.md)
-- [`docs/operations/Gov_Agentic_AI_Cross_Cluster_Playbook_v3.0.md`](./docs/operations/Gov_Agentic_AI_Cross_Cluster_Playbook_v3.0.md)
-- [`docs/architecture/Gov_Agentic_AI_Persona_Alias_Annex_v3.0.md`](./docs/architecture/Gov_Agentic_AI_Persona_Alias_Annex_v3.0.md)
+This is intentional for the MVP phase:
+- practical to wire
+- easy to test locally
+- avoids fake assumptions about runtime internals
 
-## Why This Repo Matters
+## Key docs
+- `docs/architecture/AGENT_TO_AGENT_CONTRACTS_AND_RUNTIME.md`
+- `docs/architecture/GOVERNMENT_WORK_LOGIC.md`
+- `docs/architecture/REPO_CONTRACT.md`
 
-Most AI repository examples stop at prompts, demo agents, or toy retrieval. This repository is aimed at a harder target:
+## Recommended next steps after MVP
+The most natural next milestones are:
+1. native runtime hardening for Hermes/OpenClaw
+2. audit severity / retention / compliance classes
+3. golden fixtures for more workflow types
+4. retrieval integration over real government documents
+5. human approval / review interface
 
-- production adoption
-- role accountability
-- auditable behavior
-- reusable knowledge structure
-- cross-runtime skill portability
-- human-governed execution in public-sector contexts
+## Bottom line
+If your question is:
 
-That is the reason this repository exists.
+**“Is there already an MVP here?”**
+
+The honest answer is:
+
+**Yes — the orchestration MVP is already here.**
+
+If your question is:
+
+**“Is this already a full production government AI platform?”**
+
+The honest answer is:
+
+**Not yet.**
+
+But the backbone is now strong enough to commit, share, and iterate as a serious MVP branch on GitHub.

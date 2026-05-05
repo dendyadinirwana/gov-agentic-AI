@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gov-agentic-ai/agent_to_agent_audit_event.schema.json",
+  "title": "Gov Agentic AI A2A Audit Event",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "trace_id",
+    "event_id",
+    "event_type",
+    "created_at",
+    "actor_role",
+    "payload_ref"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "a2a.v1"
+    },
+    "trace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "handoff_created",
+        "role_response_recorded",
+        "workflow_terminalized",
+        "governance_gate_triggered",
+        "human_touchpoint_required",
+        "fallback_used",
+        "runtime_failed",
+        "runtime_timeout",
+        "review_returned"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actor_role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

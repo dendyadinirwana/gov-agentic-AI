@@ -18,7 +18,7 @@ REQUIRED_KEYS = [
     'default_router_skill', 'output_contract_required_fields', 'runtime_boot_sequence', 'runtime_pack_root',
     'central_pack_root', 'install_target_root', 'install_target_config', 'install_target_skills',
     'install_target_type', 'install_mode', 'install_applied', 'installed_at', 'government_work_logic',
-    'authority_matrix', 'decision_engine', 'decision_engine_entrypoint', 'central_home_root',
+    'authority_matrix', 'role_registry', 'decision_engine', 'decision_engine_entrypoint', 'central_home_root',
     'runtime_shim_root', 'runtime_attach_mode', 'canonical_repo_root', 'shim_installed_skills',
     'canonical_skill_manifest', 'canonical_knowledge_root', 'canonical_system_prompt',
     'canonical_agent_entrypoint', 'canonical_runtime_config'
@@ -76,7 +76,7 @@ def validate_enums(config: dict[str, Any], errors: list[str]) -> None:
         errors.append(f'invalid runtime_attach_mode: {config.get("runtime_attach_mode")}')
 
 def validate_repo_paths(config: dict[str, Any], errors: list[str]) -> None:
-    repo_relative_keys = ['agent_entrypoint', 'runtime_handshake', 'bootstrap_example', 'system_prompt', 'shared_guardrail_skill', 'audit_schema', 'acceptance_tests', 'knowledge_base_root', 'shared_knowledge_root', 'adapter_profile_path', 'government_work_logic', 'authority_matrix', 'decision_engine_entrypoint']
+    repo_relative_keys = ['agent_entrypoint', 'runtime_handshake', 'bootstrap_example', 'system_prompt', 'shared_guardrail_skill', 'audit_schema', 'acceptance_tests', 'knowledge_base_root', 'shared_knowledge_root', 'adapter_profile_path', 'government_work_logic', 'authority_matrix', 'role_registry', 'decision_engine_entrypoint']
     for key in repo_relative_keys:
         value = config.get(key)
         if value and not (ROOT / value).exists():
@@ -181,13 +181,17 @@ def validate_runtime_fields(config: dict[str, Any], errors: list[str]) -> None:
     if not isinstance(decision, dict):
         errors.append('decision_engine must be an object')
     else:
-        for key in ['enabled', 'entrypoint', 'workflow_schema', 'authority_matrix', 'rules_config', 'default_mode']:
+        for key in ['enabled', 'entrypoint', 'workflow_schema', 'authority_matrix', 'role_registry', 'rules_config', 'routing_policy_embedded', 'default_mode']:
             if key not in decision:
                 errors.append(f'decision_engine missing key: {key}')
-        for key in ['entrypoint', 'workflow_schema', 'authority_matrix', 'rules_config']:
+        for key in ['entrypoint', 'workflow_schema', 'authority_matrix', 'role_registry', 'rules_config']:
             value = decision.get(key)
             if value and not (ROOT / value).exists():
                 errors.append(f'decision_engine path does not exist for {key}: {value}')
+        if decision.get('role_registry') != config.get('role_registry'):
+            errors.append('decision_engine.role_registry must match top-level role_registry')
+        if decision.get('routing_policy_embedded') is not True:
+            errors.append('decision_engine.routing_policy_embedded must be true')
     discovery = config.get('runtime_discovery')
     if not isinstance(discovery, dict):
         errors.append('runtime_discovery must be an object')
@@ -213,8 +217,8 @@ def validate_runtime_fields(config: dict[str, Any], errors: list[str]) -> None:
     if not str(config.get('canonical_runtime_config', '')).endswith('/configs/runtime.generated.json'):
         errors.append('canonical_runtime_config must point to central configs/runtime.generated.json')
     for pack_key, rels in {
-        'runtime_pack_root': ['runtime.generated.json', 'runtime-link.json', 'runtime-pack.manifest.json', 'skills/roles/top-layer__gov-ai_yayak/SKILL.md'],
-        'central_pack_root': ['configs/runtime.generated.json', 'central-home.manifest.json', 'skills/skill_manifest.json', 'knowledge-base/kb_manifest.json'],
+        'runtime_pack_root': ['runtime.generated.json', 'runtime-link.json', 'runtime-pack.manifest.json', 'configs/role_registry.json', 'skills/roles/top-layer__gov-ai_yayak/SKILL.md'],
+        'central_pack_root': ['configs/runtime.generated.json', 'configs/role_registry.json', 'central-home.manifest.json', 'skills/skill_manifest.json', 'knowledge-base/kb_manifest.json'],
     }.items():
         pack_root = ROOT / config.get(pack_key, '')
         if pack_root.exists():

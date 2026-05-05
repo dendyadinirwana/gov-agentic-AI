@@ -1,0 +1,19 @@
+{
+  "request_text": "Bantu buat draft nota dinas untuk tindak lanjut permintaan klarifikasi program, sertakan basis dokumen dan siapkan untuk review kepatuhan.",
+  "intent_class": "draft-formal-artifact",
+  "action_level": "L3",
+  "evidence_complete": true,
+  "approval_owner_known": true,
+  "material_impact": true,
+  "sensitive": false,
+  "evidence_sources": [
+    "Surat permintaan klarifikasi unit pengusul",
+    "Arahan internal pimpinan terkait tindak lanjut",
+    "Dokumen ringkasan program yang relevan"
+  ],
+  "instructions": "Hasilkan draf formal awal dulu, lalu kirim ke review kepatuhan.",
+  "assumptions": [
+    "Belum ada nomor surat final",
+    "Output tahap ini hanya draf internal"
+  ]
+}

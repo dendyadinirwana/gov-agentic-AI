@@ -20,6 +20,7 @@ ADAPTER_EXPORTS = {
 REQUIRED_CENTRAL_FILES = [
     'configs/runtime.generated.json',
     'configs/runtime-bootstrap.generated.json',
+    'configs/role_registry.json',
     'skills/skill_manifest.json',
     'knowledge-base/kb_manifest.json',
     'prompts/system/YayakAI_Master_System_Prompt_v3.0.md',

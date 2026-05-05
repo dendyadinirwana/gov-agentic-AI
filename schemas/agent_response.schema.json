@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gov-agentic-ai/agent_response.schema.json",
+  "title": "Agent-to-Agent Response",
+  "type": "object",
+  "required": [
+    "trace_id",
+    "response_id",
+    "role_slug",
+    "status",
+    "summary",
+    "evidence_map",
+    "assumptions",
+    "confidence",
+    "red_flags",
+    "human_touchpoint",
+    "next_step"
+  ],
+  "properties": {
+    "trace_id": { "type": "string", "minLength": 1 },
+    "response_id": { "type": "string", "minLength": 1 },
+    "role_slug": { "type": "string", "minLength": 1 },
+    "status": { "type": "string", "enum": ["completed", "needs_review", "blocked"] },
+    "summary": { "type": "string", "minLength": 1 },
+    "artifact": { "type": ["string", "null"] },
+    "evidence_map": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "use"],
+        "properties": {
+          "source": { "type": "string" },
+          "use": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    },
+    "red_flags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "human_touchpoint": {
+      "type": "object",
+      "required": ["required", "reason"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "reason": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "next_step": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": false
+}

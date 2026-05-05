@@ -494,8 +494,9 @@ def build_config(runtime: str, memory: str, governance: str, active_clusters: li
         'shared_guardrail_skill': skills['shared_skill'],
         'government_work_logic': 'docs/architecture/GOVERNMENT_WORK_LOGIC.md',
         'authority_matrix': 'configs/authority_matrix.json',
+        'role_registry': 'configs/role_registry.json',
         'decision_engine_entrypoint': 'scripts/government_decision_engine.py',
-        'decision_engine': {'enabled': True, 'entrypoint': 'scripts/government_decision_engine.py', 'workflow_schema': 'schemas/government_workflow_state.schema.json', 'authority_matrix': 'configs/authority_matrix.json', 'rules_config': 'configs/government_logic_rules.json', 'default_mode': 'gating' if governance == 'production' else 'advisory'},
+        'decision_engine': {'enabled': True, 'entrypoint': 'scripts/government_decision_engine.py', 'workflow_schema': 'schemas/government_workflow_state.schema.json', 'authority_matrix': 'configs/authority_matrix.json', 'role_registry': 'configs/role_registry.json', 'rules_config': 'configs/government_logic_rules.json', 'routing_policy_embedded': True, 'default_mode': 'gating' if governance == 'production' else 'advisory'},
         'mcp': build_mcp_config(mcp_mode, mcp_remote_url, mcp_auth_type, mcp_auth_env_var),
         'audit_schema': 'schemas/audit_log_template_v3.0.json',
         'acceptance_tests': 'schemas/Gov_Agentic_AI_v3.1_Acceptance_Tests.json',
@@ -984,7 +985,7 @@ def central_home_copy_list() -> list[Path]:
     return [
         Path('AGENT_README.md'), Path('README.md'), Path('INSTALL.md'), Path('docs'), Path('examples'),
         Path('knowledge-base'), Path('prompts'), Path('runtime-adapters'), Path('schemas'), Path('scripts'),
-        Path('skills'), Path('configs/government_logic_rules.json'), Path('configs/authority_matrix.json')
+        Path('skills'), Path('configs/government_logic_rules.json'), Path('configs/authority_matrix.json'), Path('configs/role_registry.json')
     ]
 
 
@@ -1014,7 +1015,7 @@ def build_runtime_pack(config: dict[str, Any], output: Path, active_deployment: 
     files_to_copy = [
         Path(config['agent_entrypoint']), Path(config['runtime_handshake']), Path(config['bootstrap_example']),
         Path(config['system_prompt']), Path(config['shared_guardrail_skill']), Path(config['government_work_logic']),
-        Path(config['authority_matrix']), Path(config['decision_engine_entrypoint']), Path(config['decision_engine']['workflow_schema']),
+        Path(config['authority_matrix']), Path(config['role_registry']), Path(config['decision_engine_entrypoint']), Path(config['decision_engine']['workflow_schema']),
         Path(config['decision_engine']['rules_config']), Path(config['audit_schema']), Path(config['acceptance_tests']),
         Path(config['adapter_profile_path']), Path('skills/roles/top-layer__gov-ai_yayak'), Path('prompts/roles/top-layer__gov-ai_yayak.md')
     ]

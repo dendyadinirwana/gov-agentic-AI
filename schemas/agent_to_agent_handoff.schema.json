@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gov-agentic-ai/agent_to_agent_handoff.schema.json",
+  "title": "Gov Agentic AI A2A Handoff",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "trace_id",
+    "handoff_id",
+    "from_role",
+    "to_role",
+    "intent_class",
+    "task_summary",
+    "action_level",
+    "workflow_state",
+    "payload",
+    "governance",
+    "audit"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "a2a.v1"
+    },
+    "trace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "handoff_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "intent_class": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "action_level": {
+      "type": "string",
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3",
+        "L4"
+      ]
+    },
+    "workflow_state": {
+      "$ref": "gov-agentic-ai/government_workflow_state.schema.json"
+    },
+    "payload": {
+      "type": "object",
+      "required": [
+        "request_text",
+        "evidence_sources",
+        "assumptions"
+      ],
+      "properties": {
+        "request_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "instructions": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "draft_artifact": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "decision_context": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "governance": {
+      "type": "object",
+      "required": [
+        "decision_gate",
+        "human_touchpoint_required"
+      ],
+      "properties": {
+        "decision_gate": {
+          "type": "string",
+          "enum": [
+            "PROCEED",
+            "REVIEW_NEEDED",
+            "HOLD"
+          ]
+        },
+        "decision_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "human_touchpoint_required": {
+          "type": "boolean"
+        },
+        "approval_gate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stop_condition": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "audit": {
+      "type": "object",
+      "required": [
+        "created_at",
+        "created_by",
+        "sequence"
+      ],
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

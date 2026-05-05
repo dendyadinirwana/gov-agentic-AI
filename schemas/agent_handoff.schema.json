@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gov-agentic-ai/agent_handoff.schema.json",
+  "title": "Agent-to-Agent Handoff",
+  "type": "object",
+  "required": [
+    "trace_id",
+    "handoff_id",
+    "from_role",
+    "to_role",
+    "intent_class",
+    "task_summary",
+    "action_level",
+    "workflow_state",
+    "payload",
+    "governance"
+  ],
+  "properties": {
+    "trace_id": { "type": "string", "minLength": 1 },
+    "handoff_id": { "type": "string", "minLength": 1 },
+    "from_role": { "type": "string", "minLength": 1 },
+    "to_role": { "type": "string", "minLength": 1 },
+    "intent_class": { "type": "string", "minLength": 1 },
+    "task_summary": { "type": "string", "minLength": 1 },
+    "action_level": { "type": "string", "enum": ["L0", "L1", "L2", "L3", "L4"] },
+    "workflow_state": { "$ref": "./government_workflow_state.schema.json" },
+    "payload": {
+      "type": "object",
+      "required": ["request_text", "evidence_sources"],
+      "properties": {
+        "request_text": { "type": "string", "minLength": 1 },
+        "evidence_sources": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        },
+        "draft_artifact": { "type": ["string", "null"] },
+        "instructions": { "type": ["string", "null"] },
+        "assumptions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        }
+      },
+      "additionalProperties": true
+    },
+    "governance": {
+      "type": "object",
+      "required": ["decision_gate", "human_touchpoint_required"],
+      "properties": {
+        "decision_gate": { "type": "string", "enum": ["PROCEED", "HOLD", "REVIEW_NEEDED", "ESCALATE_TO"] },
+        "decision_reason": { "type": ["string", "null"] },
+        "human_touchpoint_required": { "type": "boolean" },
+        "approval_gate": { "type": ["string", "null"] },
+        "stop_condition": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "audit": {
+      "type": "object",
+      "properties": {
+        "created_at": { "type": "string" },
+        "created_by": { "type": "string" },
+        "sequence": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

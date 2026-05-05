@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gov-agentic-ai/agent_to_agent_terminal_state.schema.json",
+  "title": "Gov Agentic AI A2A Terminal State",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "trace_id",
+    "status",
+    "summary",
+    "workflow_state"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "a2a.v1"
+    },
+    "trace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "needs_review",
+        "blocked",
+        "failed"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "workflow_state": {
+      "$ref": "gov-agentic-ai/government_workflow_state.schema.json"
+    },
+    "recommended_next_step": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "red_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "final_artifact": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}
