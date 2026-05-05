@@ -18,15 +18,17 @@ Run:
 
 ```bash
 python3 scripts/verify_repo.py
-python3 scripts/verify_skills.py
-python3 scripts/generate_role_skills.py --check
+python3 scripts/smoke_test_agent_to_agent.py
+python3 scripts/smoke_test_agent_to_agent_matrix.py
+python3 -m unittest discover -s tests -v
 ```
 
 Expected:
 
 - no broken symlinks
-- role and skill counts stay aligned
-- `SKILL.md` frontmatter remains valid
+- core orchestration fixtures remain valid
+- contract validation stays green
+- retrieval and HITL flows remain covered by tests
 - required manifests and contracts remain present
 
 ## Change Categories
