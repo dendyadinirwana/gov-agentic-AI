@@ -314,6 +314,7 @@ def execute_role(handoff: dict[str, Any], adapter_mode: str = "local-mock", runt
     trace_id = handoff["trace_id"]
     request_text = handoff["payload"]["request_text"]
     evidence_sources = handoff["payload"].get("evidence_sources", [])
+    retrieval_hits = ((handoff["payload"].get("retrieval_context") or {}).get("hits") or [])
     draft_artifact = handoff["payload"].get("draft_artifact")
     governance = handoff["governance"]
     role = roles_by_slug.get(role_slug, {"role_slug": role_slug, "role": role_slug})
@@ -353,6 +354,7 @@ def execute_role(handoff: dict[str, Any], adapter_mode: str = "local-mock", runt
             "Teruskan draf ke Monitor Kepatuhan Hukum (Edi) untuk review kepatuhan.",
             adapter_mode,
             audit_hints=fallback_hint,
+            retrieval_hits=retrieval_hits,
         )
     elif role_slug == "kebijakan-dan-hukum__monitor-kepatuhan-hukum_edi":
         red_flags = []
@@ -370,6 +372,7 @@ def execute_role(handoff: dict[str, Any], adapter_mode: str = "local-mock", runt
             "Kembalikan ke Yayak untuk diringkas menjadi rekomendasi tindak lanjut + human review gate.",
             adapter_mode,
             audit_hints={**(fallback_hint or {}), "review_returned": bool(red_flags), "human_touchpoint_required": True},
+            retrieval_hits=retrieval_hits,
         )
     elif role_slug == "top-layer__gov-ai_yayak":
         response = _mk_response(
@@ -377,6 +380,7 @@ def execute_role(handoff: dict[str, Any], adapter_mode: str = "local-mock", runt
             evidence_sources, [], "high", [], governance.get("human_touchpoint_required", False),
             "Mengikuti gate governance dari decision engine.", "Sampaikan hasil ke user atau teruskan ke owner manusia yang relevan.", adapter_mode,
             audit_hints=fallback_hint,
+            retrieval_hits=retrieval_hits,
         )
     else:
         response = generic_response(handoff, role, adapter_mode)

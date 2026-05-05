@@ -123,6 +123,8 @@ Event type saat ini:
 - `review_returned` → `warning` / `governance_record` / `human_approval` / `review_required`
 - `runtime_failed` → `critical` / `incident_record` / `runtime_incident` / `escalate_required`
 - `runtime_timeout` → `critical` / `incident_record` / `runtime_incident` / `escalate_required`
+- `human_review_decision` → `warning` / `governance_record` / `human_approval` / `ack_required`
+- `workflow_resumed` → `info` / `governance_record` / `human_approval` / `log_only`
 
 ### 4) Terminal state
 Terminal state adalah ringkasan final workflow.

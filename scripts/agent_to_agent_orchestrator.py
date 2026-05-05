@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from a2a_contracts import AUDIT_POLICY_BY_TYPE, validate_audit_event, validate_handoff, validate_response, validate_terminal_state
+from a2a_contracts import AUDIT_POLICY_BY_TYPE, validate_audit_event, validate_handoff, validate_response, validate_review_decision, validate_terminal_state
 from government_decision_engine import build_decision
 from local_retriever import retrieve
 from role_runner import build_role_runner
@@ -215,9 +215,41 @@ def build_terminal_state(trace_id: str, workflow_state: dict[str, Any], steps: l
     return terminal
 
 
+def apply_review_decision(final: dict[str, Any], decision: dict[str, Any]) -> dict[str, Any]:
+    decision_type = decision["decision"]
+    status_map = {
+        "approve": "completed",
+        "reject": "failed",
+        "hold": "blocked",
+        "escalate": "needs_review",
+    }
+    final["status"] = status_map[decision_type]
+    final["final_status"] = status_map[decision_type]
+    final["review_decision"] = decision
+    final["workflow_state"]["work_state"] = {
+        "approve": "approved",
+        "reject": "blocked",
+        "hold": "awaiting-approval",
+        "escalate": "escalated",
+    }[decision_type]
+    final["workflow_state"]["current_owner_role"] = decision["reviewer"]["actor_role"]
+    final["workflow_state"]["human_touchpoint_required"] = decision_type != "approve"
+    final["recommended_next_step"] = {
+        "approve": "Lanjutkan sebagai artefak yang sudah disetujui manusia dan siap diteruskan sesuai workflow.",
+        "reject": "Perbaiki artefak atau bukti lalu ajukan review ulang.",
+        "hold": "Tunggu keputusan lanjutan atau evidence tambahan dari reviewer manusia.",
+        "escalate": "Naikkan ke owner/escalation target manusia yang lebih tepat.",
+    }[decision_type]
+    final.setdefault("red_flags", [])
+    if decision.get("notes"):
+        final["red_flags"].append(f"Human review note: {decision['notes']}")
+    return final
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Registry-driven A2A orchestrator for Gov-Agentic AI")
     parser.add_argument("--input-json", required=True, help="Path to orchestrator request payload")
+    parser.add_argument("--review-decision-json", help="Optional HITL review decision to resume/finalize workflow")
     parser.add_argument("--pretty", action="store_true", help="Pretty-print output")
     args = parser.parse_args()
 
@@ -297,6 +329,14 @@ def main() -> int:
         steps.append({"handoff": review_handoff, "response": review_response})
 
     final = build_terminal_state(trace_id, workflow_state, steps, roles_by_slug, retrieval)
+    if args.review_decision_json:
+        review_decision = load_json(Path(args.review_decision_json))
+        errors = validate_review_decision(review_decision, trace_id)
+        if errors:
+            raise ValueError("invalid review decision: " + "; ".join(errors))
+        audit_events.append(build_audit_event(trace_id, "human_review_decision", review_decision["reviewer"]["actor_role"], review_decision["review_id"], review_decision.get("notes")))
+        final = apply_review_decision(final, review_decision)
+        audit_events.append(build_audit_event(trace_id, "workflow_resumed", review_decision["reviewer"]["actor_role"], review_decision["review_id"], review_decision["decision"]))
     audit_events.append(build_audit_event(trace_id, "workflow_terminalized", ROLE_YAYAK, "final", final["status"]))
 
     output = {

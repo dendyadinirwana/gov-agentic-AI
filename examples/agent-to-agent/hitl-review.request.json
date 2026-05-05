@@ -1,0 +1,16 @@
+{
+  "request_text": "Bantu buat draft nota dinas untuk tindak lanjut klarifikasi program dan siapkan review manusia sebelum dipakai resmi.",
+  "intent_class": "draft-formal-artifact",
+  "action_level": "L3",
+  "evidence_complete": true,
+  "approval_owner_known": true,
+  "material_impact": true,
+  "sensitive": false,
+  "retrieval_required": true,
+  "evidence_sources": [],
+  "instructions": "Susun draf awal, lalu pertahankan jalur review manusia pada output workflow.",
+  "assumptions": [
+    "Dokumen belum boleh dianggap final tanpa human approval.",
+    "Retrieval lokal dipakai untuk grounding dasar."
+  ]
+}

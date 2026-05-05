@@ -47,6 +47,12 @@ CASES = [
         "expected_path": ["Anastasia"],
         "expected_status": "completed",
     },
+    {
+        "file": "hitl-review.request.json",
+        "expected_steps": 2,
+        "expected_path": ["Alfian", "Edi"],
+        "expected_status": "needs_review",
+    },
 ]
 
 

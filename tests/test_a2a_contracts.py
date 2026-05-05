@@ -13,7 +13,7 @@ SCRIPTS = ROOT / 'scripts'
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
-from a2a_contracts import validate_handoff, validate_response, validate_terminal_state, validate_audit_event
+from a2a_contracts import validate_handoff, validate_response, validate_terminal_state, validate_audit_event, validate_review_decision
 
 ORCHESTRATOR = ROOT / 'scripts' / 'agent_to_agent_orchestrator.py'
 ADAPTER = ROOT / 'scripts' / 'role_runtime_adapter.py'
@@ -62,6 +62,13 @@ FIXTURE_CASES = [
         'expected_status': 'completed',
         'expected_event_types': {'handoff_created', 'role_response_recorded', 'workflow_terminalized'},
     },
+    {
+        'file': 'hitl-review.request.json',
+        'expected_steps': 2,
+        'expected_path': ['Alfian', 'Edi'],
+        'expected_status': 'needs_review',
+        'expected_event_types': {'governance_gate_triggered', 'human_touchpoint_required', 'review_returned'},
+    },
 ]
 
 
@@ -109,6 +116,69 @@ class A2AContractTests(unittest.TestCase):
                     self.assertIn('source_id', payload['steps'][0]['response']['evidence_map'][0])
                 for event in payload['audit_events']:
                     self.assertFalse(validate_audit_event(event, payload['trace_id']))
+
+    def test_hitl_review_console_packet_decision_and_resume(self) -> None:
+        workflow_path = EXAMPLES / 'hitl-review.request.json'
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workflow_json_path = Path(tmpdir) / 'workflow.json'
+            packet_path = Path(tmpdir) / 'review-packet.json'
+            decision_path = Path(tmpdir) / 'review-decision.json'
+
+            workflow = subprocess.run(
+                [sys.executable, str(ORCHESTRATOR), '--input-json', str(workflow_path)],
+                capture_output=True,
+                text=True,
+                check=True,
+                cwd=ROOT,
+            )
+            workflow_payload = json.loads(workflow.stdout)
+            self.assertEqual(workflow_payload['final']['final_status'], 'needs_review')
+            workflow_json_path.write_text(json.dumps(workflow_payload, ensure_ascii=False), encoding='utf-8')
+
+            subprocess.run(
+                [sys.executable, str(ROOT / 'scripts' / 'hitl_review_console.py'), 'packet', '--workflow-json', str(workflow_json_path), '--output-json', str(packet_path)],
+                capture_output=True,
+                text=True,
+                check=True,
+                cwd=ROOT,
+            )
+            packet = json.loads(packet_path.read_text(encoding='utf-8'))
+            self.assertTrue(packet['review_required'])
+
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / 'scripts' / 'hitl_review_console.py'),
+                    'decide',
+                    '--packet-json', str(packet_path),
+                    '--decision', 'approve',
+                    '--actor-id', 'reviewer-1',
+                    '--actor-role', 'human-reviewer',
+                    '--display-name', 'Reviewer Internal',
+                    '--notes', 'Dapat dilanjutkan',
+                    '--output-json', str(decision_path),
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+                cwd=ROOT,
+            )
+            review_decision = json.loads(decision_path.read_text(encoding='utf-8'))
+            self.assertFalse(validate_review_decision(review_decision, workflow_payload['trace_id']))
+
+            resumed = subprocess.run(
+                [sys.executable, str(ORCHESTRATOR), '--input-json', str(workflow_path), '--review-decision-json', str(decision_path)],
+                capture_output=True,
+                text=True,
+                check=True,
+                cwd=ROOT,
+            )
+            resumed_payload = json.loads(resumed.stdout)
+            self.assertEqual(resumed_payload['final']['final_status'], 'completed')
+            event_types = {event['event_type'] for event in resumed_payload['audit_events']}
+            self.assertIn('human_review_decision', event_types)
+            self.assertIn('workflow_resumed', event_types)
+            self.assertEqual(resumed_payload['final']['review_decision']['decision'], 'approve')
 
     def _sample_handoff(self, trace_id: str = 'trace-test-fallback') -> dict:
         return {

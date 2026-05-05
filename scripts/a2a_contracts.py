@@ -32,11 +32,15 @@ AUDIT_TYPES = {
     "runtime_failed",
     "runtime_timeout",
     "review_returned",
+    "human_review_decision",
+    "workflow_resumed",
 }
 AUDIT_SEVERITIES = {"info", "warning", "critical"}
 AUDIT_RETENTION_CLASSES = {"ephemeral", "operational_record", "governance_record", "incident_record"}
 AUDIT_COMPLIANCE_CLASSES = {"standard", "governance_control", "human_approval", "runtime_incident"}
 AUDIT_RESPONSE_POLICIES = {"log_only", "review_required", "ack_required", "escalate_required"}
+REVIEW_DECISIONS = {"approve", "reject", "hold", "escalate"}
+
 AUDIT_POLICY_BY_TYPE = {
     "handoff_created": {
         "severity": "info",
@@ -91,6 +95,18 @@ AUDIT_POLICY_BY_TYPE = {
         "retention_class": "incident_record",
         "compliance_class": "runtime_incident",
         "response_policy": "escalate_required",
+    },
+    "human_review_decision": {
+        "severity": "warning",
+        "retention_class": "governance_record",
+        "compliance_class": "human_approval",
+        "response_policy": "ack_required",
+    },
+    "workflow_resumed": {
+        "severity": "info",
+        "retention_class": "governance_record",
+        "compliance_class": "human_approval",
+        "response_policy": "log_only",
     },
 }
 AUDIT_SEVERITY_BY_TYPE = {event_type: policy["severity"] for event_type, policy in AUDIT_POLICY_BY_TYPE.items()}
@@ -204,6 +220,30 @@ def validate_response(response: dict[str, Any], handoff: dict[str, Any] | None =
             errors.append("response.trace_id must match handoff.trace_id")
         if response.get("role_slug") != handoff.get("to_role"):
             errors.append("response.role_slug must match handoff.to_role")
+    return errors
+
+
+def validate_review_decision(decision: dict[str, Any], trace_id: str | None = None) -> list[str]:
+    errors: list[str] = []
+    for key in ["contract_version", "trace_id", "review_id", "packet_ref", "decision", "reviewer", "notes", "decided_at"]:
+        if key not in decision:
+            errors.append(f"review_decision missing key: {key}")
+    if decision.get("contract_version") != CONTRACT_VERSION:
+        errors.append("review_decision.contract_version must be a2a.v1")
+    if decision.get("decision") not in REVIEW_DECISIONS:
+        errors.append(f"invalid review_decision.decision: {decision.get('decision')}")
+    reviewer = decision.get("reviewer")
+    if not isinstance(reviewer, dict):
+        errors.append("review_decision.reviewer must be object")
+    else:
+        if not reviewer.get("actor_id"):
+            errors.append("review_decision.reviewer.actor_id is required")
+        if not reviewer.get("actor_role"):
+            errors.append("review_decision.reviewer.actor_role is required")
+    if not _is_iso(str(decision.get("decided_at", ""))):
+        errors.append("review_decision.decided_at must be ISO timestamp")
+    if trace_id and decision.get("trace_id") != trace_id:
+        errors.append("review_decision.trace_id must match workflow trace")
     return errors
 
 

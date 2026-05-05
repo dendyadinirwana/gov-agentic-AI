@@ -38,9 +38,11 @@
         "governance_gate_triggered",
         "human_touchpoint_required",
         "fallback_used",
+        "review_returned",
         "runtime_failed",
         "runtime_timeout",
-        "review_returned"
+        "human_review_decision",
+        "workflow_resumed"
       ]
     },
     "created_at": {
